@@ -14,8 +14,7 @@ import {
 } from 'react-icons/fa';
 import classes from './Header.module.scss';
 
-const SECTIONS = ['Раздел 1', 'Раздел 2', 'Раздел 3', 'Раздел 4', 'Раздел 5', 'Раздел 6'];
-const GAMES = ['Саванна', 'Аудиовызов', 'Спринт', 'Своя Игра'];
+import { SECTIONS, GAMES } from './../../common/constants';
 
 const DropDownItem = ({ name }) => {
 	return (
