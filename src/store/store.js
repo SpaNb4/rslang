@@ -5,7 +5,7 @@ import dictionaryReducer from './dictionary/reducer';
 import appReducer from './app/reducer';
 import { SLICE_NAME as app } from './app/action-types';
 import { SLICE_NAME as dictionary } from './dictionary/action-types';
-import { SLICE_NAME as book } from './country/action-types';
+import { SLICE_NAME as book } from './book/action-types';
 
 const store = configureStore({
 	reducer: {
