@@ -1,8 +1,9 @@
 body {
 	margin: 0;
 	font-family: $font-primary;
+	font-size: 14px;
 	line-height: 1.3;
-	color: $color-text-secondary;
+	color: $color-white;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -10,14 +11,26 @@ body {
 *,
 *::after,
 *::before {
+	margin: 0;
+	padding: 0;
 	box-sizing: border-box;
 }
 
 a {
 	text-decoration: none;
+	transition: 0.4s ease;
 }
 
 img {
 	max-width: 100%;
 	height: auto;
+}
+
+ul {
+	list-style: none;
+}
+
+button {
+	cursor: pointer;
+	transition: 0.4s ease;
 }
