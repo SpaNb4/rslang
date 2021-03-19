@@ -103,42 +103,43 @@ const Header = () => {
 					<FaHamburger />
 				</button>
 				<h2 className={classes.title}>RS Lang</h2>
-				<ul className={classes.menu} aria-hidden={hiddenMenu}>
-					<li className={classes.menuItem}>
-						<Link className={classes.menuLink} to="/">
-							<FaBookDead />
-							<span>Мой словарь</span>
-						</Link>
-						<DropDown array={SECTIONS} />
-					</li>
-					<li className={classes.menuItem}>
-						<Link className={classes.menuLink} to="/">
-							<FaTableTennis />
-							<span>Тренировки</span>
-						</Link>
-						<DropDown array={GAMES} />
-					</li>
-					<li className={classes.menuItem}>
-						<Link className={classes.menuLink} to="/">
-							<FaPercentage />
-							<span>Статистика</span>
-						</Link>
-					</li>
-					<li className={classes.menuItem}>
-						{auth ? (
-							<Link className={classes.menuLink} onClick={handleLogout} to="/">
-								<FaSignOutAlt />
-								<span>Выход</span>
+				<div className={classes.menuWrapper} aria-hidden={hiddenMenu}>
+					<ul className={classes.menu}>
+						<li className={classes.menuItem}>
+							<Link className={classes.menuLink} to="/">
+								<FaBookDead />
+								<span>Мой словарь</span>
 							</Link>
-						) : (
-							<Link className={classes.menuLink} onClick={handleLogin} to="/">
-								<FaSignInAlt />
-								<span>Вход/Регистрация</span>
+							<DropDown array={SECTIONS} />
+						</li>
+						<li className={classes.menuItem}>
+							<Link className={classes.menuLink} to="/">
+								<FaTableTennis />
+								<span>Тренировки</span>
 							</Link>
-						)}
-					</li>
-				</ul>
-
+							<DropDown array={GAMES} />
+						</li>
+						<li className={classes.menuItem}>
+							<Link className={classes.menuLink} to="/">
+								<FaPercentage />
+								<span>Статистика</span>
+							</Link>
+						</li>
+						<li className={classes.menuItem}>
+							{auth ? (
+								<Link className={classes.menuLink} onClick={handleLogout} to="/">
+									<FaSignOutAlt />
+									<span>Выход</span>
+								</Link>
+							) : (
+								<Link className={classes.menuLink} onClick={handleLogin} to="/">
+									<FaSignInAlt />
+									<span>Вход/Регистрация</span>
+								</Link>
+							)}
+						</li>
+					</ul>
+				</div>
 				{auth ? (
 					<Link className={classes.navLink} to="/profile/:id">
 						<FaUserGraduate />

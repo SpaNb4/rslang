@@ -15,17 +15,15 @@
 	margin-right: auto;
 }
 
-.menu {
+.menuWrapper {
 	position: fixed;
-	padding: 20px 0;
 	min-height: 100vh;
+	overflow: auto;
 	top: 0;
 	right: 0;
 	min-width: 280px;
 	max-width: 400px;
-	background-color: $color-white;
 	transition: 0.4s ease;
-	box-shadow: $box-shadow-1;
 
 	&[aria-hidden='true'] {
 		transform: translateX(100%);
@@ -35,6 +33,16 @@
 	&[aria-hidden='false'] {
 		transform: translateX(0);
 	}
+}
+
+.menu {
+	position: absolute;
+	top: 0;
+	right: 0;
+	min-height: 100vh;
+	padding: 20px 0;
+	background-color: $color-white;
+	box-shadow: $box-shadow-1;
 }
 
 .navLink {
