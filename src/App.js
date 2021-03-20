@@ -5,6 +5,10 @@ import { fetchWords } from './store/book/actions';
 import { getCurrentGroup, getCurrentPage } from './store/book/slices';
 
 import Header from './components/Header/Header';
+import Features from './components/Features/Features';
+import Team from './components/Team/Team';
+import Video from './components/Video/Video';
+import { CONTAINER } from './common/constants';
 
 function App() {
 	const dispatch = useDispatch();
@@ -16,9 +20,14 @@ function App() {
 	}, [currentGroup, currentPage]);
 
 	return (
-		<div>
+		<React.Fragment>
 			<Header />
-		</div>
+			<main className={CONTAINER}>
+				<Features />
+				<Video />
+				<Team />
+			</main>
+		</React.Fragment>
 	);
 }
 

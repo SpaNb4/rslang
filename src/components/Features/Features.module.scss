@@ -1,0 +1,42 @@
+.root {
+	padding: 25px 0;
+}
+
+.grid {
+	display: grid;
+	justify-content: center;
+	grid-template-columns: repeat(3, 250px);
+	grid-gap: 20px;
+
+	@include resolution(tablet) {
+		grid-template-columns: repeat(2, 250px);
+	}
+
+	@include resolution(big-mobile) {
+		grid-template-columns: 250px;
+	}
+}
+
+.card {
+	padding: 15px 25px;
+	box-shadow: $box-shadow-2;
+	text-align: center;
+
+	.iconWrapper {
+		font-size: 36px;
+		margin-bottom: 10px;
+	}
+
+	&:nth-child(odd) .iconWrapper {
+		color: $color-primary;
+	}
+
+	&:nth-child(even) .iconWrapper {
+		color: $color-secondary;
+	}
+}
+
+.title {
+	font-size: 16px;
+	margin-bottom: 10px;
+}
