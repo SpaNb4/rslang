@@ -39,11 +39,12 @@ const DropDown = ({ array }) => {
 				className={classes.dropToggle}
 				type="button"
 				aria-label="toggle dropdown"
+				aria-expanded={hiddenDropdown}
 				onClick={handleDropdownToggle}
 			>
 				<FaAngleDown />
 			</button>
-			<ul className={classes.dropdown} aria-hidden={hiddenDropdown}>
+			<ul className={classes.dropdown} aria-expanded={hiddenDropdown}>
 				{array.length &&
 					array.map((name, index) => {
 						return <DropDownItem name={name} key={index} />;
@@ -95,7 +96,7 @@ const Header = () => {
 			<nav className={classes.nav} onClick={(evt) => evt.stopPropagation()}>
 				<button
 					type="button"
-					className={classes.hamburger}
+					className={[classes.hamburger, classes.navLink].join(' ')}
 					aria-label="toggle sidebar"
 					onClick={handleMenuToggle}
 				>
@@ -144,7 +145,7 @@ const Header = () => {
 						<FaUserGraduate />
 					</Link>
 				) : (
-					<Link className={classes.navLink} to="/profile/:id">
+					<Link className={classes.navLink} to="/">
 						<FaUserSecret />
 					</Link>
 				)}

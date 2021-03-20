@@ -45,12 +45,6 @@
 	box-shadow: $box-shadow-1;
 }
 
-.navLink {
-	color: $color-white;
-	font-size: 24px;
-	line-height: 1;
-}
-
 .menuItem {
 	display: flex;
 	align-items: center;
@@ -69,8 +63,8 @@
 	padding: 15px 10px;
 	align-items: center;
 	gap: 10px;
-	color: #7e919f;
-	outline: none;
+	color: $color-regent-gray;
+	font-weight: 500;
 
 	&:hover {
 		color: $color-secondary;
@@ -81,25 +75,44 @@
 .dropToggle {
 	background-color: transparent;
 	border: none;
-	outline: none;
 }
 
-.hamburger {
+.navLink {
+	position: relative;
+	color: $color-white;
 	font-size: 24px;
 	line-height: 1;
-	color: $color-white;
+
+	&::after {
+		position: absolute;
+		content: '';
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 36px;
+		height: 36px;
+		color: transparent;
+		border: 1px solid;
+		border-radius: 5px;
+		z-index: 1;
+		transition: 0.4s;
+	}
+
+	&:hover::after {
+		color: $color-white;
+	}
 }
 
 .dropToggle {
 	font-size: 18px;
-	color: #7e919f;
+	color: $color-regent-gray;
 
 	&:hover {
 		color: $color-secondary;
 	}
 
-	&--rotated {
-		transform: rotate();
+	&[aria-expanded='false'] {
+		transform: rotate(180deg);
 	}
 }
 
@@ -108,12 +121,12 @@
 	transition: max-height 0.6s;
 	overflow: hidden;
 
-	&[aria-hidden='true'] {
+	&[aria-expanded='true'] {
 		max-height: 0;
 		transition-duration: ease-in;
 	}
 
-	&[aria-hidden='false'] {
+	&[aria-expanded='false'] {
 		max-height: 100vh;
 		transition-duration: ease-out;
 	}

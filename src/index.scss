@@ -19,6 +19,7 @@ body {
 a {
 	text-decoration: none;
 	transition: 0.4s ease;
+	outline: none;
 }
 
 img {
@@ -33,4 +34,5 @@ ul {
 button {
 	cursor: pointer;
 	transition: 0.4s ease;
+	outline: none;
 }
