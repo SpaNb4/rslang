@@ -1,0 +1,17 @@
+@mixin font($fname, $fstyle, $fweight, $furl) {
+	@font-face {
+		font-family: $fname;
+		font-style: $fstyle;
+		font-weight: $fweight;
+		src: local($fname), url($furl) format('woff2');
+		font-display: swap;
+	}
+}
+
+@include font('Metropolis', normal, 300, '../fonts/Metropolis-Light.woff2');
+@include font('Metropolis', normal, 400, '../fonts/Metropolis-Regular.woff2');
+@include font('Metropolis', normal, 500, '../fonts/Metropolis-Medium.woff2');
+@include font('Metropolis', normal, 600, '../fonts/Metropolis-SemiBold.woff2');
+@include font('Metropolis', normal, bold, '../fonts/Metropolis-Bold.woff2');
+@include font('Metropolis', normal, 800, '../fonts/Metropolis-ExtraBold.woff2');
+@include font('Metropolis', normal, 900, '../fonts/Metropolis-Black.woff2');
