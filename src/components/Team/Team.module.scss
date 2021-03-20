@@ -1,0 +1,75 @@
+.team {
+	padding: 25px 0;
+	display: grid;
+	grid-gap: 20px;
+	justify-items: center;
+	color: #646464;
+	grid-template-columns: repeat(4, 1fr);
+
+	@include resolution(big-desktop) {
+		grid-template-columns: repeat(2, 1fr);
+		grid-gap: 30px;
+	}
+
+	@include resolution(tablet) {
+		grid-template-columns: 1fr;
+	}
+}
+
+.card {
+	box-shadow: $box-shadow-2;
+	border-radius: 16px;
+	background: $color-white $gradient-1 no-repeat;
+
+	@include resolution(big-mobile) {
+		display: flex;
+		align-items: center;
+		max-width: 420px;
+		padding: 20px 40px 20px 20px;
+		background-size: 100px 100%;
+	}
+
+	@include resolution(mobile) {
+		display: block;
+		padding: 70px 16px 40px;
+		max-width: 345px;
+		text-align: center;
+		background-size: 100% 130px;
+	}
+}
+
+.title {
+	position: relative;
+	padding-bottom: 17px;
+	margin-bottom: 32px;
+	font-size: 24px;
+
+	&::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 1px;
+		background-color: #c2c2c2;
+	}
+}
+
+.avatar {
+	border: 10px solid $color-white;
+	border-radius: 100%;
+	overflow: hidden;
+
+	@include resolution(big-mobile) {
+		width: 160px;
+		height: 160px;
+		flex-shrink: 0;
+		margin-right: 10px;
+	}
+
+	@include resolution(mobile) {
+		width: 120px;
+		height: 120px;
+		margin: 0 auto 10px;
+	}
+}

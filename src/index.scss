@@ -1,4 +1,5 @@
 body {
+	min-width: 320px;
 	margin: 0;
 	font-family: $font-primary;
 	font-size: 14px;
@@ -35,4 +36,10 @@ button {
 	cursor: pointer;
 	transition: 0.4s ease;
 	outline: none;
+}
+
+.container {
+	max-width: 900px;
+	padding: 0 6.7%;
+	margin: 0 auto;
 }
