@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import shuffle from 'lodash/shuffle';
 import sampleSize from 'lodash/sampleSize';
 import { useSpring, animated } from 'react-spring';
 import { useHotkeys } from 'react-hotkeys-hook';
+import { FaRegHeart, FaHeart } from 'react-icons/fa';
+import { AiFillSound } from 'react-icons/ai';
+import { ExternalUrls } from './../../common/constants';
+import { useSelector } from 'react-redux';
+import { getAllWords } from './../../store/book/slices';
 import classes from './Savanna.module.scss';
 
 export default function Savanna() {
@@ -18,20 +22,21 @@ export default function Savanna() {
 	const [wrongAnswers, setWrongAnswers] = useState(0);
 	const [currAnswersWords, setCurrAnswersWords] = useState([]);
 	const [wrongAnswersWords, setWrongAnswersWords] = useState([]);
+	const allWords = useSelector(getAllWords);
 
 	const lives = [...Array(5)].map((_, index) => {
 		if (index < livesCount) {
-			return <span key={index} className={classes.redHeart}></span>;
+			return <FaHeart key={index} className={classes.redHeart} />;
 		} else {
-			return <span key={index} className={classes.heart}></span>;
+			return <FaRegHeart key={index} className={classes.heart} />;
 		}
 	});
 
 	useEffect(() => {
-		axios.get(`https://afternoon-falls-25894.herokuapp.com/words`).then((res) => {
-			setWords(res.data);
-		});
-	}, []);
+		if (allWords.length) {
+			setWords(allWords);
+		}
+	}, [allWords]);
 
 	useEffect(() => {
 		if (words) {
@@ -69,6 +74,8 @@ export default function Savanna() {
 	}, [livesCount]);
 
 	function handleWrongWordClick(e) {
+		checkEndWords();
+
 		if (!isGameOver) {
 			// if we use mouse click
 			if (e && e.target) {
@@ -95,12 +102,25 @@ export default function Savanna() {
 	}
 
 	function handleCorrectWordClick() {
+		checkEndWords();
+
 		if (!isGameOver) {
 			// go to next word
 			setCurrWordIndex(currWordIndex + 1);
 			setCorrectAnswers(correctAnswers + 1);
 			setCurrAnswersWords([...currAnswersWords, currWord]);
 		}
+	}
+
+	function checkEndWords() {
+		if (currWordIndex === words.length - 1) {
+			setIsGameOver(true);
+		}
+	}
+
+	function soundClickHandler(word) {
+		const sound = new Audio(`${ExternalUrls.Files}${word.audio}`);
+		sound.play();
 	}
 
 	const keysStr = '1,2,3,4';
@@ -134,31 +154,40 @@ export default function Savanna() {
 		<div className={classes.savanna}>
 			<div className={classes.lives}>{lives.reverse()}</div>
 			{isGameOver ? (
-				<div>
-					<h1>Game over</h1>
-					<div>
-						<h3>Correct Answers - {correctAnswers}</h3>
-						<ul>
-							{currAnswersWords.map((word, index) => {
-								return (
-									<li key={index}>
-										{word.word} - {word.wordTranslate}
-									</li>
-								);
-							})}
-						</ul>
-					</div>
-					<div>
-						<h3>Wrong Answers - {wrongAnswers}</h3>
-						<ul>
-							{wrongAnswersWords.map((word, index) => {
-								return (
-									<li key={index}>
-										{word.word} - {word.wordTranslate}
-									</li>
-								);
-							})}
-						</ul>
+				<div className={classes.gameOver}>
+					<h1 className={classes.heading}>Статистика игры</h1>
+					<div className={classes.allWordsWrapper}>
+						<div className={classes.correctAnswers}>
+							<h3>
+								Знаю - <span className={classes.correctWordCount}>{correctAnswers}</span>
+							</h3>
+							<ul>
+								{currAnswersWords.map((word, index) => {
+									return (
+										<li key={index}>
+											<AiFillSound onClick={() => soundClickHandler(word)} /> {word.word} -{' '}
+											{word.wordTranslate}
+										</li>
+									);
+								})}
+							</ul>
+						</div>
+						<hr />
+						<div className={classes.wrongAnswers}>
+							<h3>
+								Ошибок - <span className={classes.wrongWordCount}>{wrongAnswers}</span>
+							</h3>
+							<ul>
+								{wrongAnswersWords.map((word, index) => {
+									return (
+										<li key={index}>
+											<AiFillSound onClick={() => soundClickHandler(word)} /> {word.word} -{' '}
+											{word.wordTranslate}
+										</li>
+									);
+								})}
+							</ul>
+						</div>
 					</div>
 				</div>
 			) : (

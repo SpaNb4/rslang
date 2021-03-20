@@ -5,7 +5,6 @@ import { fetchWords } from './store/book/actions';
 import { getCurrentGroup, getCurrentPage } from './store/book/slices';
 
 import Header from './components/Header/Header';
-import Savanna from './components/Savanna/Savanna';
 import Features from './components/Features/Features';
 import Team from './components/Team/Team';
 import Video from './components/Video/Video';
@@ -23,7 +22,6 @@ function App() {
 	return (
 		<React.Fragment>
 			<Header />
-			<Savanna />
 			<main className={CONTAINER}>
 				<Features />
 				<Video />
