@@ -1,5 +1,5 @@
 .header {
-	padding: 15px 3.3%;
+	padding: 20px 3.3% 15px;
 	background-color: $color-primary;
 }
 
@@ -24,6 +24,7 @@
 	min-width: 280px;
 	max-width: 400px;
 	transition: 0.4s ease;
+	z-index: 1;
 
 	&[aria-hidden='true'] {
 		transform: translateX(100%);

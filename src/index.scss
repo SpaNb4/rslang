@@ -39,7 +39,14 @@ button {
 }
 
 .container {
-	max-width: 900px;
 	padding: 0 6.7%;
 	margin: 0 auto;
+}
+
+.section-title {
+	margin-bottom: 20px;
+	font-size: 24px;
+	font-weight: 600;
+	text-align: center;
+	text-transform: uppercase;
 }

@@ -1,19 +1,24 @@
 .team {
 	padding: 25px 0;
+	color: $color-dove-gray;
+}
+
+.grid {
 	display: grid;
-	grid-gap: 20px;
+	justify-content: center;
 	justify-items: center;
-	color: #646464;
-	grid-template-columns: repeat(4, 1fr);
 
 	@include resolution(big-desktop) {
-		grid-template-columns: repeat(2, 1fr);
-		grid-gap: 30px;
+		grid-template-columns: repeat(2, minmax(max-content, min-content));
 	}
 
 	@include resolution(tablet) {
 		grid-template-columns: 1fr;
+		grid-gap: 20px;
 	}
+
+	grid-template-columns: repeat(4, minmax(max-content, min-content));
+	grid-gap: 40px;
 }
 
 .card {
@@ -21,7 +26,7 @@
 	border-radius: 16px;
 	background: $color-white $gradient-1 no-repeat;
 
-	@include resolution(big-mobile) {
+	@include resolution(tablet) {
 		display: flex;
 		align-items: center;
 		max-width: 420px;
@@ -29,16 +34,14 @@
 		background-size: 100px 100%;
 	}
 
-	@include resolution(mobile) {
-		display: block;
-		padding: 70px 16px 40px;
-		max-width: 345px;
-		text-align: center;
-		background-size: 100% 130px;
-	}
+	display: block;
+	padding: 50px 16px 40px;
+	max-width: 345px;
+	text-align: center;
+	background-size: 100% 130px;
 }
 
-.title {
+.name {
 	position: relative;
 	padding-bottom: 17px;
 	margin-bottom: 32px;
@@ -51,25 +54,21 @@
 		left: 0;
 		width: 100%;
 		height: 1px;
-		background-color: #c2c2c2;
+		background-color: $color-silver;
 	}
 }
 
 .avatar {
+	width: 160px;
+	height: 160px;
 	border: 10px solid $color-white;
 	border-radius: 100%;
 	overflow: hidden;
 
-	@include resolution(big-mobile) {
-		width: 160px;
-		height: 160px;
+	@include resolution(tablet) {
 		flex-shrink: 0;
 		margin-right: 10px;
 	}
 
-	@include resolution(mobile) {
-		width: 120px;
-		height: 120px;
-		margin: 0 auto 10px;
-	}
+	margin: 0 auto 10px;
 }
