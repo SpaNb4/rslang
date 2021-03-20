@@ -19,7 +19,7 @@ const TeamCard = ({ name, src, quote }) => {
 
 const Team = () => {
 	return (
-		<section className={classes.team}>
+		<section className={classes.root}>
 			<h2 className={SECTION_TITLE}>Наша команда</h2>
 			<div className={classes.grid}>
 				{TEAM_MATES.length &&
