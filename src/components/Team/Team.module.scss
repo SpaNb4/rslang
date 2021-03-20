@@ -1,12 +1,13 @@
 .team {
 	padding: 25px 0;
-	color: $color-dove-gray;
 }
 
 .grid {
 	display: grid;
 	justify-content: center;
 	justify-items: center;
+	grid-template-columns: repeat(4, minmax(max-content, min-content));
+	grid-gap: 40px;
 
 	@include resolution(big-desktop) {
 		grid-template-columns: repeat(2, minmax(max-content, min-content));
@@ -16,15 +17,17 @@
 		grid-template-columns: 1fr;
 		grid-gap: 20px;
 	}
-
-	grid-template-columns: repeat(4, minmax(max-content, min-content));
-	grid-gap: 40px;
 }
 
 .card {
 	box-shadow: $box-shadow-2;
 	border-radius: 16px;
 	background: $color-white $gradient-1 no-repeat;
+	display: block;
+	padding: 50px 16px 40px;
+	max-width: 345px;
+	text-align: center;
+	background-size: 100% 130px;
 
 	@include resolution(tablet) {
 		display: flex;
@@ -34,11 +37,13 @@
 		background-size: 100px 100%;
 	}
 
-	display: block;
-	padding: 50px 16px 40px;
-	max-width: 345px;
-	text-align: center;
-	background-size: 100% 130px;
+	@include resolution(big-mobile) {
+		display: block;
+		padding: 50px 16px 40px;
+		max-width: 345px;
+		text-align: center;
+		background-size: 100% 130px;
+	}
 }
 
 .name {
@@ -64,11 +69,14 @@
 	border: 10px solid $color-white;
 	border-radius: 100%;
 	overflow: hidden;
+	margin: 0 auto 10px;
 
 	@include resolution(tablet) {
 		flex-shrink: 0;
 		margin-right: 10px;
 	}
 
-	margin: 0 auto 10px;
+	@include resolution(big-mobile) {
+		margin: 0 auto 10px;
+	}
 }
