@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import {
 	FaHamburger,
 	FaBookDead,
+	FaBrain,
 	FaTableTennis,
 	FaPercentage,
 	FaAngleDown,
@@ -14,7 +15,7 @@ import {
 } from 'react-icons/fa';
 import classes from './Header.module.scss';
 
-import { menuSections, menuGames } from './../../common/constants';
+import { menu } from './../../common/constants';
 
 const DropDownItem = ({ name }) => {
 	return (
@@ -105,19 +106,28 @@ const Header = () => {
 				<h2 className={classes.title}>RS Lang</h2>
 				<div className={classes.menuWrapper} aria-hidden={hiddenMenu}>
 					<ul className={classes.menu}>
+						{auth && (
+							<li className={classes.menuItem}>
+								<Link className={classes.menuLink} to="/dictionary">
+									<FaBookDead />
+									<span>Мой словарь</span>
+								</Link>
+								<DropDown array={menu.words} />
+							</li>
+						)}
 						<li className={classes.menuItem}>
 							<Link className={classes.menuLink} to="/">
-								<FaBookDead />
-								<span>Мой словарь</span>
+								<FaBrain />
+								<span>Учебник</span>
 							</Link>
-							<DropDown array={menuSections} />
+							<DropDown array={menu.sections} />
 						</li>
 						<li className={classes.menuItem}>
 							<Link className={classes.menuLink} to="/">
 								<FaTableTennis />
 								<span>Тренировки</span>
 							</Link>
-							<DropDown array={menuGames} />
+							<DropDown array={menu.games} />
 						</li>
 						<li className={classes.menuItem}>
 							<Link className={classes.menuLink} to="/">
