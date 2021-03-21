@@ -145,7 +145,7 @@ export default function Savanna() {
 	});
 
 	return (
-		<div className={classes.savanna}>
+		<div className={classes.savanna} fullscreen="true">
 			<div className={classes.lives}>{lives.reverse()}</div>
 			{isGameOver ? (
 				<GameStats corrAnswersWords={corrAnswersWords} wrongAnswersWords={wrongAnswersWords} />
