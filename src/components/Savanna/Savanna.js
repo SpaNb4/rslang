@@ -20,11 +20,12 @@ export default function Savanna() {
 	const [isGameOver, setIsGameOver] = useState(false);
 	const [correctAnswers, setCorrectAnswers] = useState(0);
 	const [wrongAnswers, setWrongAnswers] = useState(0);
-	const [currAnswersWords, setCurrAnswersWords] = useState([]);
+	const [corrAnswersWords, setCorrAnswersWords] = useState([]);
 	const [wrongAnswersWords, setWrongAnswersWords] = useState([]);
 	const allWords = useSelector(getAllWords);
 
-	const lives = [...Array(5)].map((_, index) => {
+	const maxLivesCount = 5;
+	const lives = [...Array(maxLivesCount)].map((_, index) => {
 		if (index < livesCount) {
 			return <FaHeart key={index} className={classes.redHeart} />;
 		} else {
@@ -108,7 +109,7 @@ export default function Savanna() {
 			// go to next word
 			setCurrWordIndex(currWordIndex + 1);
 			setCorrectAnswers(correctAnswers + 1);
-			setCurrAnswersWords([...currAnswersWords, currWord]);
+			setCorrAnswersWords([...corrAnswersWords, currWord]);
 		}
 	}
 
@@ -119,7 +120,7 @@ export default function Savanna() {
 	}
 
 	function soundClickHandler(word) {
-		const sound = new Audio(`${ExternalUrls.Files}${word.audio}`);
+		const sound = new Audio(`${ExternalUrls.Main}${word.audio}`);
 		sound.play();
 	}
 
@@ -134,11 +135,13 @@ export default function Savanna() {
 	);
 
 	function keyHandler(e) {
-		// e.key-1 coz we press 1, but array index starts with 0
-		if (commonWords[e.key - 1] === currWord) {
-			handleCorrectWordClick();
-		} else {
-			handleWrongWordClick();
+		if (commonWords) {
+			// e.key-1 coz we press 1, but array index starts with 0
+			if (commonWords[e.key - 1] === currWord) {
+				handleCorrectWordClick();
+			} else {
+				handleWrongWordClick();
+			}
 		}
 	}
 
@@ -162,7 +165,7 @@ export default function Savanna() {
 								Знаю - <span className={classes.correctWordCount}>{correctAnswers}</span>
 							</h3>
 							<ul>
-								{currAnswersWords.map((word, index) => {
+								{corrAnswersWords.map((word, index) => {
 									return (
 										<li key={index}>
 											<AiFillSound onClick={() => soundClickHandler(word)} /> {word.word} -{' '}
