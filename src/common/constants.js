@@ -3,8 +3,9 @@ import { FaMobileAlt } from 'react-icons/fa';
 
 // URLs
 export const ExternalUrls = {
-	Words: 'https://react-learnwords-example.herokuapp.com/words',
-	UserWords: 'https://react-learnwords-example.herokuapp.com/users/id/words',
+	Root: 'https://rslang-app-be.herokuapp.com/',
+	Words: 'https://rslang-app-be.herokuapp.com/words',
+	UserWords: 'https://rslang-app-be.herokuapp.com/users/id/words',
 };
 
 // Default Values
@@ -15,7 +16,39 @@ export const DefaultValues = {
 
 export const VIDEO_SRC = 'https://www.youtube.com/embed/DHQngnnHE_0';
 
-export const SECTIONS = ['Раздел 1', 'Раздел 2', 'Раздел 3', 'Раздел 4', 'Раздел 5', 'Раздел 6'];
+export const BOOK_SECTIONS = [
+	{
+		linkName: 'Раздел 0',
+		linkId: '0',
+		listName: 'book',
+	},
+	{
+		linkName: 'Раздел 1',
+		linkId: '1',
+		listName: 'book',
+	},
+	{
+		linkName: 'Раздел 2',
+		linkId: '2',
+		listName: 'book',
+	},
+	{
+		linkName: 'Раздел 3',
+		linkId: '3',
+		listName: 'book',
+	},
+	{
+		linkName: 'Раздел 4',
+		linkId: '4',
+		listName: 'book',
+	},
+	{
+		linkName: 'Раздел 5',
+		linkId: '5',
+		listName: 'book',
+	},
+];
+
 export const GAMES = ['Саванна', 'Аудиовызов', 'Спринт', 'Своя Игра'];
 export const TEAM_MATES = [
 	{

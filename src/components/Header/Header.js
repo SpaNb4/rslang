@@ -14,13 +14,13 @@ import {
 } from 'react-icons/fa';
 import classes from './Header.module.scss';
 
-import { SECTIONS, GAMES } from './../../common/constants';
+import { BOOK_SECTIONS, GAMES } from './../../common/constants';
 
-const DropDownItem = ({ name }) => {
+const DropDownItem = ({ listName, linkName, linkId }) => {
 	return (
 		<li className={classes.menuItem}>
-			<Link className={classes.menuLink} to="/">
-				<span>{name}</span>
+			<Link className={classes.menuLink} to={`/${listName}/${linkId}`}>
+				<span>{linkName}</span>
 			</Link>
 		</li>
 	);
@@ -46,9 +46,14 @@ const DropDown = ({ array }) => {
 			</button>
 			<ul className={classes.dropdown} aria-expanded={hiddenDropdown}>
 				{array.length &&
-					array.map((name, index) => {
-						return <DropDownItem name={name} key={index} />;
-					})}
+					array.map((item, index) => (
+						<DropDownItem
+							listName={item.listName}
+							linkName={item.linkName}
+							linkId={item.linkId}
+							key={index}
+						/>
+					))}
 			</ul>
 		</>
 	);
@@ -106,11 +111,11 @@ const Header = () => {
 				<div className={classes.menuWrapper} aria-hidden={hiddenMenu}>
 					<ul className={classes.menu}>
 						<li className={classes.menuItem}>
-							<Link className={classes.menuLink} to="/">
+							<Link className={classes.menuLink} to="/book/0">
 								<FaBookDead />
-								<span>Мой словарь</span>
+								<span>Учебник</span>
 							</Link>
-							<DropDown array={SECTIONS} />
+							<DropDown array={BOOK_SECTIONS} />
 						</li>
 						<li className={classes.menuItem}>
 							<Link className={classes.menuLink} to="/">
@@ -155,7 +160,9 @@ const Header = () => {
 };
 
 DropDownItem.propTypes = {
-	name: PropTypes.string,
+	listName: PropTypes.string,
+	linkName: PropTypes.string,
+	linkId: PropTypes.string,
 };
 
 DropDown.propTypes = {
