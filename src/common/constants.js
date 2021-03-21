@@ -5,6 +5,7 @@ import { FaMobileAlt } from 'react-icons/fa';
 export const ExternalUrls = {
 	Words: 'https://react-learnwords-example.herokuapp.com/words',
 	UserWords: 'https://react-learnwords-example.herokuapp.com/users/id/words',
+	Main: 'https://react-learnwords-example.herokuapp.com/',
 };
 
 // Default Values
