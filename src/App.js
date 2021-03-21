@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 
 import Header from './components/Header/Header';
@@ -7,8 +8,26 @@ import Team from './components/Team/Team';
 import Video from './components/Video/Video';
 import Book from './components/Book/Book';
 import { CONTAINER } from './common/constants';
+// import { LocalStorageKeys } from './common/constants';
+
+// import { loginSuccess } from './store/app/actions';
+// import { register } from './store/app/actions';
+import { login } from './store/app/actions';
 
 function App() {
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		// const username = localStorage.getItem(LocalStorageKeys.Username) || null;
+
+		// Just for dev purpose
+		// const username = 'admin';
+		const email = 'admin@gmail.com';
+		const password = 'Admin1234!';
+		// dispatch(register(username, email, password));
+		dispatch(login(email, password));
+	});
+
 	return (
 		<React.Fragment>
 			<Header />

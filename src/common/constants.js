@@ -5,13 +5,20 @@ import { FaMobileAlt } from 'react-icons/fa';
 export const ExternalUrls = {
 	Root: 'https://rslang-app-be.herokuapp.com/',
 	Words: 'https://rslang-app-be.herokuapp.com/words',
-	UserWords: 'https://rslang-app-be.herokuapp.com/users/id/words',
+	Users: 'https://rslang-app-be.herokuapp.com/users/',
+	Signin: 'https://rslang-app-be.herokuapp.com/signin',
 };
 
 // Default Values
 export const DefaultValues = {
 	Group: '0',
 	Page: '0',
+};
+
+// LOCAL STORAGE KEYs
+export const LocalStorageKeys = {
+	Username: 'username',
+	Avatar: 'avatar',
 };
 
 export const VIDEO_SRC = 'https://www.youtube.com/embed/DHQngnnHE_0';
