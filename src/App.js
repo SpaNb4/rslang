@@ -8,7 +8,7 @@ import Header from './components/Header/Header';
 import Features from './components/Features/Features';
 import Team from './components/Team/Team';
 import Video from './components/Video/Video';
-import { CONTAINER } from './common/constants';
+import { globalClasses as c } from './common/constants';
 
 function App() {
 	const dispatch = useDispatch();
@@ -22,7 +22,7 @@ function App() {
 	return (
 		<React.Fragment>
 			<Header />
-			<main className={CONTAINER}>
+			<main className={c.container}>
 				<Features />
 				<Video />
 				<Team />

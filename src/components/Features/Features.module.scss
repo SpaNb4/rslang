@@ -1,26 +1,38 @@
-.root {
-	padding: 25px 0;
-}
-
 .grid {
 	display: grid;
 	justify-content: center;
-	grid-template-columns: repeat(3, 250px);
-	grid-gap: 20px;
+	justify-items: center;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 50px;
+
+	@include resolution(desktop) {
+		grid-template-columns: repeat(2, 1fr);
+		justify-content: center;
+		grid-gap: 30px;
+	}
 
 	@include resolution(tablet) {
-		grid-template-columns: repeat(2, 250px);
+		grid-template-columns: repeat(2, 1fr);
+		grid-gap: 20px;
 	}
 
 	@include resolution(big-mobile) {
-		grid-template-columns: 250px;
+		grid-template-columns: 300px;
 	}
 }
 
 .card {
-	padding: 15px 25px;
+	padding: 35px 60px;
 	box-shadow: $box-shadow-2;
 	text-align: center;
+
+	@include resolution(desktop) {
+		padding: 25px 40px;
+	}
+
+	@include resolution(tablet) {
+		padding: 15px 25px;
+	}
 
 	.iconWrapper {
 		font-size: 36px;
@@ -37,6 +49,10 @@
 }
 
 .title {
-	font-size: 16px;
-	margin-bottom: 10px;
+	font-size: 1.2em;
+	margin-bottom: 20px;
+
+	@include resolution(tablet) {
+		margin-bottom: 10px;
+	}
 }

@@ -14,7 +14,7 @@ import {
 } from 'react-icons/fa';
 import classes from './Header.module.scss';
 
-import { SECTIONS, GAMES } from './../../common/constants';
+import { menuSections, menuGames } from './../../common/constants';
 
 const DropDownItem = ({ name }) => {
 	return (
@@ -110,14 +110,14 @@ const Header = () => {
 								<FaBookDead />
 								<span>Мой словарь</span>
 							</Link>
-							<DropDown array={SECTIONS} />
+							<DropDown array={menuSections} />
 						</li>
 						<li className={classes.menuItem}>
 							<Link className={classes.menuLink} to="/">
 								<FaTableTennis />
 								<span>Тренировки</span>
 							</Link>
-							<DropDown array={GAMES} />
+							<DropDown array={menuGames} />
 						</li>
 						<li className={classes.menuItem}>
 							<Link className={classes.menuLink} to="/">
