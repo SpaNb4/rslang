@@ -3,10 +3,9 @@ import { FaMobileAlt } from 'react-icons/fa';
 
 // URLs
 export const ExternalUrls = {
-	Words: 'https://react-learnwords-example.herokuapp.com/words',
-	UserWords: 'https://react-learnwords-example.herokuapp.com/users/id/words',
 	Video: 'https://www.youtube.com/embed/DHQngnnHE_0',
-	Main: 'https://react-learnwords-example.herokuapp.com/',
+	Root: 'https://rslang-app-be.herokuapp.com/',
+	Words: 'https://rslang-app-be.herokuapp.com/words',
 };
 
 // Default Values
@@ -16,12 +15,46 @@ export const DefaultValues = {
 };
 
 export const menu = {
-	sections: ['Раздел 1', 'Раздел 2', 'Раздел 3', 'Раздел 4', 'Раздел 5', 'Раздел 6'],
+	sections: BOOK_SECTIONS,
 	games: ['Саванна', 'Аудиовызов', 'Спринт', 'Своя Игра'],
 	words: ['Изучаемые слова', 'Сложные слова', 'Удалённые слова'],
 };
 
-export const ourTeammates = [
+export const BOOK_SECTIONS = [
+	{
+		linkName: 'Раздел 0',
+		linkId: '0',
+		listName: 'book',
+	},
+	{
+		linkName: 'Раздел 1',
+		linkId: '1',
+		listName: 'book',
+	},
+	{
+		linkName: 'Раздел 2',
+		linkId: '2',
+		listName: 'book',
+	},
+	{
+		linkName: 'Раздел 3',
+		linkId: '3',
+		listName: 'book',
+	},
+	{
+		linkName: 'Раздел 4',
+		linkId: '4',
+		listName: 'book',
+	},
+	{
+		linkName: 'Раздел 5',
+		linkId: '5',
+		listName: 'book',
+	},
+];
+
+export const GAMES = ['Саванна', 'Аудиовызов', 'Спринт', 'Своя Игра'];
+export const TEAM_MATES = [
 	{
 		name: 'Алеся',
 		src: 'https://images.unsplash.com/photo-1534432586043-ead5b99229fb',
