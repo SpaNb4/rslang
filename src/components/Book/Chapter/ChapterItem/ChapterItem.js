@@ -1,5 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import parse from 'html-react-parser';
 import classes from './ChapterItem.module.scss';
 
 import { FaVolumeUp, FaThumbtack, FaRegTrashAlt } from 'react-icons/fa';
@@ -23,10 +24,10 @@ function ChapterItem({ wordData }) {
 					</button>
 				</div>
 				<div className={classes.itemParagraph}>
-					<div>{wordData.textMeaning}</div>
+					<div>{parse(wordData.textMeaning)}</div>
 				</div>
 				<div className={classes.itemParagraph}>
-					<div>{wordData.textExample}</div>
+					<div>{parse(wordData.textExample)}</div>
 				</div>
 			</div>
 			<div className={classes.itemSettings}>
