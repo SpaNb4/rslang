@@ -3,6 +3,7 @@
 	"plugins": ["stylelint-scss"],
 	"rules": {
 		"at-rule-no-unknown": null,
+		"declaration-colon-newline-after": null,
 		"scss/at-rule-no-unknown": true,
 		"indentation": "tab",
 		"block-no-empty": null
