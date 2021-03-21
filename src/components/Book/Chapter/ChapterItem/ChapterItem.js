@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import parse from 'html-react-parser';
 import classes from './ChapterItem.module.scss';
@@ -7,8 +8,15 @@ import { FaVolumeUp, FaThumbtack, FaRegTrashAlt } from 'react-icons/fa';
 
 import { buildUrl } from '../../../../common/helpers';
 import { ExternalUrls } from '../../../../common/constants';
+import { setUserWord } from '../../../../store/dictionary/actions';
+import { getUserId, getAuthorized, getToken } from '../../../../store/app/slices';
 
 function ChapterItem({ wordData }) {
+	const dispatch = useDispatch();
+	const authorized = useSelector(getAuthorized);
+	const userId = useSelector(getUserId);
+	const token = useSelector(getToken);
+
 	function handleVolumeUp(e) {
 		const { audio, meaning, example } = e.currentTarget.dataset;
 		const urlsList = [audio, meaning, example];
@@ -21,6 +29,10 @@ function ChapterItem({ wordData }) {
 				audioList[2].play();
 			};
 		};
+	}
+
+	function saveToDictionary() {
+		dispatch(setUserWord(userId, token, wordData));
 	}
 
 	return (
@@ -51,10 +63,10 @@ function ChapterItem({ wordData }) {
 				</div>
 			</div>
 			<div className={classes.itemSettings}>
-				<button className={classes.settingsButton} type="button">
+				<button className={classes.settingsButton} onClick={saveToDictionary} disabled={!authorized}>
 					<FaThumbtack />
 				</button>
-				<button className={classes.settingsButton} type="button">
+				<button className={classes.settingsButton} type="button" disabled={!authorized}>
 					<FaRegTrashAlt />
 				</button>
 			</div>

@@ -6,6 +6,8 @@ export const ExternalUrls = {
 	Video: 'https://www.youtube.com/embed/DHQngnnHE_0',
 	Root: 'https://rslang-app-be.herokuapp.com/',
 	Words: 'https://rslang-app-be.herokuapp.com/words',
+	Users: 'https://rslang-app-be.herokuapp.com/users/',
+	Signin: 'https://rslang-app-be.herokuapp.com/signin',
 };
 
 // Default Values
@@ -18,6 +20,11 @@ export const menu = {
 	sections: BOOK_SECTIONS,
 	games: ['Саванна', 'Аудиовызов', 'Спринт', 'Своя Игра'],
 	words: ['Изучаемые слова', 'Сложные слова', 'Удалённые слова'],
+};
+// LOCAL STORAGE KEYs
+export const LocalStorageKeys = {
+	Username: 'username',
+	Avatar: 'avatar',
 };
 
 export const BOOK_SECTIONS = [
