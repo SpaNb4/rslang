@@ -5,6 +5,7 @@ import { FaMobileAlt } from 'react-icons/fa';
 export const ExternalUrls = {
 	Words: 'https://react-learnwords-example.herokuapp.com/words',
 	UserWords: 'https://react-learnwords-example.herokuapp.com/users/id/words',
+	Video: 'https://www.youtube.com/embed/DHQngnnHE_0',
 	Main: 'https://react-learnwords-example.herokuapp.com/',
 };
 
@@ -14,11 +15,13 @@ export const DefaultValues = {
 	Page: '0',
 };
 
-export const VIDEO_SRC = 'https://www.youtube.com/embed/DHQngnnHE_0';
+export const menu = {
+	sections: ['Раздел 1', 'Раздел 2', 'Раздел 3', 'Раздел 4', 'Раздел 5', 'Раздел 6'],
+	games: ['Саванна', 'Аудиовызов', 'Спринт', 'Своя Игра'],
+	words: ['Изучаемые слова', 'Сложные слова', 'Удалённые слова'],
+};
 
-export const SECTIONS = ['Раздел 1', 'Раздел 2', 'Раздел 3', 'Раздел 4', 'Раздел 5', 'Раздел 6'];
-export const GAMES = ['Саванна', 'Аудиовызов', 'Спринт', 'Своя Игра'];
-export const TEAM_MATES = [
+export const ourTeammates = [
 	{
 		name: 'Алеся',
 		src: 'https://images.unsplash.com/photo-1534432586043-ead5b99229fb',
@@ -46,7 +49,7 @@ export const TEAM_MATES = [
 	},
 ];
 
-export const FEATURES = [
+export const ourFeatures = [
 	{
 		title: 'Lorem ipsum',
 		text:
@@ -86,5 +89,8 @@ export const FEATURES = [
 ];
 
 // Global Classes
-export const CONTAINER = 'container';
-export const SECTION_TITLE = 'section-title';
+export const globalClasses = {
+	container: 'container',
+	section: 'section',
+	sectionTitle: 'section-title',
+};

@@ -1,6 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { TEAM_MATES, SECTION_TITLE } from '../../common/constants';
+import { ourTeammates, globalClasses as c } from '../../common/constants';
 import classes from './Team.module.scss';
 
 const TeamCard = ({ name, src, quote }) => {
@@ -19,11 +19,11 @@ const TeamCard = ({ name, src, quote }) => {
 
 const Team = () => {
 	return (
-		<section className={classes.root}>
-			<h2 className={SECTION_TITLE}>Наша команда</h2>
+		<section className={c.section}>
+			<h2 className={c.sectionTitle}>Наша команда</h2>
 			<div className={classes.grid}>
-				{TEAM_MATES.length &&
-					TEAM_MATES.map((mate, index) => {
+				{ourTeammates.length &&
+					ourTeammates.map((mate, index) => {
 						return <TeamCard {...mate} key={`teammate-${index}`} />;
 					})}
 			</div>

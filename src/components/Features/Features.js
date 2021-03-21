@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import classes from './Features.module.scss';
-import { FEATURES, SECTION_TITLE } from '../../common/constants';
+import { globalClasses as c, ourFeatures } from '../../common/constants';
 
 const FeatureCard = ({ title, text, icon }) => {
 	return (
@@ -15,11 +15,11 @@ const FeatureCard = ({ title, text, icon }) => {
 
 const Features = () => {
 	return (
-		<section className={classes.root}>
-			<h2 className={SECTION_TITLE}>Фишки приложения</h2>
+		<section className={c.section}>
+			<h2 className={c.sectionTitle}>Фишки приложения</h2>
 			<div className={classes.grid}>
-				{FEATURES.length &&
-					FEATURES.map((feature, index) => {
+				{ourFeatures.length &&
+					ourFeatures.map((feature, index) => {
 						return <FeatureCard {...feature} key={`feature${index}`} />;
 					})}
 			</div>
