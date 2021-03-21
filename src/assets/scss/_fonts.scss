@@ -8,10 +8,10 @@
 	}
 }
 
-@include font('Metropolis', normal, 300, '../fonts/Metropolis-Light.woff2');
-@include font('Metropolis', normal, 400, '../fonts/Metropolis-Regular.woff2');
-@include font('Metropolis', normal, 500, '../fonts/Metropolis-Medium.woff2');
-@include font('Metropolis', normal, 600, '../fonts/Metropolis-SemiBold.woff2');
-@include font('Metropolis', normal, bold, '../fonts/Metropolis-Bold.woff2');
-@include font('Metropolis', normal, 800, '../fonts/Metropolis-ExtraBold.woff2');
-@include font('Metropolis', normal, 900, '../fonts/Metropolis-Black.woff2');
+@include font('Manrope', normal, 200, '../fonts/manrope-v4-latin_cyrillic-200.woff2');
+@include font('Manrope', normal, 300, '../fonts/manrope-v4-latin_cyrillic-300.woff2');
+@include font('Manrope', normal, 400, '../fonts/manrope-v4-latin_cyrillic-regular.woff2');
+@include font('Manrope', normal, 500, '../fonts/manrope-v4-latin_cyrillic-500.woff2');
+@include font('Manrope', normal, 600, '../fonts/manrope-v4-latin_cyrillic-600.woff2');
+@include font('Manrope', normal, 700, '../fonts/manrope-v4-latin_cyrillic-500.woff2');
+@include font('Manrope', normal, 800, '../fonts/manrope-v4-latin_cyrillic-600.woff2');
