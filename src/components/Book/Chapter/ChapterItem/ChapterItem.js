@@ -9,6 +9,20 @@ import { buildUrl } from '../../../../common/helpers';
 import { ExternalUrls } from '../../../../common/constants';
 
 function ChapterItem({ wordData }) {
+	function handleVolumeUp(e) {
+		const { audio, meaning, example } = e.currentTarget.dataset;
+		const urlsList = [audio, meaning, example];
+		const audioList = urlsList.map((url) => new Audio(buildUrl(ExternalUrls.Root, url)));
+
+		audioList[0].play();
+		audioList[0].onended = () => {
+			audioList[1].play();
+			audioList[1].onended = () => {
+				audioList[2].play();
+			};
+		};
+	}
+
 	return (
 		<div className={classes.chapterItem}>
 			<div className={classes.itemImage}>
@@ -19,7 +33,13 @@ function ChapterItem({ wordData }) {
 					<div>{wordData.word}</div>
 					<div>{wordData.transcription}</div>
 					<div>{wordData.wordTranslate}</div>
-					<button>
+					<button
+						type="button"
+						onClick={handleVolumeUp}
+						data-audio={wordData.audio}
+						data-meaning={wordData.audioMeaning}
+						data-example={wordData.audioExample}
+					>
 						<FaVolumeUp />
 					</button>
 				</div>
@@ -31,10 +51,10 @@ function ChapterItem({ wordData }) {
 				</div>
 			</div>
 			<div className={classes.itemSettings}>
-				<button className={classes.settingsButton}>
+				<button className={classes.settingsButton} type="button">
 					<FaThumbtack />
 				</button>
-				<button className={classes.settingsButton}>
+				<button className={classes.settingsButton} type="button">
 					<FaRegTrashAlt />
 				</button>
 			</div>
@@ -65,6 +85,9 @@ ChapterItem.propTypes = {
 		id: PropTypes.string,
 		word: PropTypes.string,
 		image: PropTypes.string,
+		audioExample: PropTypes.string,
+		audioMeaning: PropTypes.string,
+		audio: PropTypes.string,
 		wordTranslate: PropTypes.string,
 		transcription: PropTypes.string,
 		textMeaning: PropTypes.string,
