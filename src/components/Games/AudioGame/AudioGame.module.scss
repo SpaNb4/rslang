@@ -59,64 +59,6 @@
 	}
 }
 
-.gameOver {
-	width: 100%;
-	max-width: 600px;
-	padding: 20px 20px 30px 20px;
-	text-align: center;
-	background-color: $color-white;
-	border-radius: 10px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-
-	.heading {
-		margin: 0;
-	}
-
-	hr {
-		margin-top: 30px;
-	}
-
-	.correctAnswers,
-	.wrongAnswers {
-		margin-top: 30px;
-
-		ul {
-			margin-left: 40px;
-			text-align: left;
-
-			li {
-				display: flex;
-				align-items: center;
-				gap: 10px;
-				margin-top: 10px;
-			}
-		}
-	}
-
-	%wordCount {
-		padding: 2px 8px;
-		color: $color-white;
-		border-radius: 7px;
-	}
-
-	.correctWordCount {
-		@extend %wordCount;
-
-		background-color: $color-apple;
-	}
-
-	.wrongWordCount {
-		@extend %wordCount;
-
-		background-color: $color-chestnut;
-	}
-
-	.allWordsWrapper {
-		max-height: 380px;
-		overflow-y: scroll;
-	}
-}
-
 .btn {
 	display: flex;
 	align-items: center;

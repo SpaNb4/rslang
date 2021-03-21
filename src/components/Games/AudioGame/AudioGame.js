@@ -3,13 +3,15 @@ import shuffle from 'lodash/shuffle';
 import sampleSize from 'lodash/sampleSize';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { AiFillSound } from 'react-icons/ai';
-import { ExternalUrls } from './../../common/constants';
+import { ExternalUrls } from '../../../common/constants';
 import { useSelector } from 'react-redux';
-import { getAllWords } from './../../store/book/slices';
+import { getAllWords } from '../../../store/book/slices';
 import classes from './AudioGame.module.scss';
 
-import correctSound from '../../assets/audio/correctAnswer.wav';
-import wrongSound from '../../assets/audio/wrongAnswer.wav';
+import correctSound from '../../../assets/audio/correctAnswer.wav';
+import wrongSound from '../../../assets/audio/wrongAnswer.wav';
+import GameStats from '../GameStats/GameStats';
+import { playSound } from './../../../common/utils';
 
 export default function AudioGame() {
 	const [words, setWords] = useState(null);
@@ -18,8 +20,6 @@ export default function AudioGame() {
 	const [randomWords, setRandomWords] = useState(null);
 	const [commonWords, setCommonWords] = useState(null);
 	const [isGameOver, setIsGameOver] = useState(false);
-	const [correctAnswers, setCorrectAnswers] = useState(0);
-	const [wrongAnswers, setWrongAnswers] = useState(0);
 	const [corrAnswersWords, setCorrAnswersWords] = useState([]);
 	const [wrongAnswersWords, setWrongAnswersWords] = useState([]);
 	const [isWordClicked, setIsWordClicked] = useState(false);
@@ -73,12 +73,10 @@ export default function AudioGame() {
 		checkEndWords();
 
 		if (!isGameOver) {
-			setWrongAnswers(wrongAnswers + 1);
 			setWrongAnswersWords([...wrongAnswersWords, currWord]);
 			setIsWordClicked(true);
 
-			const sound = new Audio(wrongSound);
-			sound.play();
+			playSound(wrongSound);
 		}
 	}
 
@@ -87,12 +85,10 @@ export default function AudioGame() {
 
 		if (!isGameOver) {
 			// go to next word
-			setCorrectAnswers(correctAnswers + 1);
 			setCorrAnswersWords([...corrAnswersWords, currWord]);
 			setIsWordClicked(true);
 
-			const sound = new Audio(correctSound);
-			sound.play();
+			playSound(correctSound);
 		}
 	}
 
@@ -100,11 +96,6 @@ export default function AudioGame() {
 		if (currWordIndex === words.length - 1) {
 			setIsGameOver(true);
 		}
-	}
-
-	function soundClickHandler(word) {
-		const sound = new Audio(`${ExternalUrls.Main}${word.audio}`);
-		sound.play();
 	}
 
 	function audioClickHandler(e, word) {
@@ -150,42 +141,7 @@ export default function AudioGame() {
 	return (
 		<div className={classes.audioGame}>
 			{isGameOver ? (
-				<div className={classes.gameOver}>
-					<h1 className={classes.heading}>Статистика игры</h1>
-					<div className={classes.allWordsWrapper}>
-						<div className={classes.correctAnswers}>
-							<h3>
-								Знаю - <span className={classes.correctWordCount}>{correctAnswers}</span>
-							</h3>
-							<ul>
-								{corrAnswersWords.map((word, index) => {
-									return (
-										<li key={index}>
-											<AiFillSound onClick={() => soundClickHandler(word)} /> {word.word} -{' '}
-											{word.wordTranslate}
-										</li>
-									);
-								})}
-							</ul>
-						</div>
-						<hr />
-						<div className={classes.wrongAnswers}>
-							<h3>
-								Ошибок - <span className={classes.wrongWordCount}>{wrongAnswers}</span>
-							</h3>
-							<ul>
-								{wrongAnswersWords.map((word, index) => {
-									return (
-										<li key={index}>
-											<AiFillSound onClick={() => soundClickHandler(word)} /> {word.word} -{' '}
-											{word.wordTranslate}
-										</li>
-									);
-								})}
-							</ul>
-						</div>
-					</div>
-				</div>
+				<GameStats corrAnswersWords={corrAnswersWords} wrongAnswersWords={wrongAnswersWords} />
 			) : (
 				currWord && (
 					<>
