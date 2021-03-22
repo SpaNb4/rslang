@@ -120,7 +120,7 @@ export default function Savanna() {
 	}
 
 	function soundClickHandler(word) {
-		const sound = new Audio(`${ExternalUrls.Main}${word.audio}`);
+		const sound = new Audio(`${ExternalUrls.Root}${word.audio}`);
 		sound.play();
 	}
 

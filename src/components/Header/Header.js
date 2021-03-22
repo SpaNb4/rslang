@@ -17,11 +17,11 @@ import classes from './Header.module.scss';
 
 import { menu } from './../../common/constants';
 
-const DropDownItem = ({ name }) => {
+const DropDownItem = ({ listName, linkName, linkId }) => {
 	return (
 		<li className={classes.menuItem}>
-			<Link className={classes.menuLink} to="/">
-				<span>{name}</span>
+			<Link className={classes.menuLink} to={`/${listName}/${linkId}`}>
+				<span>{linkName}</span>
 			</Link>
 		</li>
 	);
@@ -33,6 +33,12 @@ const DropDown = ({ array }) => {
 	const handleDropdownToggle = useCallback(() => {
 		setHiddenDropdown((prev) => !prev);
 	}, [hiddenDropdown]);
+
+	const dropDownItems =
+		array.length &&
+		array.map((item, index) => (
+			<DropDownItem listName={item.listName} linkName={item.linkName} linkId={item.linkId} key={index} />
+		));
 
 	return (
 		<>
@@ -46,10 +52,7 @@ const DropDown = ({ array }) => {
 				<FaAngleDown />
 			</button>
 			<ul className={classes.dropdown} aria-expanded={hiddenDropdown}>
-				{array.length &&
-					array.map((name, index) => {
-						return <DropDownItem name={name} key={index} />;
-					})}
+				{dropDownItems}
 			</ul>
 		</>
 	);
@@ -116,7 +119,7 @@ const Header = () => {
 							</li>
 						)}
 						<li className={classes.menuItem}>
-							<Link className={classes.menuLink} to="/">
+							<Link className={classes.menuLink} to="/book/0">
 								<FaBrain />
 								<span>Учебник</span>
 							</Link>
@@ -165,7 +168,9 @@ const Header = () => {
 };
 
 DropDownItem.propTypes = {
-	name: PropTypes.string,
+	listName: PropTypes.string,
+	linkName: PropTypes.string,
+	linkId: PropTypes.string,
 };
 
 DropDown.propTypes = {
