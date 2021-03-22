@@ -22,18 +22,6 @@ export const DefaultValues = {
 	Page: '0',
 };
 
-export const menu = {
-	sections: BOOK_SECTIONS,
-	games: ['Саванна', 'Аудиовызов', 'Спринт', 'Своя Игра'],
-	words: ['Изучаемые слова', 'Сложные слова', 'Удалённые слова'],
-};
-
-// Dictionary Sections
-export const DictionarySections = {
-	Hard: 'hard',
-	Removed: 'removed',
-};
-
 export const BOOK_SECTIONS = [
 	{
 		linkName: 'Раздел 0',
@@ -67,8 +55,19 @@ export const BOOK_SECTIONS = [
 	},
 ];
 
-export const GAMES = ['Саванна', 'Аудиовызов', 'Спринт', 'Своя Игра'];
-export const TEAM_MATES = [
+export const menu = {
+	sections: BOOK_SECTIONS,
+	games: ['Саванна', 'Аудиовызов', 'Спринт', 'Своя Игра'],
+	words: ['Изучаемые слова', 'Сложные слова', 'Удалённые слова'],
+};
+
+// Dictionary Sections
+export const DictionarySections = {
+	Hard: 'hard',
+	Removed: 'removed',
+};
+
+export const ourTeammates = [
 	{
 		name: 'Алеся',
 		src: 'https://images.unsplash.com/photo-1534432586043-ead5b99229fb',
