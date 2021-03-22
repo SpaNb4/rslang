@@ -11,19 +11,27 @@ export const createUserWordFailure = createAction(types.CREATE_USER_WORD_FAILURE
 export const showLoader = createAction(types.SHOW_LOADER);
 export const hideLoader = createAction(types.HIDE_LOADER);
 
-export const fetchUserWords = (userId) => async (dispatch) => {
+export const fetchUserWords = (userId, token) => async (dispatch) => {
 	try {
 		dispatch(showLoader());
-		const response = await axios(buildUrl(ExternalUrls.Users, '/', userId, '/words'), { params: { id: userId } });
-		const userWords = response.data;
-		dispatch(fetchUserWordsSuccess(userWords));
+		const { data } = await axios({
+			method: 'get',
+			url: buildUrl(ExternalUrls.Users, '/', userId, '/words'),
+			params: {
+				id: userId,
+			},
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		dispatch(fetchUserWordsSuccess(data));
 		dispatch(hideLoader());
 	} catch (error) {
 		dispatch(fetchUserWordsFailure(error));
 	}
 };
 
-export const setUserWord = (userId, token, wordData) => async (dispatch) => {
+export const setUserWord = (userId, token, wordData, section) => async (dispatch) => {
 	try {
 		const { data } = await axios({
 			method: 'post',
@@ -33,7 +41,7 @@ export const setUserWord = (userId, token, wordData) => async (dispatch) => {
 				wordId: wordData.id,
 			},
 			data: {
-				difficulty: 'hard',
+				difficulty: section,
 				optional: wordData,
 			},
 			headers: {

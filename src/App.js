@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 
 import Header from './components/Header/Header';
@@ -11,9 +11,13 @@ import Book from './components/Book/Book';
 
 import { LocalStorageKeys } from './common/constants';
 import { login, register } from './store/app/actions';
+import { getUserId, getToken } from './store/app/slices';
+import { fetchUserWords } from './store/dictionary/actions';
 
 function App() {
 	const dispatch = useDispatch();
+	const userId = useSelector(getUserId);
+	const token = useSelector(getToken);
 
 	useEffect(() => {
 		const user = localStorage.getItem(LocalStorageKeys.User) || null;
@@ -30,6 +34,12 @@ function App() {
 			dispatch(register(user.name, user.email, user.password));
 		}
 	});
+
+	useEffect(() => {
+		if (userId && token) {
+			dispatch(fetchUserWords(userId, token));
+		}
+	}, [userId, token]);
 
 	return (
 		<React.Fragment>

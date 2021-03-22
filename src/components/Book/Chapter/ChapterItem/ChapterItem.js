@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import parse from 'html-react-parser';
@@ -7,7 +7,7 @@ import classes from './ChapterItem.module.scss';
 import { FaVolumeUp, FaThumbtack, FaRegTrashAlt } from 'react-icons/fa';
 
 import { buildUrl } from '../../../../common/helpers';
-import { ExternalUrls } from '../../../../common/constants';
+import { ExternalUrls, DictionarySections } from '../../../../common/constants';
 import { setUserWord } from '../../../../store/dictionary/actions';
 import { getUserId, getAuthorized, getToken } from '../../../../store/app/slices';
 
@@ -29,9 +29,19 @@ function ChapterItem({ wordData }) {
 	const authorized = useSelector(getAuthorized);
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
+	const [saved, setSaved] = useState(false);
+	const [removed, setRemoved] = useState(false);
 
-	function saveToDictionary() {
-		dispatch(setUserWord(userId, token, wordData));
+	function saveToDictionaryHard() {
+		setSaved(true);
+		const section = DictionarySections.Hard;
+		dispatch(setUserWord(userId, token, wordData, section));
+	}
+
+	function saveToDictionaryRemoved() {
+		setRemoved(true);
+		const section = DictionarySections.Removed;
+		dispatch(setUserWord(userId, token, wordData, section));
 	}
 
 	return (
@@ -62,10 +72,20 @@ function ChapterItem({ wordData }) {
 				</div>
 			</div>
 			<div className={classes.itemSettings}>
-				<button className={classes.settingsButton} onClick={saveToDictionary} disabled={!authorized}>
+				<button
+					className={classes.settingsButton}
+					onClick={saveToDictionaryHard}
+					type="button"
+					disabled={!authorized || saved}
+				>
 					<FaThumbtack />
 				</button>
-				<button className={classes.settingsButton} type="button" disabled={!authorized}>
+				<button
+					className={classes.settingsButton}
+					onClick={saveToDictionaryRemoved}
+					type="button"
+					disabled={!authorized || removed}
+				>
 					<FaRegTrashAlt />
 				</button>
 			</div>

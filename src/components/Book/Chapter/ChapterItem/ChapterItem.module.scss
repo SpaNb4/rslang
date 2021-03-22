@@ -118,6 +118,14 @@
 			&:hover::after {
 				color: $color-primary;
 			}
+
+			&:disabled {
+				background-color: $color-regent-gray;
+
+				&:hover::after {
+					display: none;
+				}
+			}
 		}
 	}
 

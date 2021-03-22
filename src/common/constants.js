@@ -10,6 +10,12 @@ export const ExternalUrls = {
 	SignIn: 'https://rslang-app-be.herokuapp.com/signin',
 };
 
+// LOCAL STORAGE KEYs
+export const LocalStorageKeys = {
+	User: 'user',
+	Avatar: 'avatar',
+};
+
 // Default Values
 export const DefaultValues = {
 	Group: '0',
@@ -21,10 +27,11 @@ export const menu = {
 	games: ['Саванна', 'Аудиовызов', 'Спринт', 'Своя Игра'],
 	words: ['Изучаемые слова', 'Сложные слова', 'Удалённые слова'],
 };
-// LOCAL STORAGE KEYs
-export const LocalStorageKeys = {
-	User: 'user',
-	Avatar: 'avatar',
+
+// Dictionary Sections
+export const DictionarySections = {
+	Hard: 'hard',
+	Removed: 'removed',
 };
 
 export const BOOK_SECTIONS = [
