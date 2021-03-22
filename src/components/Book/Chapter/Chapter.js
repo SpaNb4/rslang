@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import classes from './Chapter.module.scss';
 
@@ -20,7 +19,7 @@ function Chapter() {
 		dispatch(fetchWords(group, page));
 	}, [group, page]);
 
-	const items = words && words.map((word, index) => <ChapterItem wordData={word} key={index} />);
+	const chapterItems = words && words.map((word, index) => <ChapterItem wordData={word} key={index} />);
 
 	return (
 		<div className={classes.chapter}>
@@ -28,7 +27,7 @@ function Chapter() {
 				<h2>{`Раздел ${group}`}</h2>
 			</div>
 			{loading && <React.Fragment>Loading...</React.Fragment>}
-			{items}
+			{chapterItems}
 		</div>
 	);
 }

@@ -13,14 +13,13 @@ export const register = (name, email, password) => async (dispatch) => {
 	try {
 		const { data } = await axios({
 			method: 'post',
-			url: `${ExternalUrls.Users}`,
+			url: ExternalUrls.Users,
 			data: {
 				name: name,
 				email: email,
 				password: password,
 			},
 		});
-		console.log(data);
 		dispatch(registerSuccess(data));
 	} catch (error) {
 		dispatch(registerFailure(error));
@@ -31,13 +30,12 @@ export const login = (email, password) => async (dispatch) => {
 	try {
 		const { data } = await axios({
 			method: 'post',
-			url: `${ExternalUrls.Signin}`,
+			url: ExternalUrls.SignIn,
 			data: {
 				email: email,
 				password: password,
 			},
 		});
-		console.log(data);
 		dispatch(loginSuccess(data));
 	} catch (error) {
 		dispatch(loginFailure(error));

@@ -4,15 +4,17 @@ import axios from 'axios';
 import { ExternalUrls } from '../../common/constants';
 import { buildUrl } from '../../common/helpers';
 
-export const fetchUserWordsSuccess = createAction(types.FETCH_USER_WORDS_FAILURE);
-export const fetchUserWordsFailure = createAction(types.FETCH_USER_WORDS_SUCCESS);
+export const fetchUserWordsSuccess = createAction(types.FETCH_USER_WORDS_SUCCESS);
+export const createUserWordSuccess = createAction(types.CREATE_USER_WORD_SUCCESS);
+export const fetchUserWordsFailure = createAction(types.FETCH_USER_WORDS_FAILURE);
+export const createUserWordFailure = createAction(types.CREATE_USER_WORD_FAILURE);
 export const showLoader = createAction(types.SHOW_LOADER);
 export const hideLoader = createAction(types.HIDE_LOADER);
 
 export const fetchUserWords = (userId) => async (dispatch) => {
 	try {
 		dispatch(showLoader());
-		const response = await axios(buildUrl(ExternalUrls.Users, userId, '/words'), { params: { id: userId } });
+		const response = await axios(buildUrl(ExternalUrls.Users, '/', userId, '/words'), { params: { id: userId } });
 		const userWords = response.data;
 		dispatch(fetchUserWordsSuccess(userWords));
 		dispatch(hideLoader());
@@ -21,22 +23,25 @@ export const fetchUserWords = (userId) => async (dispatch) => {
 	}
 };
 
-export const setUserWord = (userId, token, wordData) => async () => {
-	console.log(token);
+export const setUserWord = (userId, token, wordData) => async (dispatch) => {
 	try {
 		const { data } = await axios({
 			method: 'post',
-			url: `${buildUrl(ExternalUrls.Users, userId, '/words/', wordData.id)}`,
+			url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', wordData.id),
+			params: {
+				id: userId,
+				wordId: wordData.id,
+			},
 			data: {
 				difficulty: 'hard',
 				optional: wordData,
 			},
 			headers: {
-				authorization: `${token}`,
+				Authorization: `Bearer ${token}`,
 			},
 		});
-		console.log(data);
+		dispatch(createUserWordSuccess(data));
 	} catch (error) {
-		console.log(error);
+		dispatch(createUserWordFailure(error));
 	}
 };

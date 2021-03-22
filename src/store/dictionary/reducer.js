@@ -12,7 +12,13 @@ const reducer = createReducer(initialState, (builder) => {
 		.addCase(actions.fetchUserWordsSuccess, (state, action) => {
 			state.userWords = action.payload;
 		})
+		.addCase(actions.createUserWordSuccess, (state, { payload }) => {
+			state.userWords = [...state.userWords, payload];
+		})
 		.addCase(actions.fetchUserWordsFailure, (state, action) => {
+			state.errorMessage = action.payload;
+		})
+		.addCase(actions.createUserWordFailure, (state, action) => {
 			state.errorMessage = action.payload;
 		})
 		.addCase(actions.showLoader, (state) => {

@@ -11,25 +11,24 @@ import { ExternalUrls } from '../../../../common/constants';
 import { setUserWord } from '../../../../store/dictionary/actions';
 import { getUserId, getAuthorized, getToken } from '../../../../store/app/slices';
 
+function handleVolumeUp(e) {
+	const { audio, meaning, example } = e.currentTarget.dataset;
+	const urlsList = [audio, meaning, example];
+	const audioList = urlsList.map((url) => new Audio(buildUrl(ExternalUrls.Root, url)));
+
+	audioList[0].play();
+	audioList[0].onended = () => {
+		audioList[1].play();
+		audioList[1].onended = () => {
+			audioList[2].play();
+		};
+	};
+}
 function ChapterItem({ wordData }) {
 	const dispatch = useDispatch();
 	const authorized = useSelector(getAuthorized);
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
-
-	function handleVolumeUp(e) {
-		const { audio, meaning, example } = e.currentTarget.dataset;
-		const urlsList = [audio, meaning, example];
-		const audioList = urlsList.map((url) => new Audio(buildUrl(ExternalUrls.Root, url)));
-
-		audioList[0].play();
-		audioList[0].onended = () => {
-			audioList[1].play();
-			audioList[1].onended = () => {
-				audioList[2].play();
-			};
-		};
-	}
 
 	function saveToDictionary() {
 		dispatch(setUserWord(userId, token, wordData));

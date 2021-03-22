@@ -8,28 +8,27 @@ import Team from './components/Team/Team';
 import Video from './components/Video/Video';
 import { globalClasses as c } from './common/constants';
 import Book from './components/Book/Book';
-<<<<<<< HEAD
-=======
-import { CONTAINER } from './common/constants';
-// import { LocalStorageKeys } from './common/constants';
 
-// import { loginSuccess } from './store/app/actions';
-// import { register } from './store/app/actions';
-import { login } from './store/app/actions';
->>>>>>> feat: save word to dictionary action
+import { LocalStorageKeys } from './common/constants';
+import { login, register } from './store/app/actions';
 
 function App() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		// const username = localStorage.getItem(LocalStorageKeys.Username) || null;
-
-		// Just for dev purpose
-		// const username = 'admin';
-		const email = 'admin@gmail.com';
-		const password = 'Admin1234!';
-		// dispatch(register(username, email, password));
-		dispatch(login(email, password));
+		const user = localStorage.getItem(LocalStorageKeys.User) || null;
+		if (user) {
+			const userData = JSON.parse(user);
+			dispatch(login(userData.email, userData.password));
+		} else {
+			const user = {
+				name: '',
+				email: '',
+				password: '',
+			};
+			localStorage.setItem(LocalStorageKeys.User, JSON.stringify(user));
+			dispatch(register(user.name, user.email, user.password));
+		}
 	});
 
 	return (

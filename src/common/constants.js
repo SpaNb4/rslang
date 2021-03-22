@@ -6,8 +6,8 @@ export const ExternalUrls = {
 	Video: 'https://www.youtube.com/embed/DHQngnnHE_0',
 	Root: 'https://rslang-app-be.herokuapp.com/',
 	Words: 'https://rslang-app-be.herokuapp.com/words',
-	Users: 'https://rslang-app-be.herokuapp.com/users/',
-	Signin: 'https://rslang-app-be.herokuapp.com/signin',
+	Users: 'https://rslang-app-be.herokuapp.com/users',
+	SignIn: 'https://rslang-app-be.herokuapp.com/signin',
 };
 
 // Default Values
@@ -23,7 +23,7 @@ export const menu = {
 };
 // LOCAL STORAGE KEYs
 export const LocalStorageKeys = {
-	Username: 'username',
+	User: 'user',
 	Avatar: 'avatar',
 };
 
