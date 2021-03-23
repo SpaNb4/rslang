@@ -4,7 +4,9 @@ import { PropTypes } from 'prop-types';
 import parse from 'html-react-parser';
 import classes from './ChapterItem.module.scss';
 
-import { FaVolumeUp, FaThumbtack, FaRegTrashAlt } from 'react-icons/fa';
+import { FaVolumeUp } from 'react-icons/fa';
+
+import Button from '../../../Button/Button';
 
 import { buildUrl } from '../../../../common/helpers';
 import { ExternalUrls, DictionarySections } from '../../../../common/constants';
@@ -54,40 +56,41 @@ function ChapterItem({ wordData }) {
 					<div>{wordData.word}</div>
 					<div>{wordData.transcription}</div>
 					<div>{wordData.wordTranslate}</div>
-					<button
-						type="button"
-						onClick={handleVolumeUp}
+					<Button
+						handler={handleVolumeUp}
 						data-audio={wordData.audio}
 						data-meaning={wordData.audioMeaning}
 						data-example={wordData.audioExample}
 					>
 						<FaVolumeUp />
-					</button>
+					</Button>
 				</div>
 				<div className={classes.itemParagraph}>
+					<div>
+						<strong>Meaning:</strong>
+					</div>
 					<div>{parse(wordData.textMeaning)}</div>
 				</div>
 				<div className={classes.itemParagraph}>
+					<div>{parse(wordData.textMeaningTranslate)}</div>
+				</div>
+				<div className={classes.itemParagraph}>
+					<div>
+						<strong>Example:</strong>
+					</div>
 					<div>{parse(wordData.textExample)}</div>
+				</div>
+				<div className={classes.itemParagraph}>
+					<div>{parse(wordData.textExampleTranslate)}</div>
 				</div>
 			</div>
 			<div className={classes.itemSettings}>
-				<button
-					className={classes.settingsButton}
-					onClick={saveToDictionaryHard}
-					type="button"
-					disabled={!authorized || saved}
-				>
-					<FaThumbtack />
-				</button>
-				<button
-					className={classes.settingsButton}
-					onClick={saveToDictionaryRemoved}
-					type="button"
-					disabled={!authorized || removed}
-				>
-					<FaRegTrashAlt />
-				</button>
+				<Button handler={saveToDictionaryHard} disabled={!authorized || saved}>
+					Сложное слово
+				</Button>
+				<Button handler={saveToDictionaryRemoved} disabled={!authorized || removed}>
+					Удалить
+				</Button>
 			</div>
 			<div className={classes.itemResults}>
 				<div className={classes.resultItem}>
@@ -122,7 +125,9 @@ ChapterItem.propTypes = {
 		wordTranslate: PropTypes.string,
 		transcription: PropTypes.string,
 		textMeaning: PropTypes.string,
+		textMeaningTranslate: PropTypes.string,
 		textExample: PropTypes.string,
+		textExampleTranslate: PropTypes.string,
 		group: PropTypes.number,
 		page: PropTypes.number,
 	}).isRequired,

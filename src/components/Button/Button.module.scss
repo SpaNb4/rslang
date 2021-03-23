@@ -1,0 +1,32 @@
+.button {
+	position: relative;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: $color-white;
+	font-size: 16px;
+	line-height: 1;
+	margin: 10px;
+	padding: 8px;
+	border: none;
+	border-radius: 8px;
+	min-width: fit-content;
+	background-color: $color-primary;
+	outline: none;
+	transition: background 0.8s;
+
+	&:hover,
+	&:active {
+		background: lighten($color-primary, 10) radial-gradient(circle, transparent 1%, lighten($color-primary, 10) 0)
+			50%/15000%;
+	}
+
+	&:disabled {
+		background-color: $color-regent-gray;
+
+		&:hover::after {
+			display: none;
+		}
+	}
+}
