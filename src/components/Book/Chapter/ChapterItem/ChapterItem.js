@@ -31,11 +31,11 @@ function ChapterItem({ wordData }) {
 	const authorized = useSelector(getAuthorized);
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
-	const [saved, setSaved] = useState(false);
+	const [hard, setHard] = useState(false);
 	const [removed, setRemoved] = useState(false);
 
 	const saveToDictionaryHard = useCallback(() => {
-		setSaved(true);
+		setHard(true);
 		const section = DictionarySections.Hard;
 		dispatch(setUserWord(userId, token, wordData, section));
 	}, [userId, token, wordData]);
@@ -47,7 +47,7 @@ function ChapterItem({ wordData }) {
 	}, [userId, token, wordData]);
 
 	return (
-		<div className={classes.chapterItem}>
+		<div className={(hard && classes.chapterItemHard) || classes.chapterItem}>
 			<div className={classes.itemImage}>
 				<img src={buildUrl(ExternalUrls.Root, wordData.image)} alt={wordData.word} />
 			</div>
@@ -85,7 +85,7 @@ function ChapterItem({ wordData }) {
 				</div>
 			</div>
 			<div className={classes.itemSettings}>
-				<Button handler={saveToDictionaryHard} disabled={!authorized || saved}>
+				<Button handler={saveToDictionaryHard} disabled={!authorized || hard}>
 					Сложное слово
 				</Button>
 				<Button handler={saveToDictionaryRemoved} disabled={!authorized || removed}>
