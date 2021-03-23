@@ -1,12 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import sampleSize from 'lodash/sampleSize';
 import shuffle from 'lodash/shuffle';
 import { getAllWords } from '../../store/book/slices';
-import { getCurrCharIndex, getCurrWordIndex, getCurrentWord, getRandomWords } from '../../store/kit/slices';
-import { setRandomWords, increaseCharIndex, increaseWordIndex, setCurrentWord } from './../../store/kit/actions';
+import { getCurrCharIndex, getCurrWordIndex, getCurrentWord, getRandomWords, getAnswers } from '../../store/kit/slices';
+import { setRandomWords, increaseCharIndex, setCurrentWord, addAnswer } from './../../store/kit/actions';
 import classes from './Kit.module.scss';
+import { FaStar } from 'react-icons/fa';
+
+const NUMBER_OF_WORDS = 3;
+const DELAY = 1000;
+
+const colors = {
+	error: '#f00',
+	correct: `#fd0`,
+};
 
 const HiddenChar = ({ char, index }) => {
 	const [hidden, setHidden] = useState(true);
@@ -24,8 +33,10 @@ const HiddenChar = ({ char, index }) => {
 	}, [currentWord]);
 
 	return (
-		<span className={classes.hiddenChar} aria-hidden={hidden}>
-			{char}
+		<span className={classes.hiddenCharWrapper}>
+			<span className={classes.hiddenChar} aria-hidden={hidden}>
+				{char}
+			</span>
 		</span>
 	);
 };
@@ -63,23 +74,41 @@ const ShuffledChar = ({ char }) => {
 	);
 };
 
+const IconStar = ({ index }) => {
+	const answers = useSelector(getAnswers);
+	const [iconColor, setIconColor] = useState('');
+
+	useEffect(() => {
+		if (answers.includes(index)) {
+			setIconColor(colors.correct);
+		} else if (answers[index] === null) {
+			setIconColor(colors.error);
+		}
+	}, [answers]);
+
+	return (
+		<li data-index={index}>
+			<FaStar color={iconColor} />
+		</li>
+	);
+};
+
 const Kit = () => {
 	const dispatch = useDispatch();
 	const allWords = useSelector(getAllWords);
 	const randomWords = useSelector(getRandomWords);
 	const currWordIndex = useSelector(getCurrWordIndex);
 	const currCharIndex = useSelector(getCurrCharIndex);
+	const answers = useSelector(getAnswers);
 
 	const [currWordObj, setCurrWordObj] = useState(null);
 	const [normCurrWord, setNormCurrWord] = useState([]);
 	const [shuffCurrWord, setShuffCurrWord] = useState([]);
 	const [message, setMessage] = useState('loading...'); // loader mock
 
-	const [point, setPoint] = useState(0);
-
 	useEffect(() => {
 		if (allWords.length) {
-			dispatch(setRandomWords(sampleSize(allWords, 10)));
+			dispatch(setRandomWords(sampleSize(allWords, NUMBER_OF_WORDS)));
 		}
 	}, [allWords]);
 
@@ -99,25 +128,40 @@ const Kit = () => {
 	}, [currWordObj]);
 
 	useEffect(() => {
+		let timeout;
+
 		if (currCharIndex && currCharIndex === normCurrWord.length) {
-			setPoint((prev) => prev + 1);
-			dispatch(increaseWordIndex());
+			timeout = setTimeout(() => {
+				dispatch(addAnswer(currWordIndex));
+			}, DELAY);
 		}
+		return () => {
+			clearTimeout(timeout);
+		};
 	}, [currCharIndex]);
+
+	const handleSkipWord = useCallback(() => {
+		dispatch(addAnswer(null));
+	}, []);
 
 	//Game over temporary log
 	useEffect(() => {
 		if (currWordIndex && currWordIndex === randomWords.length) {
-			setMessage('game over');
+			const corrects = answers.filter((answer) => answer).length;
+			setMessage(`Угадано: ${corrects}
+			Пропущено: ${answers.length - corrects}`);
 		}
 	}, [currWordIndex]);
 
 	return (
 		<div className={classes.root}>
 			<div className={classes.gameField}>
-				<span>
-					Угадано {point} / {randomWords.length}
-				</span>
+				<ul className={classes.starList}>
+					{randomWords &&
+						randomWords.map((_, index) => {
+							return <IconStar key={`star-${index}`} index={index} />;
+						})}
+				</ul>
 				{currWordObj ? (
 					<React.Fragment>
 						<p className={classes.translatedWord}>{currWordObj.wordTranslate}</p>
@@ -139,7 +183,9 @@ const Kit = () => {
 					<div>{message}</div>
 				)}
 
-				<button aria-label="skip word">Пропустить слово</button>
+				<button className={classes.skipButton} aria-label="skip word" onClick={handleSkipWord} type="button">
+					Пропустить слово
+				</button>
 			</div>
 		</div>
 	);
@@ -152,6 +198,10 @@ HiddenChar.propTypes = {
 
 ShuffledChar.propTypes = {
 	char: PropTypes.string,
+};
+
+IconStar.propTypes = {
+	index: PropTypes.number,
 };
 
 export default Kit;

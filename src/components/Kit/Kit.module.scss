@@ -14,7 +14,9 @@
 }
 
 .translatedWord {
-	font-size: 1.3em;
+	padding: 10px 0;
+	font-size: 1.5em;
+	font-weight: 800;
 }
 
 .word {
@@ -26,10 +28,31 @@
 	&:first-of-type {
 		padding: 60px 0;
 	}
+
+	&:last-of-type {
+		margin-bottom: 30px;
+	}
+}
+
+.hiddenCharWrapper {
+	position: relative;
+	width: 20px;
+
+	&::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 1px;
+		background-color: $color-dove-gray;
+	}
 }
 
 .hiddenChar {
-	font-size: 1.2em;
+	font-size: 1.4em;
+	font-weight: 600;
+	cursor: default;
 
 	&[aria-hidden='true'] {
 		opacity: 0;
@@ -53,15 +76,36 @@
 	font-weight: 600;
 	border: 1px solid;
 	border-radius: 8px;
-	background-color: $color-chestnut;
+	background-color: $color-apple;
 
 	&:hover {
-		color: $color-chestnut;
-		background-color: $color-white;
+		opacity: 0.8;
 	}
 
 	&[aria-selected='true'] {
-		color: $color-chestnut;
+		color: $color-apple;
 		background-color: $color-white;
+	}
+}
+
+.starList {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 10px;
+	gap: 3px;
+	font-size: 20px;
+}
+
+.skipButton {
+	padding: 10px 27px;
+	color: $color-chestnut;
+	border: 1px solid;
+	box-shadow: $box-shadow-3;
+	border-radius: 8px;
+	background-color: $color-white;
+
+	&:hover {
+		color: $color-white;
+		background-color: $color-chestnut;
 	}
 }
