@@ -35,10 +35,15 @@ function ChapterItem({ wordData }) {
 	const [removed, setRemoved] = useState(false);
 
 	const saveToDictionaryHard = useCallback(() => {
-		setHard(true);
-		const section = DictionarySections.Hard;
-		dispatch(setUserWord(userId, token, wordData, section));
-	}, [userId, token, wordData]);
+		console.log(hard);
+		setHard(!hard);
+		if (hard) {
+			const section = DictionarySections.Hard;
+			dispatch(setUserWord(userId, token, wordData, section));
+		} else {
+			// dispatch(removeUserWord(userId, token, wordData));
+		}
+	}, [userId, token, wordData, hard]);
 
 	const saveToDictionaryRemoved = useCallback(() => {
 		setRemoved(true);
@@ -85,7 +90,11 @@ function ChapterItem({ wordData }) {
 				</div>
 			</div>
 			<div className={classes.itemSettings}>
-				<Button handler={saveToDictionaryHard} disabled={!authorized || hard}>
+				<Button
+					handler={saveToDictionaryHard}
+					disabled={!authorized}
+					difficulty={hard && DictionarySections.Hard}
+				>
 					Сложное слово
 				</Button>
 				<Button handler={saveToDictionaryRemoved} disabled={!authorized || removed}>
