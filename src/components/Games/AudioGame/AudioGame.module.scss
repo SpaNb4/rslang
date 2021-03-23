@@ -1,0 +1,134 @@
+.audioGame {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	padding: 0 20px;
+	color: $color-black;
+	background-color: $color-sea-buckthorn;
+	background-image: linear-gradient(315deg, $color-sea-buckthorn 0%, $color-school-bus-yellow 74%);
+}
+
+.currWord {
+	font-size: 36px;
+}
+
+.wordList {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.wordListItem {
+	padding: 10px 10px;
+	font-size: 20px;
+
+	&:hover {
+		cursor: pointer;
+		box-shadow: 0 0 3px 2px $color-emperor;
+		background: rgba(255, 255, 255, 0.25);
+		transition: box-shadow 0.5s, background-color 0.5s;
+	}
+
+	span {
+		font-size: 14px;
+	}
+}
+
+.wrongWord {
+	background: $color-chestnut;
+	border-radius: 5px;
+
+	&:hover {
+		cursor: default;
+		box-shadow: none;
+		background: $color-chestnut;
+	}
+}
+
+.correctWord {
+	background: $color-apple;
+	border-radius: 5px;
+
+	&:hover {
+		cursor: default;
+		box-shadow: none;
+		background: $color-apple;
+	}
+}
+
+.btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 150px;
+	height: 40px;
+	font-size: 16px;
+	font-weight: 700;
+	color: #fff;
+	cursor: pointer;
+	background-color: $color-primary;
+	border: none;
+	border-radius: 5px;
+	outline: none;
+	transition: background 0.8s;
+	margin-top: 40px;
+
+	&:hover,
+	&:active {
+		background: lighten($color-primary, 10) radial-gradient(circle, transparent 1%, lighten($color-primary, 10) 0)
+			50%/15000%;
+	}
+}
+
+.audioWrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 150px;
+	height: 150px;
+	margin-bottom: 92px;
+	cursor: pointer;
+	color: $color-white;
+	border-radius: 50%;
+	transition: background-color 0.5s, color 0.3s;
+
+	&:hover {
+		background-color: $color-secondary;
+	}
+
+	.audio {
+		font-size: 100px;
+	}
+}
+
+.playing {
+	color: $color-primary;
+}
+
+.imgWrapper {
+	img {
+		width: 150px;
+		height: 150px;
+		margin-bottom: 20px;
+		border: 3px solid $color-white;
+		border-radius: 50%;
+		-o-object-fit: cover;
+		object-fit: cover;
+	}
+}
+
+.currWordWrapper {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	margin-bottom: 20px;
+
+	.smallAudio {
+		font-size: 32px;
+		color: $color-primary;
+		cursor: pointer;
+	}
+}
