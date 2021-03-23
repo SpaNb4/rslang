@@ -65,6 +65,7 @@ export const menu = {
 export const DictionarySections = {
 	Hard: 'hard',
 	Removed: 'removed',
+	Trained: 'trained',
 };
 
 export const ourTeammates = [
