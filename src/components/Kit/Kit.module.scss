@@ -1,0 +1,67 @@
+.root {
+	padding: 25px 0;
+}
+
+.title {
+	font-size: 1.8em;
+}
+
+.gameField {
+	padding: 30px 10px;
+	text-align: center;
+	border: 1px solid $color-dove-gray;
+	border-radius: 8px;
+}
+
+.translatedWord {
+	font-size: 1.3em;
+}
+
+.word {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+
+	&:first-of-type {
+		padding: 60px 0;
+	}
+}
+
+.hiddenChar {
+	font-size: 1.2em;
+
+	&[aria-hidden='true'] {
+		opacity: 0;
+	}
+
+	&[aria-hidden='false'] {
+		opacity: 1;
+		transition: 0.4s ease;
+	}
+}
+
+.shuffledChar {
+	display: flex;
+	width: 40px;
+	height: 40px;
+	justify-content: center;
+	align-items: center;
+	color: $color-white;
+	font-size: 1.1em;
+	line-height: 1;
+	font-weight: 600;
+	border: 1px solid;
+	border-radius: 8px;
+	background-color: $color-chestnut;
+
+	&:hover {
+		color: $color-chestnut;
+		background-color: $color-white;
+	}
+
+	&[aria-selected='true'] {
+		color: $color-chestnut;
+		background-color: $color-white;
+	}
+}
