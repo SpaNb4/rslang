@@ -23,10 +23,15 @@
 	}
 
 	&:disabled {
-		background-color: $color-regent-gray;
+		background: $color-regent-gray;
+	}
+}
 
-		&:hover::after {
-			display: none;
-		}
+.button[difficulty='hard'] {
+	background: $color-regent-gray;
+
+	&:hover {
+		background: lighten($color-regent-gray, 10)
+			radial-gradient(circle, transparent 1%, lighten($color-regent-gray, 10) 0) 50%/15000%;
 	}
 }
