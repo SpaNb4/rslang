@@ -21,6 +21,12 @@ const reducer = createReducer(initialState, (builder) => {
 		.addCase(actions.createUserWordFailure, (state, action) => {
 			state.errorMessage = action.payload;
 		})
+		.addCase(actions.deleteUserWordSuccess, (state, { payload }) => {
+			state.userWords = state.userWords.filter((word) => word.wordId !== payload);
+		})
+		.addCase(actions.deleteUserWordFailure, (state, action) => {
+			state.errorMessage = action.payload;
+		})
 		.addCase(actions.showLoader, (state) => {
 			state.loading = true;
 		})

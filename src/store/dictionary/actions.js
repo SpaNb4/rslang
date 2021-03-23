@@ -6,8 +6,10 @@ import { buildUrl } from '../../common/helpers';
 
 export const fetchUserWordsSuccess = createAction(types.FETCH_USER_WORDS_SUCCESS);
 export const createUserWordSuccess = createAction(types.CREATE_USER_WORD_SUCCESS);
+export const deleteUserWordSuccess = createAction(types.DELETE_USER_WORD_SUCCESS);
 export const fetchUserWordsFailure = createAction(types.FETCH_USER_WORDS_FAILURE);
 export const createUserWordFailure = createAction(types.CREATE_USER_WORD_FAILURE);
+export const deleteUserWordFailure = createAction(types.DELETE_USER_WORD_FAILURE);
 export const showLoader = createAction(types.SHOW_LOADER);
 export const hideLoader = createAction(types.HIDE_LOADER);
 
@@ -51,5 +53,20 @@ export const setUserWord = (userId, token, wordData, section) => async (dispatch
 		dispatch(createUserWordSuccess(data));
 	} catch (error) {
 		dispatch(createUserWordFailure(error));
+	}
+};
+
+export const deleteUserWord = (userId, token, wordData) => async (dispatch) => {
+	try {
+		await axios({
+			method: 'delete',
+			url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', wordData.wordId),
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		dispatch(deleteUserWordSuccess(wordData.wordId));
+	} catch (error) {
+		dispatch(deleteUserWordFailure(error));
 	}
 };

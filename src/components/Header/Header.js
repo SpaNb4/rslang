@@ -111,7 +111,7 @@ const Header = () => {
 					<ul className={classes.menu}>
 						{auth && (
 							<li className={classes.menuItem}>
-								<Link className={classes.menuLink} to="/dictionary">
+								<Link className={classes.menuLink} to="/vocabulary/studied">
 									<FaBookDead />
 									<span>Мой словарь</span>
 								</Link>

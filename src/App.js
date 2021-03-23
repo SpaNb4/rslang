@@ -8,6 +8,7 @@ import Team from './components/Team/Team';
 import Video from './components/Video/Video';
 import { globalClasses as c } from './common/constants';
 import Book from './components/Book/Book';
+import Vocabulary from './components/Vocabulary/Vocabulary';
 
 import { LocalStorageKeys } from './common/constants';
 import { login, register } from './store/app/actions';
@@ -26,9 +27,9 @@ function App() {
 			dispatch(login(userData.email, userData.password));
 		} else {
 			const user = {
-				name: '',
-				email: '',
-				password: '',
+				name: 'SpaNb4',
+				email: 'spanb4@gmail.com',
+				password: '12345678',
 			};
 			localStorage.setItem(LocalStorageKeys.User, JSON.stringify(user));
 			dispatch(register(user.name, user.email, user.password));
@@ -54,6 +55,7 @@ function App() {
 						</div>
 					</Route>
 					<Route path="/book/:group" component={Book} />
+					<Route path="/vocabulary/:group" component={Vocabulary} />
 				</Switch>
 			</main>
 		</React.Fragment>

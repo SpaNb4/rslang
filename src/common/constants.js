@@ -55,10 +55,28 @@ export const BOOK_SECTIONS = [
 	},
 ];
 
+export const VOCABULARY_SECTIONS = [
+	{
+		linkName: 'Изучаемые слова',
+		linkId: 'studied',
+		listName: 'vocabulary',
+	},
+	{
+		linkName: 'Сложные слова',
+		linkId: 'hard',
+		listName: 'vocabulary',
+	},
+	{
+		linkName: 'Удалённые слова',
+		linkId: 'removed',
+		listName: 'vocabulary',
+	},
+];
+
 export const menu = {
 	sections: BOOK_SECTIONS,
 	games: ['Саванна', 'Аудиовызов', 'Спринт', 'Своя Игра'],
-	words: ['Изучаемые слова', 'Сложные слова', 'Удалённые слова'],
+	words: VOCABULARY_SECTIONS,
 };
 
 // Dictionary Sections
