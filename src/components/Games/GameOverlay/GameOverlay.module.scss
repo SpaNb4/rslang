@@ -1,0 +1,12 @@
+.fullScreenWrapper {
+	height: 600px;
+
+	.fullScreenBtn {
+		position: absolute;
+		top: 90px;
+		left: 20px;
+		font-size: 30px;
+		color: $color-black;
+		cursor: pointer;
+	}
+}
