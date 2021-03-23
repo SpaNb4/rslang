@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import parse from 'html-react-parser';
@@ -34,17 +34,17 @@ function ChapterItem({ wordData }) {
 	const [saved, setSaved] = useState(false);
 	const [removed, setRemoved] = useState(false);
 
-	function saveToDictionaryHard() {
+	const saveToDictionaryHard = useCallback(() => {
 		setSaved(true);
 		const section = DictionarySections.Hard;
 		dispatch(setUserWord(userId, token, wordData, section));
-	}
+	}, [userId, token, wordData]);
 
-	function saveToDictionaryRemoved() {
+	const saveToDictionaryRemoved = useCallback(() => {
 		setRemoved(true);
 		const section = DictionarySections.Removed;
 		dispatch(setUserWord(userId, token, wordData, section));
-	}
+	}, [userId, token, wordData]);
 
 	return (
 		<div className={classes.chapterItem}>
