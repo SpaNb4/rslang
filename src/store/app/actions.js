@@ -8,6 +8,7 @@ export const registerFailure = createAction(types.REGISTER_FAILURE);
 export const loginSuccess = createAction(types.LOGIN_SUCCESS);
 export const loginFailure = createAction(types.LOGIN_FAILURE);
 export const logout = createAction(types.LOGOUT_SUCCESS);
+export const menuToggle = createAction(types.MENU_TOGGLE);
 
 export const register = (name, email, password) => async (dispatch) => {
 	try {

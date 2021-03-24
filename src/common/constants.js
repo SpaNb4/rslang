@@ -22,43 +22,78 @@ export const DefaultValues = {
 	Page: '0',
 };
 
-export const BOOK_SECTIONS = [
-	{
-		linkName: 'Раздел 0',
-		linkId: '0',
-		listName: 'book',
-	},
-	{
-		linkName: 'Раздел 1',
-		linkId: '1',
-		listName: 'book',
-	},
-	{
-		linkName: 'Раздел 2',
-		linkId: '2',
-		listName: 'book',
-	},
-	{
-		linkName: 'Раздел 3',
-		linkId: '3',
-		listName: 'book',
-	},
-	{
-		linkName: 'Раздел 4',
-		linkId: '4',
-		listName: 'book',
-	},
-	{
-		linkName: 'Раздел 5',
-		linkId: '5',
-		listName: 'book',
-	},
-];
-
 export const menu = {
-	sections: BOOK_SECTIONS,
-	games: ['Саванна', 'Аудиовызов', 'Спринт', 'Своя Игра'],
-	words: ['Изучаемые слова', 'Сложные слова', 'Удалённые слова'],
+	sections: [
+		{
+			linkName: 'Раздел 0',
+			linkId: '0',
+			listName: 'book',
+		},
+		{
+			linkName: 'Раздел 1',
+			linkId: '1',
+			listName: 'book',
+		},
+		{
+			linkName: 'Раздел 2',
+			linkId: '2',
+			listName: 'book',
+		},
+		{
+			linkName: 'Раздел 3',
+			linkId: '3',
+			listName: 'book',
+		},
+		{
+			linkName: 'Раздел 4',
+			linkId: '4',
+			listName: 'book',
+		},
+		{
+			linkName: 'Раздел 5',
+			linkId: '5',
+			listName: 'book',
+		},
+	],
+	dictionary: [
+		{
+			linkName: 'Изучаемые слова',
+			linkId: '6',
+			listName: 'book',
+		},
+		{
+			linkName: 'Сложные слова',
+			linkId: '7',
+			listName: 'book',
+		},
+		{
+			linkName: 'Удалённые слова',
+			linkId: '8',
+			listName: 'book',
+		},
+	],
+	games: [
+		{
+			linkName: 'Саванна',
+			linkId: 'savanna',
+			listName: 'game',
+		},
+		{
+			linkName: 'Спринт',
+			linkId: 'sprint',
+			listName: 'game',
+		},
+		{
+			linkName: 'Аудиовызов',
+			linkId: 'audiogame',
+			listName: 'game',
+		},
+		{
+			linkName: 'Конструктор',
+			linkId: 'kit',
+			listName: 'game',
+		},
+	],
 };
 
 // Dictionary Sections
@@ -139,4 +174,5 @@ export const globalClasses = {
 	container: 'container',
 	section: 'section',
 	sectionTitle: 'section-title',
+	visuallyHidden: 'visually-hidden',
 };

@@ -6,13 +6,13 @@ import Header from './components/Header/Header';
 import Features from './components/Features/Features';
 import Team from './components/Team/Team';
 import Video from './components/Video/Video';
-import { globalClasses as c } from './common/constants';
 import Book from './components/Book/Book';
 
 import { LocalStorageKeys } from './common/constants';
 import { login, register } from './store/app/actions';
 import { getUserId, getToken } from './store/app/slices';
 import { fetchUserWords } from './store/dictionary/actions';
+import { globalClasses as c } from './common/constants';
 
 function App() {
 	const dispatch = useDispatch();
@@ -26,14 +26,14 @@ function App() {
 			dispatch(login(userData.email, userData.password));
 		} else {
 			const user = {
-				name: '',
-				email: '',
-				password: '',
+				name: 'usermane',
+				email: 'email@gmail.com',
+				password: 'password',
 			};
 			localStorage.setItem(LocalStorageKeys.User, JSON.stringify(user));
 			dispatch(register(user.name, user.email, user.password));
 		}
-	});
+	}, []);
 
 	useEffect(() => {
 		if (userId && token) {
@@ -47,11 +47,9 @@ function App() {
 			<main className={c.container}>
 				<Switch>
 					<Route exact path="/">
-						<div>
-							<Features />
-							<Video />
-							<Team />
-						</div>
+						<Features />
+						<Video />
+						<Team />
 					</Route>
 					<Route path="/book/:group" component={Book} />
 				</Switch>

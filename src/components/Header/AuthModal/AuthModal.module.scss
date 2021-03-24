@@ -1,0 +1,138 @@
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	transform: scale(1);
+	background: $gradient-1;
+	z-index: 15;
+	overflow: hidden;
+	transition: 0.4s ease;
+
+	&[aria-hidden='true'] {
+		transform: scale(0);
+	}
+}
+
+.modal {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 20px 40px;
+	color: $color-emperor;
+	background-color: $color-white;
+	border-radius: 16px;
+	box-shadow: $box-shadow-1;
+
+	@include resolution(tablet) {
+		flex-direction: column;
+	}
+
+	form {
+		text-align: center;
+	}
+}
+
+.title {
+	margin-bottom: 30px;
+	font-size: 24px;
+}
+
+.fieldset {
+	position: relative;
+	margin-bottom: 20px;
+	padding: 0;
+	border: none;
+}
+
+.input {
+	padding: 10px;
+	border: 2px solid $color-botticelli;
+	border-radius: 8px;
+	transition: 0.4s ease;
+
+	&::placeholder {
+		color: $color-emperor;
+	}
+
+	&:focus::placeholder {
+		color: transparent;
+	}
+
+	&:hover {
+		box-shadow: $box-shadow-2;
+	}
+
+	&:focus {
+		outline: none;
+		border-color: $color-secondary;
+	}
+
+	&[data-error='true'] {
+		border-color: $color-red;
+
+		&::placeholder {
+			color: transparent;
+		}
+	}
+}
+
+.button {
+	width: 100%;
+	margin-top: 20px;
+	padding: 10px;
+	border: 1px solid;
+	border-radius: 8px;
+	background-color: $color-white;
+	box-shadow: $box-shadow-2;
+
+	&[aria-label='register'] {
+		color: $color-primary;
+
+		&:hover {
+			color: $color-white;
+			background-color: $color-primary;
+			border-color: $color-primary;
+		}
+	}
+
+	&[aria-label='login'] {
+		color: $color-secondary;
+
+		&:hover {
+			color: $color-white;
+			background-color: $color-secondary;
+			border-color: $color-secondary;
+		}
+	}
+
+	&:hover {
+		color: $color-white;
+	}
+}
+
+.inputButton {
+	width: 45px;
+	height: 45px;
+	color: $color-white;
+	border-radius: 100%;
+	border: 1px solid;
+	background: $gradient-1;
+
+	&:hover {
+		background: $gradient-2;
+	}
+
+	&:focus {
+		outline: none;
+	}
+
+	&[data-error='true'] {
+		border-color: $color-red;
+	}
+}

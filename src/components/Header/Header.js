@@ -1,10 +1,14 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import { Link } from 'react-router-dom';
+import AuthModal from './AuthModal/AuthModal';
+import { login, logout, menuToggle, register } from '../../store/app/actions';
+import { getMenu, getAuthorized } from '../../store/app/slices';
 import {
 	FaHamburger,
-	FaBookDead,
 	FaBrain,
+	FaBookDead,
 	FaTableTennis,
 	FaPercentage,
 	FaAngleDown,
@@ -12,27 +16,37 @@ import {
 	FaUserSecret,
 	FaSignInAlt,
 	FaSignOutAlt,
+	FaHome,
 } from 'react-icons/fa';
 import classes from './Header.module.scss';
-
-import { menu } from './../../common/constants';
+import { menu, LocalStorageKeys } from './../../common/constants';
 
 const DropDownItem = ({ listName, linkName, linkId }) => {
+	const dispatch = useDispatch();
+
+	const handleClick = () => {
+		dispatch(menuToggle(false));
+	};
+
 	return (
 		<li className={classes.menuItem}>
-			<Link className={classes.menuLink} to={`/${listName}/${linkId}`}>
+			<Link className={classes.menuLink} to={`/${listName}/${linkId}`} onClick={handleClick}>
 				<span>{linkName}</span>
 			</Link>
 		</li>
 	);
 };
 
-const DropDown = ({ array }) => {
+const DropDown = ({ array, name, icon }) => {
 	const [hiddenDropdown, setHiddenDropdown] = useState(true);
 
-	const handleDropdownToggle = useCallback(() => {
-		setHiddenDropdown((prev) => !prev);
-	}, [hiddenDropdown]);
+	const handleDropdownToggle = useCallback(
+		(evt) => {
+			evt.preventDefault();
+			setHiddenDropdown((prev) => !prev);
+		},
+		[hiddenDropdown]
+	);
 
 	const dropDownItems =
 		array.length &&
@@ -42,15 +56,13 @@ const DropDown = ({ array }) => {
 
 	return (
 		<>
-			<button
-				className={classes.dropToggle}
-				type="button"
-				aria-label="toggle dropdown"
-				aria-expanded={hiddenDropdown}
-				onClick={handleDropdownToggle}
-			>
-				<FaAngleDown />
-			</button>
+			<a href="#" className={classes.menuLink} aria-label="toggle dropdown" onClick={handleDropdownToggle}>
+				{icon}
+				<span>{name}</span>
+				<span className={classes.dropToggle} aria-expanded={hiddenDropdown}>
+					<FaAngleDown />
+				</span>
+			</a>
 			<ul className={classes.dropdown} aria-expanded={hiddenDropdown}>
 				{dropDownItems}
 			</ul>
@@ -59,111 +71,154 @@ const DropDown = ({ array }) => {
 };
 
 const Header = () => {
-	const [auth, setAuth] = useState(true);
-	const [hiddenMenu, setHiddenMenu] = useState(true);
+	const dispatch = useDispatch();
 
-	const handleLogout = useCallback(() => {
-		setHiddenMenu(true);
-		setAuth(false);
-	}, []);
+	const menuHidden = useSelector(getMenu);
+	const auth = useSelector(getAuthorized);
 
-	const handleLogin = useCallback(() => {
-		setHiddenMenu(true);
-		//open popup ???
-		setAuth(true);
-	}, []);
+	const [loginHidden, setLoginHidden] = useState(true);
+	const [registerHidden, setRegisterHidden] = useState(true);
 
 	const handleMenuToggle = useCallback(() => {
-		setHiddenMenu((prev) => !prev);
-	}, [hiddenMenu]);
+		setRegisterHidden(true);
+		setLoginHidden(true);
+		dispatch(menuToggle(!menuHidden));
+	}, [menuHidden]);
 
-	const handleMenuClose = useCallback(
-		(evt) => {
-			if (!hiddenMenu && (evt.key === 'Escape' || evt.type === 'click')) {
-				setHiddenMenu(true);
+	const handleModalClose = (evt) => {
+		if (evt.key === 'Escape' || evt.type === 'click') {
+			switch (false) {
+				case loginHidden:
+					setLoginHidden(true);
+					break;
+				case registerHidden:
+					setRegisterHidden(true);
+					break;
+				case menuHidden:
+					dispatch(menuToggle(true));
+					break;
 			}
-		},
-		[setHiddenMenu]
-	);
+		}
+	};
 
 	useEffect(() => {
-		document.addEventListener('keydown', handleMenuClose);
-		document.addEventListener('click', handleMenuClose);
-		return () => {
-			document.removeEventListener('keydown', handleMenuClose);
-			document.removeEventListener('click', handleMenuClose);
-		};
+		if (!menuHidden || !loginHidden || !registerHidden) {
+			document.body.style.overflow = 'hidden';
+		} else {
+			document.body.style.overflow = 'auto';
+		}
+	}, [menuHidden, loginHidden, registerHidden]);
+
+	const handleLoginOpen = useCallback(() => {
+		setRegisterHidden(true);
+		setLoginHidden(false);
+		dispatch(menuToggle(true));
+	}, [setLoginHidden]);
+
+	const handleRegisterOpen = useCallback(() => {
+		setLoginHidden(true);
+		setRegisterHidden(false);
+		dispatch(menuToggle(true));
+	}, [setRegisterHidden]);
+
+	const handleLogout = useCallback(() => {
+		localStorage.removeItem(LocalStorageKeys.User);
+
+		dispatch(logout());
+
+		// close menu
+		dispatch(menuToggle(true));
 	}, []);
 
+	useEffect(() => {
+		document.addEventListener('keydown', handleModalClose);
+		document.addEventListener('click', handleModalClose);
+		return () => {
+			document.removeEventListener('keydown', handleModalClose);
+			document.removeEventListener('click', handleModalClose);
+		};
+	}, [menuHidden, loginHidden, registerHidden]);
+
 	return (
-		<header className={classes.header}>
-			<nav className={classes.nav} onClick={(evt) => evt.stopPropagation()}>
-				<button
-					type="button"
-					className={[classes.hamburger, classes.navLink].join(' ')}
-					aria-label="toggle sidebar"
-					onClick={handleMenuToggle}
-				>
-					<FaHamburger />
-				</button>
-				<h2 className={classes.title}>RS Lang</h2>
-				<div className={classes.menuWrapper} aria-hidden={hiddenMenu}>
-					<ul className={classes.menu}>
-						{auth && (
-							<li className={classes.menuItem}>
-								<Link className={classes.menuLink} to="/dictionary">
-									<FaBookDead />
-									<span>Мой словарь</span>
-								</Link>
-								<DropDown array={menu.words} />
-							</li>
-						)}
-						<li className={classes.menuItem}>
-							<Link className={classes.menuLink} to="/book/0">
-								<FaBrain />
-								<span>Учебник</span>
-							</Link>
-							<DropDown array={menu.sections} />
-						</li>
-						<li className={classes.menuItem}>
-							<Link className={classes.menuLink} to="/">
-								<FaTableTennis />
-								<span>Тренировки</span>
-							</Link>
-							<DropDown array={menu.games} />
-						</li>
-						<li className={classes.menuItem}>
-							<Link className={classes.menuLink} to="/">
-								<FaPercentage />
-								<span>Статистика</span>
-							</Link>
-						</li>
-						<li className={classes.menuItem}>
-							{auth ? (
-								<Link className={classes.menuLink} onClick={handleLogout} to="/">
-									<FaSignOutAlt />
-									<span>Выход</span>
-								</Link>
-							) : (
-								<Link className={classes.menuLink} onClick={handleLogin} to="/">
-									<FaSignInAlt />
-									<span>Вход/Регистрация</span>
-								</Link>
+		<React.Fragment>
+			<header className={classes.header}>
+				<nav className={classes.nav} onClick={(evt) => evt.stopPropagation()}>
+					<Link to="/" className={classes.navLink} onClick={handleModalClose}>
+						<FaHome />
+					</Link>
+					<button
+						type="button"
+						className={classes.navLink}
+						aria-label="toggle sidebar"
+						onClick={handleMenuToggle}
+					>
+						<FaHamburger />
+					</button>
+					<h2 className={classes.title}>RS Lang</h2>
+					<div className={classes.menuWrapper} aria-hidden={menuHidden}>
+						<ul className={classes.menu}>
+							{auth && (
+								<li className={classes.menuItem}>
+									<DropDown array={menu.dictionary} name="Мой словарь" icon={<FaBookDead />} />
+								</li>
 							)}
-						</li>
-					</ul>
-				</div>
-				{auth ? (
-					<Link className={classes.navLink} to="/profile/:id">
-						<FaUserGraduate />
-					</Link>
-				) : (
-					<Link className={classes.navLink} to="/">
-						<FaUserSecret />
-					</Link>
-				)}
-			</nav>
-		</header>
+							<li className={classes.menuItem}>
+								<DropDown array={menu.sections} name="Учебник" icon={<FaBrain />} />
+							</li>
+							<li className={classes.menuItem}>
+								<DropDown array={menu.sections} name="Тренировки" icon={<FaTableTennis />} />
+							</li>
+							<li className={classes.menuItem}>
+								<Link className={classes.menuLink} to="/">
+									<FaPercentage />
+									<span>Статистика</span>
+								</Link>
+							</li>
+							{auth ? (
+								<li className={classes.menuItem}>
+									<Link className={classes.menuLink} onClick={handleLogout} to="/">
+										<FaSignOutAlt />
+										<span>Выход</span>
+									</Link>
+								</li>
+							) : (
+								<React.Fragment>
+									<li className={classes.menuItem}>
+										<Link className={classes.menuLink} onClick={handleRegisterOpen} to="/">
+											<FaSignInAlt />
+											<span>Регистрация</span>
+										</Link>
+									</li>
+									<li className={classes.menuItem}>
+										<Link className={classes.menuLink} onClick={handleLoginOpen} to="/">
+											<FaSignInAlt />
+											<span>Вход</span>
+										</Link>
+									</li>
+								</React.Fragment>
+							)}
+						</ul>
+					</div>
+					{auth ? (
+						<Link className={classes.navLink} to="/profile/:id">
+							<FaUserGraduate />
+						</Link>
+					) : (
+						<Link className={classes.navLink} to="/">
+							<FaUserSecret />
+						</Link>
+					)}
+				</nav>
+			</header>
+			<AuthModal hidden={loginHidden} buttonName="Войти" title="Вход" callback={login} />
+			<AuthModal
+				hidden={registerHidden}
+				buttonName="Зарегистрироваться"
+				title="Регистрация"
+				reg
+				callback={register}
+			/>
+		</React.Fragment>
 	);
 };
 
@@ -175,6 +230,8 @@ DropDownItem.propTypes = {
 
 DropDown.propTypes = {
 	array: PropTypes.array,
+	name: PropTypes.string,
+	icon: PropTypes.element,
 };
 
 export default Header;
