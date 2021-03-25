@@ -1,0 +1,111 @@
+.root {
+	padding: 25px 0;
+}
+
+.title {
+	font-size: 1.8em;
+}
+
+.gameField {
+	padding: 30px 10px;
+	text-align: center;
+	border: 1px solid $color-dove-gray;
+	border-radius: 8px;
+}
+
+.translatedWord {
+	padding: 10px 0;
+	font-size: 1.5em;
+	font-weight: 800;
+}
+
+.word {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 10px;
+
+	&:first-of-type {
+		padding: 60px 0;
+	}
+
+	&:last-of-type {
+		margin-bottom: 30px;
+	}
+}
+
+.hiddenCharWrapper {
+	position: relative;
+	width: 20px;
+
+	&::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 1px;
+		background-color: $color-dove-gray;
+	}
+}
+
+.hiddenChar {
+	font-size: 1.4em;
+	font-weight: 600;
+	cursor: default;
+
+	&[aria-hidden='true'] {
+		opacity: 0;
+	}
+
+	&[aria-hidden='false'] {
+		opacity: 1;
+		transition: 0.4s ease;
+	}
+}
+
+.shuffledChar {
+	display: flex;
+	width: 40px;
+	height: 40px;
+	justify-content: center;
+	align-items: center;
+	color: $color-white;
+	font-size: 1.1em;
+	line-height: 1;
+	font-weight: 600;
+	border: 1px solid;
+	border-radius: 8px;
+	background-color: $color-apple;
+
+	&:hover {
+		opacity: 0.8;
+	}
+
+	&[aria-selected='true'] {
+		color: $color-apple;
+		background-color: $color-white;
+	}
+}
+
+.starList {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 10px;
+	gap: 3px;
+	font-size: 20px;
+}
+
+.skipButton {
+	padding: 10px 27px;
+	color: $color-chestnut;
+	border: 1px solid;
+	box-shadow: $box-shadow-3;
+	border-radius: 8px;
+	background-color: $color-white;
+
+	&:hover {
+		color: $color-white;
+		background-color: $color-chestnut;
+	}
+}

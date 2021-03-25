@@ -6,16 +6,16 @@ import Header from './components/Header/Header';
 import Features from './components/Features/Features';
 import Team from './components/Team/Team';
 import Video from './components/Video/Video';
-import { globalClasses as c } from './common/constants';
+import Footer from './components/Footer/Footer';
 import Book from './components/Book/Book';
 import Vocabulary from './components/Vocabulary/Vocabulary';
 
-import { LocalStorageKeys } from './common/constants';
 import { login, register } from './store/app/actions';
 import { getUserId, getToken } from './store/app/slices';
 import { fetchUserWords } from './store/dictionary/actions';
 import { getCurrentGroup, getCurrentPage } from './store/book/slices';
 import { fetchWords } from './store/book/actions';
+import { globalClasses as c, LocalStorageKeys } from './common/constants';
 
 function App() {
 	const dispatch = useDispatch();
@@ -66,6 +66,7 @@ function App() {
 					<Route path="/vocabulary/:group" component={Vocabulary} />
 				</Switch>
 			</main>
+			<Footer />
 		</React.Fragment>
 	);
 }
