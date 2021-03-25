@@ -6,7 +6,6 @@ import Header from './components/Header/Header';
 import Features from './components/Features/Features';
 import Team from './components/Team/Team';
 import Video from './components/Video/Video';
-import Kit from './components/Kit/Kit';
 import Footer from './components/Footer/Footer';
 import Book from './components/Book/Book';
 
@@ -55,7 +54,6 @@ function App() {
 						</div>
 					</Route>
 					<Route path="/book/:group" component={Book} />
-					<Route path="/Kit" component={Kit} />
 				</Switch>
 			</main>
 			<Footer />
