@@ -1,11 +1,11 @@
 import React, { useState, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import { FaCamera } from 'react-icons/fa';
+import { FaCamera, FaTimes } from 'react-icons/fa';
 import classes from './AuthModal.module.scss';
 import { globalClasses as c } from '../../../common/constants';
 
-const AuthModal = ({ hidden, buttonName, callback, reg, title }) => {
+const AuthModal = ({ hidden, buttonName, callback, reg, title, handleClose }) => {
 	const dispatch = useDispatch();
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
@@ -55,7 +55,6 @@ const AuthModal = ({ hidden, buttonName, callback, reg, title }) => {
 	};
 
 	const handleFileUpload = (evt) => {
-		console.log(evt.target.files[0]);
 		setImage(evt.target.files[0]);
 	};
 
@@ -65,7 +64,10 @@ const AuthModal = ({ hidden, buttonName, callback, reg, title }) => {
 
 	return (
 		<div className={classes.overlay} aria-hidden={hidden}>
-			<div className={classes.modal} onClick={(evt) => evt.stopPropagation()} role="dialog">
+			<div className={classes.modal} role="dialog">
+				<button className={classes.closeButton} type="button" onClick={handleClose}>
+					<FaTimes />
+				</button>
 				<h2 className={classes.title}>{title}</h2>
 				<form autoComplete="false" name="form" onSubmit={handleSubmit}>
 					{reg && (
@@ -156,6 +158,7 @@ AuthModal.propTypes = {
 	hidden: PropTypes.bool,
 	reg: PropTypes.bool,
 	callback: PropTypes.func,
+	handleClose: PropTypes.func,
 	buttonName: PropTypes.string,
 	title: PropTypes.string,
 };
