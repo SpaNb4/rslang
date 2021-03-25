@@ -4,6 +4,7 @@ import { DefaultValues } from '../../common/constants';
 
 const initialState = {
 	words: [],
+	aggregatedWords: [],
 	currentGroup: DefaultValues.Group,
 	currentPage: DefaultValues.Page,
 	loading: false,
@@ -23,6 +24,12 @@ const reducer = createReducer(initialState, (builder) => {
 		})
 		.addCase(actions.updateCurrentPage, (state, action) => {
 			state.currentPage = action.payload;
+		})
+		.addCase(actions.fetchAggregatedWordsSuccess, (state, action) => {
+			state.aggregatedWords = action.payload;
+		})
+		.addCase(actions.fetchAggregatedWordsFailure, (state, action) => {
+			state.errorMessage = action.payload;
 		})
 		.addCase(actions.showLoader, (state) => {
 			state.loading = true;

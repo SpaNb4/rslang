@@ -10,23 +10,30 @@ import Button from '../../../Button/Button';
 
 import { buildUrl } from '../../../../common/helpers';
 import { ExternalUrls, DictionarySections } from '../../../../common/constants';
-import { setUserWord } from '../../../../store/dictionary/actions';
+import { setUserWord, updateUserWord } from '../../../../store/dictionary/actions';
 import { getUserId, getAuthorized, getToken } from '../../../../store/app/slices';
 function ChapterItem({ wordData }) {
 	const dispatch = useDispatch();
 	const authorized = useSelector(getAuthorized);
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
-	const [hard, setHard] = useState(false);
+	const hardInitial = authorized
+		? wordData.userWord.difficulty === DictionarySections.Hard
+			? wordData.userWord.difficulty
+			: false
+		: false;
+	const [hard, setHard] = useState(hardInitial);
 	const [removed, setRemoved] = useState(false);
+	const [saved, setSaved] = useState(false);
 
 	const saveToDictionaryHard = useCallback(() => {
 		setHard(!hard);
+		setSaved(true);
 	}, [hard]);
 
 	const saveToDictionaryRemoved = useCallback(() => {
 		setRemoved(true);
-	});
+	}, [hard]);
 
 	const handleVolumeUp = useCallback(() => {
 		const { audio, audioMeaning, audioExample } = wordData;
@@ -43,20 +50,25 @@ function ChapterItem({ wordData }) {
 	});
 
 	useEffect(() => {
-		if (hard) {
+		if (hard && saved) {
 			const section = DictionarySections.Hard;
 			dispatch(setUserWord(userId, token, wordData, section));
-		} else {
-			// dispatch(removeUserWord(userId, token, wordData));
+		} else if (!hard && saved) {
+			const section = DictionarySections.Trained;
+			dispatch(updateUserWord(userId, token, wordData, section));
 		}
-	}, [hard, userId, token, wordData]);
+	}, [saved, hard, userId, token, wordData]);
 
 	useEffect(() => {
-		if (removed) {
+		if (removed && hard) {
+			const section = DictionarySections.Removed;
+			dispatch(updateUserWord(userId, token, wordData, section));
+		}
+		if (removed && !hard) {
 			const section = DictionarySections.Removed;
 			dispatch(setUserWord(userId, token, wordData, section));
 		}
-	}, [removed, userId, token, wordData]);
+	}, [removed, hard, userId, token, wordData]);
 
 	return (
 		<div className={(hard && classes.chapterItemHard) || classes.chapterItem}>
@@ -139,6 +151,9 @@ ChapterItem.propTypes = {
 		textMeaningTranslate: PropTypes.string,
 		textExample: PropTypes.string,
 		textExampleTranslate: PropTypes.string,
+		userWord: PropTypes.shape({
+			difficulty: PropTypes.string,
+		}),
 		group: PropTypes.number,
 		page: PropTypes.number,
 	}).isRequired,
