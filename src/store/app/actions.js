@@ -10,8 +10,21 @@ export const loginFailure = createAction(types.LOGIN_FAILURE);
 export const logout = createAction(types.LOGOUT_SUCCESS);
 export const menuToggle = createAction(types.MENU_TOGGLE);
 
-export const register = (name, email, password) => async (dispatch) => {
+export const register = (email, password, name, image) => async (dispatch) => {
 	try {
+		// something like ...
+		// const formData = new FormData();
+		// formData.append('username', email);
+		// formData.append('email', email);
+		// formData.append('password', password);
+		// formData.append('password', password);
+
+		// const { data } = await axios({
+		// 	method: 'post',
+		// 	url: ExternalUrls.Users,
+		// 	data: formData,
+		// });
+
 		const { data } = await axios({
 			method: 'post',
 			url: ExternalUrls.Users,
@@ -19,6 +32,7 @@ export const register = (name, email, password) => async (dispatch) => {
 				name: name,
 				email: email,
 				password: password,
+				image: image, // getting empty object
 			},
 		});
 		dispatch(registerSuccess(data));

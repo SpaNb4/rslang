@@ -30,7 +30,7 @@ const AuthModal = ({ hidden, buttonName, callback, reg, title }) => {
 		} else if (reg && !image) {
 			uploadBtnRef.current.dataset.error = 'true';
 		} else {
-			dispatch(callback(username, email, password));
+			dispatch(callback(email, password, username, image));
 		}
 	};
 
