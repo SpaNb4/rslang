@@ -1,0 +1,16 @@
+.timer {
+	display: flex;
+	border: 1px solid $color-black;
+	border-radius: 75px;
+	width: 70px;
+	margin-left: 80px;
+	margin-top: 10px;
+}
+
+.numbers {
+	font-size: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 70px;
+}
