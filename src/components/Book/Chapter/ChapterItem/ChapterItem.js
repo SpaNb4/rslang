@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import parse from 'html-react-parser';
-import classes from './ChapterItem.module.scss';
+import classes from '../../../ChapterItem/ChapterItem.module.scss';
 
 import { FaVolumeUp } from 'react-icons/fa';
 
