@@ -14,11 +14,15 @@ import { LocalStorageKeys } from './common/constants';
 import { login, register } from './store/app/actions';
 import { getUserId, getToken } from './store/app/slices';
 import { fetchUserWords } from './store/dictionary/actions';
+import { getCurrentGroup, getCurrentPage } from './store/book/slices';
+import { fetchWords } from './store/book/actions';
 
 function App() {
 	const dispatch = useDispatch();
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
+	const group = useSelector(getCurrentGroup);
+	const page = useSelector(getCurrentPage);
 
 	useEffect(() => {
 		const user = localStorage.getItem(LocalStorageKeys.User) || null;
@@ -41,6 +45,10 @@ function App() {
 			dispatch(fetchUserWords(userId, token));
 		}
 	}, [userId, token]);
+
+	useEffect(() => {
+		dispatch(fetchWords(group, page));
+	}, [group, page]);
 
 	return (
 		<React.Fragment>

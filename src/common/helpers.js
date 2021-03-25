@@ -4,9 +4,9 @@ export function buildUrl(...args) {
 	return args.join('');
 }
 
-export function handleVolumeUp(e) {
-	const { audio, meaning, example } = e.currentTarget.dataset;
-	const urlsList = [audio, meaning, example];
+export function handleVolumeUp(wordData) {
+	const { audio, audioMeaning, audioExample } = wordData;
+	const urlsList = [audio, audioMeaning, audioExample];
 	const audioList = urlsList.map((url) => new Audio(buildUrl(ExternalUrls.Root, url)));
 
 	audioList[0].play();

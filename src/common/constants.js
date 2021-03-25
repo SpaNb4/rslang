@@ -58,7 +58,7 @@ export const BOOK_SECTIONS = [
 export const VOCABULARY_SECTIONS = [
 	{
 		linkName: 'Изучаемые слова',
-		linkId: 'studied',
+		linkId: 'trained',
 		listName: 'vocabulary',
 	},
 	{
@@ -83,6 +83,7 @@ export const menu = {
 export const DictionarySections = {
 	Hard: 'hard',
 	Removed: 'removed',
+	Trained: 'trained',
 };
 
 export const ourTeammates = [

@@ -9,7 +9,7 @@ import { FaVolumeUp, FaRegTrashAlt } from 'react-icons/fa';
 import { buildUrl, handleVolumeUp } from '../../../../common/helpers';
 import { ExternalUrls } from '../../../../common/constants';
 import { getUserId, getToken } from '../../../../store/app/slices';
-import { deleteUserWord } from './../../../../store/dictionary/actions';
+import { removeUserWord } from './../../../../store/dictionary/actions';
 
 function ChapterItem({ wordData }) {
 	const dispatch = useDispatch();
@@ -17,7 +17,7 @@ function ChapterItem({ wordData }) {
 	const token = useSelector(getToken);
 
 	function restoreWordToBook() {
-		dispatch(deleteUserWord(userId, token, wordData));
+		dispatch(removeUserWord(userId, token, wordData));
 	}
 
 	return (
@@ -32,7 +32,7 @@ function ChapterItem({ wordData }) {
 					<div>{wordData.optional.wordTranslate}</div>
 					<button
 						type="button"
-						onClick={handleVolumeUp}
+						onClick={() => handleVolumeUp(wordData)}
 						data-audio={wordData.optional.audio}
 						data-meaning={wordData.optional.audioMeaning}
 						data-example={wordData.optional.audioExample}

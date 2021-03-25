@@ -34,13 +34,14 @@ export const fetchUserWords = (userId, token) => async (dispatch) => {
 };
 
 export const setUserWord = (userId, token, wordData, section) => async (dispatch) => {
+	const wordId = wordData.id || wordData._id;
 	try {
 		const { data } = await axios({
 			method: 'post',
-			url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', wordData.id),
+			url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', wordId),
 			params: {
 				id: userId,
-				wordId: wordData.id,
+				wordId: wordId,
 			},
 			data: {
 				difficulty: section,
@@ -56,17 +57,46 @@ export const setUserWord = (userId, token, wordData, section) => async (dispatch
 	}
 };
 
-export const deleteUserWord = (userId, token, wordData) => async (dispatch) => {
+export const updateUserWord = (userId, token, wordData, section) => async (dispatch) => {
+	const wordId = wordData.id || wordData._id;
 	try {
-		await axios({
-			method: 'delete',
-			url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', wordData.wordId),
+		const { data } = await axios({
+			method: 'put',
+			url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', wordId),
+			params: {
+				id: userId,
+				wordId: wordId,
+			},
+			data: {
+				difficulty: section,
+				optional: wordData,
+			},
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
 		});
-		dispatch(deleteUserWordSuccess(wordData.wordId));
+		dispatch(createUserWordSuccess(data));
 	} catch (error) {
-		dispatch(deleteUserWordFailure(error));
+		dispatch(createUserWordFailure(error));
+	}
+};
+
+export const removeUserWord = (userId, token, wordData) => async (dispatch) => {
+	const wordId = wordData.id || wordData._id;
+	try {
+		const { data } = await axios({
+			method: 'delete',
+			url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', wordId),
+			params: {
+				id: userId,
+				wordId: wordId,
+			},
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		dispatch(createUserWordSuccess(data));
+	} catch (error) {
+		dispatch(createUserWordFailure(error));
 	}
 };
