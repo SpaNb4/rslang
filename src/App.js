@@ -6,13 +6,13 @@ import Header from './components/Header/Header';
 import Features from './components/Features/Features';
 import Team from './components/Team/Team';
 import Video from './components/Video/Video';
+import Footer from './components/Footer/Footer';
 import Book from './components/Book/Book';
 
-import { LocalStorageKeys } from './common/constants';
 import { login, register } from './store/app/actions';
 import { getUserId, getToken } from './store/app/slices';
 import { fetchUserWords } from './store/dictionary/actions';
-import { globalClasses as c } from './common/constants';
+import { globalClasses as c, LocalStorageKeys } from './common/constants';
 
 function App() {
 	const dispatch = useDispatch();
@@ -54,6 +54,7 @@ function App() {
 					<Route path="/book/:group" component={Book} />
 				</Switch>
 			</main>
+			<Footer />
 		</React.Fragment>
 	);
 }
