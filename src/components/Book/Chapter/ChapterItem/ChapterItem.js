@@ -17,9 +17,26 @@ function ChapterItem({ wordData }) {
 	const authorized = useSelector(getAuthorized);
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
-	const [hard, setHard] = useState(false);
+
+	const trained = authorized
+		? wordData.userWord
+			? wordData.userWord.difficulty === DictionarySections.Trained
+				? true
+				: false
+			: false
+		: false;
+
+	const hardInitial = authorized
+		? wordData.userWord
+			? wordData.userWord.difficulty === DictionarySections.Hard
+				? true
+				: false
+			: false
+		: false;
+
+	const [hard, setHard] = useState(hardInitial);
 	const [removed, setRemoved] = useState(false);
-	const [savedHard, setSavedHard] = useState(hard);
+	const [savedHard, setSavedHard] = useState(false);
 	const [savedTrained, setSavedTrained] = useState(false);
 
 	const saveToDictionaryHard = useCallback(() => {
@@ -31,7 +48,7 @@ function ChapterItem({ wordData }) {
 		setRemoved(true);
 		setHard(false);
 		setSavedHard(false);
-	}, [hard]);
+	});
 
 	const handleVolumeUp = useCallback(() => {
 		const { audio, audioMeaning, audioExample } = wordData;
@@ -48,30 +65,18 @@ function ChapterItem({ wordData }) {
 
 	useEffect(() => {
 		if (authorized) {
-			if (!savedTrained) {
-				const trained = wordData.userWord
-					? wordData.userWord.difficulty === DictionarySections.Trained
-						? true
-						: false
-					: false;
-				const hardInitial = wordData.userWord
-					? wordData.userWord.difficulty === DictionarySections.Hard
-						? true
-						: false
-					: false;
-				setHard(hardInitial);
-				if (!trained && !hardInitial) {
-					console.log('post trained');
-					const section = DictionarySections.Trained;
-					dispatch(setUserWord(userId, token, wordData, section));
-				}
+			if (!trained && !savedTrained && !hard && !savedHard && !hardInitial) {
+				console.log('post trained');
+				const section = DictionarySections.Trained;
+				dispatch(setUserWord(userId, token, wordData, section));
 				setSavedTrained(true);
 			}
 			if (hard && savedHard) {
 				console.log('update hard');
 				const section = DictionarySections.Hard;
 				dispatch(updateUserWord(userId, token, wordData, section));
-			} else if (!hard && savedHard) {
+			}
+			if (!hard && savedHard) {
 				console.log('update trained');
 				const section = DictionarySections.Trained;
 				dispatch(updateUserWord(userId, token, wordData, section));
@@ -82,10 +87,17 @@ function ChapterItem({ wordData }) {
 				dispatch(updateUserWord(userId, token, wordData, section));
 			}
 		}
-	}, [authorized, savedTrained, removed, savedHard, hard, userId, token, wordData]);
+	}, [authorized, trained, savedTrained, removed, savedHard, hard, userId, token, hardInitial, wordData]);
+
+	console.log(
+		`${wordData.word} - hardInitial ${hardInitial} - hard ${hard} - difficulty ${
+			authorized && wordData.userWord.difficulty
+		}}`
+	);
+	const difficulty = hard ? DictionarySections.Hard : 'none';
 
 	return (
-		<div className={classes.chapterItem} id={hard && 'hardWord'}>
+		<div className={classes.chapterItem}>
 			<div className={classes.itemImage}>
 				<img src={buildUrl(ExternalUrls.Root, wordData.image)} alt={wordData.word} />
 			</div>
@@ -118,11 +130,7 @@ function ChapterItem({ wordData }) {
 				</div>
 			</div>
 			<div className={classes.itemSettings}>
-				<Button
-					handler={saveToDictionaryHard}
-					disabled={!authorized}
-					difficulty={hard ? DictionarySections.Hard : ''}
-				>
+				<Button handler={saveToDictionaryHard} disabled={!authorized} difficulty={difficulty}>
 					Сложное слово
 				</Button>
 				<Button handler={saveToDictionaryRemoved} disabled={!authorized || removed}>

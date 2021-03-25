@@ -10,10 +10,6 @@
 	border-color: transparent;
 	border-radius: 8px;
 
-	&#hardWord {
-		background: $color-lola;
-	}
-
 	.itemImage {
 		flex-basis: 30%;
 		height: auto;
@@ -112,4 +108,8 @@
 			}
 		}
 	}
+}
+
+.hard {
+	background: $color-lola;
 }

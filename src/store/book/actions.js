@@ -37,7 +37,7 @@ export const fetchAggregatedWords = (group, page, userId, token, filterObj) => a
 			params: {
 				group: group,
 				page: '0',
-				wordsPerPage: '20',
+				wordsPerPage: '3',
 				filter: filterObj,
 			},
 			headers: {
