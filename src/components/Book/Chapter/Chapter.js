@@ -8,6 +8,7 @@ import ChapterItem from './ChapterItem/ChapterItem';
 import { fetchAggregatedWords } from '../../../store/book/actions';
 import { getWordsLoading, getAllWords, getCurrentPage, getAggregatedWordsWords } from '../../../store/book/slices';
 import { getUserId, getToken, getAuthorized } from '../../../store/app/slices';
+import { DictionarySections } from '../../../common/constants';
 
 function Chapter() {
 	const dispatch = useDispatch();
@@ -23,7 +24,13 @@ function Chapter() {
 	useEffect(() => {
 		if (authorized) {
 			console.log('get Aggregated Words');
-			const wordsWithoutRemoved = JSON.stringify({ $and: [{ 'userWord.difficulty': 'hard' }] }); // TODO: добавить trained
+			const wordsWithoutRemoved = JSON.stringify({
+				$or: [
+					{ 'userWord.difficulty': DictionarySections.Hard },
+					{ 'userWord.difficulty': DictionarySections.Trained },
+					{ userWord: null },
+				],
+			});
 			dispatch(fetchAggregatedWords(group, page, userId, token, wordsWithoutRemoved));
 		}
 	}, [authorized, group, page, userId, token]);

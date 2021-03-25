@@ -18,17 +18,22 @@ function ChapterItem({ wordData }) {
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
 	const hardInitial = authorized
-		? wordData.userWord.difficulty === DictionarySections.Hard
+		? wordData.userWord && wordData.userWord.difficulty === DictionarySections.Hard
+			? wordData.userWord.difficulty
+			: false
+		: false;
+	const trained = authorized
+		? wordData.userWord && wordData.userWord.difficulty === DictionarySections.Trained
 			? wordData.userWord.difficulty
 			: false
 		: false;
 	const [hard, setHard] = useState(hardInitial);
 	const [removed, setRemoved] = useState(false);
-	const [saved, setSaved] = useState(false);
+	const [savedHard, setSavedHard] = useState(false);
 
 	const saveToDictionaryHard = useCallback(() => {
 		setHard(!hard);
-		setSaved(true);
+		setSavedHard(true);
 	}, [hard]);
 
 	const saveToDictionaryRemoved = useCallback(() => {
@@ -50,14 +55,14 @@ function ChapterItem({ wordData }) {
 	});
 
 	useEffect(() => {
-		if (hard && saved) {
+		if (hard && savedHard) {
 			const section = DictionarySections.Hard;
-			dispatch(setUserWord(userId, token, wordData, section));
-		} else if (!hard && saved) {
+			dispatch(updateUserWord(userId, token, wordData, section));
+		} else if (!hard && savedHard) {
 			const section = DictionarySections.Trained;
 			dispatch(updateUserWord(userId, token, wordData, section));
 		}
-	}, [saved, hard, userId, token, wordData]);
+	}, [savedHard, hard, userId, token, wordData]);
 
 	useEffect(() => {
 		if (removed && hard) {
@@ -66,9 +71,20 @@ function ChapterItem({ wordData }) {
 		}
 		if (removed && !hard) {
 			const section = DictionarySections.Removed;
-			dispatch(setUserWord(userId, token, wordData, section));
+			dispatch(updateUserWord(userId, token, wordData, section));
 		}
 	}, [removed, hard, userId, token, wordData]);
+
+	useEffect(() => {
+		if (!trained && authorized && !hard) {
+			const section = DictionarySections.Trained;
+			dispatch(setUserWord(userId, token, wordData, section));
+		}
+		if (!trained && authorized && hard) {
+			const section = DictionarySections.Trained;
+			dispatch(updateUserWord(userId, token, wordData, section));
+		}
+	}, [trained, userId, token, wordData]);
 
 	return (
 		<div className={(hard && classes.chapterItemHard) || classes.chapterItem}>
