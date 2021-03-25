@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import parse from 'html-react-parser';
@@ -12,20 +12,6 @@ import { buildUrl } from '../../../../common/helpers';
 import { ExternalUrls, DictionarySections } from '../../../../common/constants';
 import { setUserWord } from '../../../../store/dictionary/actions';
 import { getUserId, getAuthorized, getToken } from '../../../../store/app/slices';
-
-function handleVolumeUp(e) {
-	const { audio, meaning, example } = e.currentTarget.dataset;
-	const urlsList = [audio, meaning, example];
-	const audioList = urlsList.map((url) => new Audio(buildUrl(ExternalUrls.Root, url)));
-
-	audioList[0].play();
-	audioList[0].onended = () => {
-		audioList[1].play();
-		audioList[1].onended = () => {
-			audioList[2].play();
-		};
-	};
-}
 function ChapterItem({ wordData }) {
 	const dispatch = useDispatch();
 	const authorized = useSelector(getAuthorized);
@@ -35,21 +21,42 @@ function ChapterItem({ wordData }) {
 	const [removed, setRemoved] = useState(false);
 
 	const saveToDictionaryHard = useCallback(() => {
-		console.log(hard);
 		setHard(!hard);
+	}, [hard]);
+
+	const saveToDictionaryRemoved = useCallback(() => {
+		setRemoved(true);
+	});
+
+	const handleVolumeUp = useCallback(() => {
+		const { audio, audioMeaning, audioExample } = wordData;
+		const urlsList = [audio, audioMeaning, audioExample];
+		const audioList = urlsList.map((url) => new Audio(buildUrl(ExternalUrls.Root, url)));
+
+		audioList[0].play();
+		audioList[0].onended = () => {
+			audioList[1].play();
+			audioList[1].onended = () => {
+				audioList[2].play();
+			};
+		};
+	});
+
+	useEffect(() => {
 		if (hard) {
 			const section = DictionarySections.Hard;
 			dispatch(setUserWord(userId, token, wordData, section));
 		} else {
 			// dispatch(removeUserWord(userId, token, wordData));
 		}
-	}, [userId, token, wordData, hard]);
+	}, [hard, userId, token, wordData]);
 
-	const saveToDictionaryRemoved = useCallback(() => {
-		setRemoved(true);
-		const section = DictionarySections.Removed;
-		dispatch(setUserWord(userId, token, wordData, section));
-	}, [userId, token, wordData]);
+	useEffect(() => {
+		if (removed) {
+			const section = DictionarySections.Removed;
+			dispatch(setUserWord(userId, token, wordData, section));
+		}
+	}, [removed, userId, token, wordData]);
 
 	return (
 		<div className={(hard && classes.chapterItemHard) || classes.chapterItem}>
@@ -61,12 +68,7 @@ function ChapterItem({ wordData }) {
 					<div>{wordData.word}</div>
 					<div>{wordData.transcription}</div>
 					<div>{wordData.wordTranslate}</div>
-					<Button
-						handler={handleVolumeUp}
-						data-audio={wordData.audio}
-						data-meaning={wordData.audioMeaning}
-						data-example={wordData.audioExample}
-					>
+					<Button handler={handleVolumeUp}>
 						<FaVolumeUp />
 					</Button>
 				</div>
@@ -93,7 +95,7 @@ function ChapterItem({ wordData }) {
 				<Button
 					handler={saveToDictionaryHard}
 					disabled={!authorized}
-					difficulty={hard && DictionarySections.Hard}
+					difficulty={(hard && DictionarySections.Hard) || ''}
 				>
 					Сложное слово
 				</Button>
