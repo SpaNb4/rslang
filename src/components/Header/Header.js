@@ -16,6 +16,7 @@ import {
 	FaUserSecret,
 	FaSignInAlt,
 	FaSignOutAlt,
+	FaUserPlus,
 	FaHome,
 } from 'react-icons/fa';
 import classes from './Header.module.scss';
@@ -185,7 +186,7 @@ const Header = () => {
 								<React.Fragment>
 									<li className={classes.menuItem}>
 										<Link className={classes.menuLink} onClick={handleRegisterOpen} to="/">
-											<FaSignInAlt />
+											<FaUserPlus />
 											<span>Регистрация</span>
 										</Link>
 									</li>
