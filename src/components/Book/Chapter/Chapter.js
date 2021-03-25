@@ -5,8 +5,9 @@ import classes from './Chapter.module.scss';
 
 import ChapterItem from './ChapterItem/ChapterItem';
 
-import { fetchWords } from '../../../store/book/actions';
+import { fetchWords, updateCurrentPage } from '../../../store/book/actions';
 import { getWordsLoading, getAllWords, getCurrentPage } from '../../../store/book/slices';
+import Pagination from '../../Pagination/Pagination';
 
 function Chapter() {
 	const dispatch = useDispatch();
@@ -14,10 +15,15 @@ function Chapter() {
 	const words = useSelector(getAllWords);
 	const { group } = useParams();
 	const page = useSelector(getCurrentPage);
+	const pageCount = 30;
 
 	useEffect(() => {
 		dispatch(fetchWords(group, page));
 	}, [group, page]);
+
+	function handlePageClick(data) {
+		dispatch(updateCurrentPage(data.selected));
+	}
 
 	const chapterItems = words && words.map((word, index) => <ChapterItem wordData={word} key={index} />);
 
@@ -28,6 +34,7 @@ function Chapter() {
 			</div>
 			{loading && <React.Fragment>Loading...</React.Fragment>}
 			{chapterItems}
+			<Pagination handlePageClick={handlePageClick} pageCount={pageCount} />
 		</div>
 	);
 }
