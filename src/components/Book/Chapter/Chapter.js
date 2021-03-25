@@ -22,7 +22,7 @@ function Chapter() {
 	const authorized = useSelector(getAuthorized);
 
 	useEffect(() => {
-		if (authorized) {
+		if (authorized && group) {
 			console.log('get Aggregated Words');
 			const wordsWithoutRemoved = JSON.stringify({
 				$or: [

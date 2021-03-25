@@ -1,5 +1,4 @@
-.chapterItem,
-.chapterItemHard {
+.chapterItem {
 	width: 90%;
 	display: flex;
 	align-items: center;
@@ -10,6 +9,10 @@
 	border: 1px solid transparent;
 	border-color: transparent;
 	border-radius: 8px;
+
+	&#hardWord {
+		background: $color-lola;
+	}
 
 	.itemImage {
 		flex-basis: 30%;
@@ -109,8 +112,4 @@
 			}
 		}
 	}
-}
-
-.chapterItemHard {
-	background: $color-lola;
 }

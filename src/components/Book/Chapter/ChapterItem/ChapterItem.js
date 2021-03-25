@@ -17,19 +17,10 @@ function ChapterItem({ wordData }) {
 	const authorized = useSelector(getAuthorized);
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
-	const hardInitial = authorized
-		? wordData.userWord && wordData.userWord.difficulty === DictionarySections.Hard
-			? wordData.userWord.difficulty
-			: false
-		: false;
-	const trained = authorized
-		? wordData.userWord && wordData.userWord.difficulty === DictionarySections.Trained
-			? wordData.userWord.difficulty
-			: false
-		: false;
-	const [hard, setHard] = useState(hardInitial);
+	const [hard, setHard] = useState(false);
 	const [removed, setRemoved] = useState(false);
-	const [savedHard, setSavedHard] = useState(false);
+	const [savedHard, setSavedHard] = useState(hard);
+	const [savedTrained, setSavedTrained] = useState(false);
 
 	const saveToDictionaryHard = useCallback(() => {
 		setHard(!hard);
@@ -38,13 +29,14 @@ function ChapterItem({ wordData }) {
 
 	const saveToDictionaryRemoved = useCallback(() => {
 		setRemoved(true);
+		setHard(false);
+		setSavedHard(false);
 	}, [hard]);
 
 	const handleVolumeUp = useCallback(() => {
 		const { audio, audioMeaning, audioExample } = wordData;
 		const urlsList = [audio, audioMeaning, audioExample];
 		const audioList = urlsList.map((url) => new Audio(buildUrl(ExternalUrls.Root, url)));
-
 		audioList[0].play();
 		audioList[0].onended = () => {
 			audioList[1].play();
@@ -55,39 +47,45 @@ function ChapterItem({ wordData }) {
 	});
 
 	useEffect(() => {
-		if (hard && savedHard) {
-			const section = DictionarySections.Hard;
-			dispatch(updateUserWord(userId, token, wordData, section));
-		} else if (!hard && savedHard) {
-			const section = DictionarySections.Trained;
-			dispatch(updateUserWord(userId, token, wordData, section));
+		if (authorized) {
+			if (!savedTrained) {
+				const trained = wordData.userWord
+					? wordData.userWord.difficulty === DictionarySections.Trained
+						? true
+						: false
+					: false;
+				const hardInitial = wordData.userWord
+					? wordData.userWord.difficulty === DictionarySections.Hard
+						? true
+						: false
+					: false;
+				setHard(hardInitial);
+				if (!trained && !hardInitial) {
+					console.log('post trained');
+					const section = DictionarySections.Trained;
+					dispatch(setUserWord(userId, token, wordData, section));
+				}
+				setSavedTrained(true);
+			}
+			if (hard && savedHard) {
+				console.log('update hard');
+				const section = DictionarySections.Hard;
+				dispatch(updateUserWord(userId, token, wordData, section));
+			} else if (!hard && savedHard) {
+				console.log('update trained');
+				const section = DictionarySections.Trained;
+				dispatch(updateUserWord(userId, token, wordData, section));
+			}
+			if (removed) {
+				console.log('update removed');
+				const section = DictionarySections.Removed;
+				dispatch(updateUserWord(userId, token, wordData, section));
+			}
 		}
-	}, [savedHard, hard, userId, token, wordData]);
-
-	useEffect(() => {
-		if (removed && hard) {
-			const section = DictionarySections.Removed;
-			dispatch(updateUserWord(userId, token, wordData, section));
-		}
-		if (removed && !hard) {
-			const section = DictionarySections.Removed;
-			dispatch(updateUserWord(userId, token, wordData, section));
-		}
-	}, [removed, hard, userId, token, wordData]);
-
-	useEffect(() => {
-		if (!trained && authorized && !hard) {
-			const section = DictionarySections.Trained;
-			dispatch(setUserWord(userId, token, wordData, section));
-		}
-		if (!trained && authorized && hard) {
-			const section = DictionarySections.Trained;
-			dispatch(updateUserWord(userId, token, wordData, section));
-		}
-	}, [trained, userId, token, wordData]);
+	}, [authorized, savedTrained, removed, savedHard, hard, userId, token, wordData]);
 
 	return (
-		<div className={(hard && classes.chapterItemHard) || classes.chapterItem}>
+		<div className={classes.chapterItem} id={hard && 'hardWord'}>
 			<div className={classes.itemImage}>
 				<img src={buildUrl(ExternalUrls.Root, wordData.image)} alt={wordData.word} />
 			</div>
@@ -123,7 +121,7 @@ function ChapterItem({ wordData }) {
 				<Button
 					handler={saveToDictionaryHard}
 					disabled={!authorized}
-					difficulty={(hard && DictionarySections.Hard) || ''}
+					difficulty={hard ? DictionarySections.Hard : ''}
 				>
 					Сложное слово
 				</Button>

@@ -29,7 +29,6 @@ export const fetchWords = (currentGroup = DefaultValues.Group, currentPage = Def
 };
 
 export const fetchAggregatedWords = (group, page, userId, token, filterObj) => async (dispatch) => {
-	console.log(page);
 	try {
 		dispatch(showLoader());
 		const response = await axios({
@@ -38,6 +37,7 @@ export const fetchAggregatedWords = (group, page, userId, token, filterObj) => a
 			params: {
 				group: group,
 				page: '0',
+				wordsPerPage: '20',
 				filter: filterObj,
 			},
 			headers: {

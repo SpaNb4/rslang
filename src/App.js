@@ -11,43 +11,40 @@ import Book from './components/Book/Book';
 
 import { LocalStorageKeys } from './common/constants';
 import { login, register } from './store/app/actions';
-import { getUserId, getToken } from './store/app/slices';
+import { getUserId, getToken, getAuthorized } from './store/app/slices';
 import { fetchUserWords } from './store/dictionary/actions';
-import { getCurrentGroup, getCurrentPage } from './store/book/slices';
 import { fetchWords } from './store/book/actions';
 
 function App() {
 	const dispatch = useDispatch();
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
-	const group = useSelector(getCurrentGroup);
-	const page = useSelector(getCurrentPage);
+	const authorized = useSelector(getAuthorized);
 
 	useEffect(() => {
-		const user = localStorage.getItem(LocalStorageKeys.User) || null;
-		if (user) {
-			const userData = JSON.parse(user);
-			dispatch(login(userData.email, userData.password));
-		} else {
-			const user = {
-				name: 'imisha',
-				email: 'imisha@gmail.com',
-				password: 'imisha15',
-			};
-			localStorage.setItem(LocalStorageKeys.User, JSON.stringify(user));
-			dispatch(register(user.name, user.email, user.password));
+		if (!authorized) {
+			const user = localStorage.getItem(LocalStorageKeys.User) || null;
+			if (user) {
+				const userData = JSON.parse(user);
+				dispatch(login(userData.email, userData.password));
+			} else {
+				const user = {
+					name: 'imisha',
+					email: 'imisha@gmail.com',
+					password: 'imisha15',
+				};
+				localStorage.setItem(LocalStorageKeys.User, JSON.stringify(user));
+				dispatch(register(user.name, user.email, user.password));
+			}
 		}
-	});
-
-	useEffect(() => {
-		if (userId && token) {
+		if (authorized) {
+			console.log('get user words');
 			dispatch(fetchUserWords(userId, token));
+		} else {
+			console.log('get all words');
+			dispatch(fetchWords());
 		}
-	}, [userId, token]);
-
-	useEffect(() => {
-		dispatch(fetchWords(group, page));
-	}, [group, page]);
+	}, [userId, token, authorized]);
 
 	return (
 		<React.Fragment>
