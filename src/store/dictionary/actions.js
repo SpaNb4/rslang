@@ -82,21 +82,16 @@ export const updateUserWord = (userId, token, wordData, section) => async (dispa
 };
 
 export const removeUserWord = (userId, token, wordData) => async (dispatch) => {
-	const wordId = wordData.id || wordData._id;
 	try {
-		const { data } = await axios({
+		await axios({
 			method: 'delete',
-			url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', wordId),
-			params: {
-				id: userId,
-				wordId: wordId,
-			},
+			url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', wordData.wordId),
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
 		});
-		dispatch(createUserWordSuccess(data));
+		dispatch(deleteUserWordSuccess(wordData.wordId));
 	} catch (error) {
-		dispatch(createUserWordFailure(error));
+		dispatch(deleteUserWordFailure(error));
 	}
 };
