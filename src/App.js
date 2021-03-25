@@ -9,11 +9,10 @@ import Video from './components/Video/Video';
 import Footer from './components/Footer/Footer';
 import Book from './components/Book/Book';
 
-import { LocalStorageKeys } from './common/constants';
 import { login, register } from './store/app/actions';
 import { getUserId, getToken } from './store/app/slices';
 import { fetchUserWords } from './store/dictionary/actions';
-import { globalClasses as c } from './common/constants';
+import { globalClasses as c, LocalStorageKeys } from './common/constants';
 
 function App() {
 	const dispatch = useDispatch();
