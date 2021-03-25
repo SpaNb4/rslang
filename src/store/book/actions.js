@@ -36,8 +36,8 @@ export const fetchAggregatedWords = (group, page, userId, token, filterObj) => a
 			url: buildUrl(ExternalUrls.Users, '/', userId, '/aggregatedWords'),
 			params: {
 				group: group,
-				page: '0',
-				wordsPerPage: '3',
+				page: page,
+				wordsPerPage: '20',
 				filter: filterObj,
 			},
 			headers: {
