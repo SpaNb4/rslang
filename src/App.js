@@ -16,6 +16,21 @@ import { saveUserAuthData } from './store/app/actions';
 import { fetchUserWords } from './store/dictionary/actions';
 import { fetchWords } from './store/book/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
+import GameSprint from './components/Games/GameSprint/GameSprint';
+
+const words = [
+	{ word: 'name', wordTranslate: 'имя', audio: '' },
+	{
+		word: 'cat',
+		wordTranslate: 'кот',
+		audio: '',
+	},
+	{
+		word: 'dog',
+		wordTranslate: 'собака',
+		audio: '',
+	},
+];
 
 function App() {
 	const dispatch = useDispatch();
@@ -40,6 +55,7 @@ function App() {
 	return (
 		<React.Fragment>
 			<Header />
+			<GameSprint wordData={words} />
 			<main className={c.container}>
 				<Switch>
 					<Route exact path="/">

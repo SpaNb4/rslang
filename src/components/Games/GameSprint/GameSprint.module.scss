@@ -10,6 +10,11 @@
 	background-image: linear-gradient(315deg, $color-sea-buckthorn 0%, $color-school-bus-yellow 74%);
 }
 
+.button {
+	display: flex;
+	flex-direction: row;
+}
+
 .currWord {
 	position: absolute;
 	top: 0;

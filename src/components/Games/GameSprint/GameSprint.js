@@ -1,139 +1,74 @@
-import React, { useState, useEffect } from 'react';
-import shuffle from 'lodash/shuffle';
-import sampleSize from 'lodash/sampleSize';
-import { useSelector } from 'react-redux';
-import { getAllWords } from '../../../store/book/slices';
-import GameStats from '../GameStats/GameStats';
+import React, { useState } from 'react';
+//import shuffle from 'lodash/shuffle';
+//import sampleSize from 'lodash/sampleSize';
+//import { useSelector } from 'react-redux';
+//import { getAllWords } from '../../../store/book/slices';
+//import GameStats from '../GameStats/GameStats';
+import { PropTypes } from 'prop-types';
 
 import classes from './GameSprint.module.scss';
 
-export default function GameSprint() {
-	const [words, setWords] = useState(null);
-	const [currWord, setCurrWord] = useState(null);
-	const [currWordIndex, setCurrWordIndex] = useState(0);
-	const [randomWords, setRandomWords] = useState(null);
-	const [commonWords, setCommonWords] = useState(null);
-	const [isGameOver, setIsGameOver] = useState(false);
-	const [corrAnswersWords, setCorrAnswersWords] = useState([]);
-	const [wrongAnswersWords, setWrongAnswersWords] = useState([]);
-	const [isWordClicked, setIsWordClicked] = useState(false);
-	const allWords = useSelector(getAllWords);
+export default function GameSprint({ wordData }) {
+	const [result, setResult] = useState(null);
+	const [objectWordData, setObjectWordData] = useState(null);
 
-	const randomWordCount = 1;
-
-	useEffect(() => {
-		if (allWords.length) {
-			setWords(allWords);
-		}
-	}, [allWords]);
-
-	useEffect(() => {
-		if (words) {
-			setRandomWords(sampleSize(words, randomWordCount));
-			setCurrWord(words[currWordIndex]);
-		}
-	}, [words]);
-
-	useEffect(() => {
-		if (randomWords) {
-			const commonWords = [...randomWords, words[randomWordCount]];
-
-			setCommonWords(shuffle(commonWords));
-		}
-	}, [randomWords]);
-
-	useEffect(() => {
-		if (words) {
-			setCurrWord(words[currWordIndex]);
-
-			const filteredArr = words.filter((item) => item !== words[currWordIndex]);
-			setRandomWords(sampleSize(filteredArr, randomWordCount));
-
-			setIsWordClicked(false);
-		}
-	}, [currWordIndex]);
-
-	function handleWrongWordClick() {
-		checkEndWords();
-
-		if (!isGameOver) {
-			setTimeout(() => {
-				setCurrWordIndex(currWordIndex + 1);
-			}, 500);
-			setWrongAnswersWords([...wrongAnswersWords, currWord]);
-			setIsWordClicked(true);
-		}
+	if (objectWordData === null) {
+		generateObjectWordData();
 	}
 
-	function handleCorrectWordClick() {
-		checkEndWords();
-
-		if (!isGameOver) {
-			setTimeout(() => {
-				setCurrWordIndex(currWordIndex + 1);
-			}, 500);
-			setCorrAnswersWords([...corrAnswersWords, currWord]);
-			setIsWordClicked(true);
+	function onClickButtonValid() {
+		if (objectWordData.showValidPair) {
+			setResult(true);
+		} else {
+			setResult(false);
 		}
+		generateObjectWordData();
+	}
+	function onClickButtonInvalid() {
+		if (!objectWordData.showValidPair) {
+			setResult(true);
+		} else {
+			setResult(false);
+		}
+		generateObjectWordData();
 	}
 
-	function checkEndWords() {
-		if (currWordIndex === words.length - 1) {
-			setIsGameOver(true);
+	function generateObjectWordData() {
+		let wordIndex = Math.floor(Math.random() * wordData.length);
+		const showValidPair = Math.random() < 0.5;
+		const currentWord = wordData[wordIndex].word;
+		let currentWordTranslation;
+		if (showValidPair) {
+			currentWordTranslation = wordData[wordIndex].wordTranslate;
+		} else {
+			let invalidWordIndex = Math.floor(Math.random() * (wordData.length - 1));
+			if (invalidWordIndex === wordIndex) {
+				invalidWordIndex = invalidWordIndex + 1;
+			}
+			currentWordTranslation = wordData[invalidWordIndex].wordTranslate;
 		}
+		setObjectWordData({
+			currentWord: currentWord,
+			currentWordTranslation: currentWordTranslation,
+			showValidPair: showValidPair,
+		});
 	}
 
 	return (
-		<div className={classes.sprint}>
-			{isGameOver ? (
-				<GameStats corrAnswersWords={corrAnswersWords} wrongAnswersWords={wrongAnswersWords} />
-			) : (
-				currWord && (
-					<>
-						<div> {currWord.word} </div>
-						{words[Math.floor(Math.random() * words.length)].wordTranslate}
-						{commonWords && (
-							<div className={classes.wordList}>
-								{commonWords.map((word, index) => {
-									if (
-										word.wordTranslate !== currWord.word.wordTranslate ||
-										word.wordTranslate ===
-											words[Math.floor(Math.random() * words.length)].wordTranslate
-									) {
-										return (
-											<div
-												className={
-													isWordClicked
-														? [classes.wordListItem, classes.correctWord].join(' ')
-														: classes.wordListItem
-												}
-												key={index}
-												onClick={handleCorrectWordClick}
-											>
-												{word.wordTranslate}
-											</div>
-										);
-									} else {
-										return (
-											<div
-												className={
-													isWordClicked
-														? [classes.wordListItem, classes.wrongWord].join(' ')
-														: classes.wordListItem
-												}
-												key={index}
-												onClick={handleWrongWordClick}
-											>
-												{word.wordTranslate}
-											</div>
-										);
-									}
-								})}
-							</div>
-						)}
-					</>
-				)
-			)}
-		</div>
+		objectWordData !== null && (
+			<div className={classes.GameSprint}>
+				<div>{objectWordData.currentWord}</div>
+				<div>{objectWordData.currentWordTranslation}</div>
+				<div className={classes.button}>
+					<button onClick={onClickButtonValid}>Верно</button>
+					<button onClick={onClickButtonInvalid}>Неверно</button>
+					{result !== null && (result ? <div>Ура!</div> : <div>nope</div>)}
+				</div>
+			</div>
+		)
 	);
 }
+
+GameSprint.propTypes = {
+	wordData: PropTypes.array,
+};
