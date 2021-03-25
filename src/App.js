@@ -7,14 +7,13 @@ import Features from './components/Features/Features';
 import Team from './components/Team/Team';
 import Video from './components/Video/Video';
 import Kit from './components/Kit/Kit';
-
-import { globalClasses as c } from './common/constants';
+import Footer from './components/Footer/Footer';
 import Book from './components/Book/Book';
 
-import { LocalStorageKeys } from './common/constants';
 import { login, register } from './store/app/actions';
 import { getUserId, getToken } from './store/app/slices';
 import { fetchUserWords } from './store/dictionary/actions';
+import { globalClasses as c, LocalStorageKeys } from './common/constants';
 
 function App() {
 	const dispatch = useDispatch();
@@ -59,6 +58,7 @@ function App() {
 					<Route path="/Kit" component={Kit} />
 				</Switch>
 			</main>
+			<Footer />
 		</React.Fragment>
 	);
 }
