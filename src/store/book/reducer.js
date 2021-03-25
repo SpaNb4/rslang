@@ -1,12 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
 import * as actions from './actions';
-import { DefaultValues } from '../../common/constants';
 
 const initialState = {
 	words: [],
 	aggregatedWords: [],
-	currentGroup: DefaultValues.Group,
-	currentPage: DefaultValues.Page,
+	currentGroup: '',
+	currentPage: '',
 	loading: false,
 	errorMessage: '',
 };

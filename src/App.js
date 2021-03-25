@@ -10,18 +10,16 @@ import Footer from './components/Footer/Footer';
 import Book from './components/Book/Book';
 
 import { login, register } from './store/app/actions';
-import { getUserId, getToken } from './store/app/slices';
+import { getUserId, getToken, getAuthorized } from './store/app/slices';
 import { fetchUserWords } from './store/dictionary/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
-import { getCurrentGroup, getCurrentPage } from './store/book/slices';
 import { fetchWords } from './store/book/actions';
 
 function App() {
 	const dispatch = useDispatch();
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
-	const group = useSelector(getCurrentGroup);
-	const page = useSelector(getCurrentPage);
+	const authorized = useSelector(getAuthorized);
 
 	useEffect(() => {
 		const user = localStorage.getItem(LocalStorageKeys.User) || null;
@@ -37,17 +35,12 @@ function App() {
 			localStorage.setItem(LocalStorageKeys.User, JSON.stringify(user));
 			dispatch(register(user.name, user.email, user.password));
 		}
-	});
-
-	useEffect(() => {
-		if (userId && token) {
+		if (authorized) {
 			dispatch(fetchUserWords(userId, token));
+		} else {
+			dispatch(fetchWords());
 		}
-	}, [userId, token]);
-
-	useEffect(() => {
-		dispatch(fetchWords(group, page));
-	}, [group, page]);
+	}, [userId, token, authorized]);
 
 	return (
 		<React.Fragment>
