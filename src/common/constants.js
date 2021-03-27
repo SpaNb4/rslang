@@ -20,6 +20,7 @@ export const LocalStorageKeys = {
 export const DefaultValues = {
 	Group: '0',
 	Page: '0',
+	WordsPerPage: '20',
 };
 
 export const menu = {
@@ -100,6 +101,7 @@ export const menu = {
 export const DictionarySections = {
 	Hard: 'hard',
 	Removed: 'removed',
+	Trained: 'trained',
 };
 
 export const ourTeammates = [
