@@ -38,9 +38,15 @@ function Chapter() {
 		dispatch(updateCurrentGroup(group));
 	}, [group]);
 
-	const chapterItems = authorized
-		? aggregatedWords && aggregatedWords.map((word, index) => <ChapterItem wordData={word} key={index} />)
-		: words && words.map((word, index) => <ChapterItem wordData={word} key={index} />);
+	const chapterItems = authorized ? (
+		aggregatedWords && aggregatedWords.length ? (
+			aggregatedWords.map((word, index) => <ChapterItem wordData={word} key={index} />)
+		) : (
+			<div>No more words...</div>
+		)
+	) : (
+		words && words.map((word, index) => <ChapterItem wordData={word} key={index} />)
+	);
 
 	return (
 		<div className={classes.chapter}>
