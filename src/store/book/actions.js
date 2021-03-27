@@ -18,7 +18,6 @@ export const fetchWords = (currentGroup = DefaultValues.Group, currentPage = Def
 ) => {
 	try {
 		dispatch(showLoader());
-		dispatch(updateCurrentGroup(currentGroup));
 		const response = await axios(ExternalUrls.Words, { params: { group: currentGroup, page: currentPage } });
 		const words = response.data;
 		dispatch(fetchWordsSuccess(words));
@@ -28,16 +27,16 @@ export const fetchWords = (currentGroup = DefaultValues.Group, currentPage = Def
 	}
 };
 
-export const fetchAggregatedWords = (group, page, userId, token, filterObj) => async (dispatch) => {
+export const fetchAggregatedWords = (currentGroup, currentPage, userId, token, filterObj) => async (dispatch) => {
 	try {
 		dispatch(showLoader());
 		const response = await axios({
 			method: 'get',
 			url: buildUrl(ExternalUrls.Users, '/', userId, '/aggregatedWords'),
 			params: {
-				group: group,
-				page: page,
-				wordsPerPage: '20',
+				group: currentGroup,
+				page: currentPage,
+				wordsPerPage: DefaultValues.WordsPerPage,
 				filter: filterObj,
 			},
 			headers: {

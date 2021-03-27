@@ -22,18 +22,20 @@ function App() {
 	const authorized = useSelector(getAuthorized);
 
 	useEffect(() => {
-		const user = localStorage.getItem(LocalStorageKeys.User) || null;
-		if (user) {
-			const userData = JSON.parse(user);
-			dispatch(login(userData.email, userData.password));
-		} else {
-			const user = {
-				name: '',
-				email: '',
-				password: '',
-			};
-			localStorage.setItem(LocalStorageKeys.User, JSON.stringify(user));
-			dispatch(register(user.name, user.email, user.password));
+		if (!authorized) {
+			const user = localStorage.getItem(LocalStorageKeys.User) || null;
+			if (user) {
+				const userData = JSON.parse(user);
+				dispatch(login(userData.email, userData.password));
+			} else {
+				const user = {
+					name: '',
+					email: '',
+					password: '',
+				};
+				localStorage.setItem(LocalStorageKeys.User, JSON.stringify(user));
+				dispatch(register(user.name, user.email, user.password));
+			}
 		}
 		if (authorized) {
 			dispatch(fetchUserWords(userId, token));

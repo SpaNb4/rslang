@@ -20,6 +20,7 @@ export const LocalStorageKeys = {
 export const DefaultValues = {
 	Group: '0',
 	Page: '0',
+	WordsPerPage: '20',
 };
 
 export const BOOK_SECTIONS = [

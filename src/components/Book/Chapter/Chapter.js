@@ -5,7 +5,7 @@ import classes from './Chapter.module.scss';
 
 import ChapterItem from './ChapterItem/ChapterItem';
 
-import { fetchAggregatedWords } from '../../../store/book/actions';
+import { fetchAggregatedWords, updateCurrentGroup } from '../../../store/book/actions';
 import { getWordsLoading, getAllWords, getCurrentPage, getAggregatedWordsWords } from '../../../store/book/slices';
 import { getUserId, getToken, getAuthorized } from '../../../store/app/slices';
 import { DictionarySections } from '../../../common/constants';
@@ -22,18 +22,21 @@ function Chapter() {
 	const authorized = useSelector(getAuthorized);
 
 	useEffect(() => {
-		if (authorized && group) {
-			console.log('get Aggregated Words');
-			const wordsWithoutRemoved = JSON.stringify({
+		if (authorized) {
+			const filterRules = JSON.stringify({
 				$or: [
 					{ 'userWord.difficulty': DictionarySections.Hard },
 					{ 'userWord.difficulty': DictionarySections.Trained },
 					{ userWord: null },
 				],
 			});
-			dispatch(fetchAggregatedWords(group, page, userId, token, wordsWithoutRemoved));
+			dispatch(fetchAggregatedWords(group, page, userId, token, filterRules));
 		}
 	}, [authorized, group, page, userId, token]);
+
+	useEffect(() => {
+		dispatch(updateCurrentGroup(group));
+	}, [group]);
 
 	const chapterItems = authorized
 		? aggregatedWords && aggregatedWords.map((word, index) => <ChapterItem wordData={word} key={index} />)

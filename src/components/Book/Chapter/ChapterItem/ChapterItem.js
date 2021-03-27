@@ -51,14 +51,12 @@ function ChapterItem({ wordData }) {
 	useEffect(() => {
 		if (authorized) {
 			const difficulty = wordData.userWord && wordData.userWord.difficulty;
-			if (difficulty && difficulty !== DictionarySections.Hard && difficulty !== DictionarySections.Trained) {
-				dispatch(setUserWord(userId, token, wordData, difficulty));
+			if (!difficulty) {
+				dispatch(setUserWord(userId, token, wordData, DictionarySections.Trained));
 				setWordDifficulty(DictionarySections.Trained);
-			} else {
-				setWordDifficulty(difficulty);
 			}
 		}
-	}, [wordData.userWord, authorized]);
+	}, [wordData, authorized]);
 
 	return (
 		<div className={classes.chapterItem} id={wordDifficulty}>
