@@ -17,6 +17,12 @@ body {
 	}
 }
 
+#root {
+	position: relative;
+	min-height: 100vh;
+	padding-bottom: 80px;
+}
+
 *,
 *::after,
 *::before {
@@ -83,5 +89,23 @@ button {
 
 	&:nth-child(even) h2::after {
 		background-color: rgba($color-primary, 0.5);
+	}
+}
+
+.audio-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 56px;
+	height: 56px;
+	font-size: 1em;
+	line-height: 1;
+	// color: $color-white;
+	background-color: $color-sea-buckthorn;
+	border: none;
+	border-radius: 100%;
+
+	&:hover {
+		color: $color-primary;
 	}
 }

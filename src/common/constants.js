@@ -139,4 +139,5 @@ export const globalClasses = {
 	container: 'container',
 	section: 'section',
 	sectionTitle: 'section-title',
+	audioButton: 'audio-button',
 };

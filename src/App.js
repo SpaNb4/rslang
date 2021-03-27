@@ -8,6 +8,7 @@ import Team from './components/Team/Team';
 import Video from './components/Video/Video';
 import Footer from './components/Footer/Footer';
 import Book from './components/Book/Book';
+import DailyWord from './components/DailyWord/DailyWords';
 
 import { login, register } from './store/app/actions';
 import { getUserId, getToken } from './store/app/slices';
@@ -54,6 +55,7 @@ function App() {
 						</div>
 					</Route>
 					<Route path="/book/:group" component={Book} />
+					<Route path="/daily" component={DailyWord} />
 				</Switch>
 			</main>
 			<Footer />
