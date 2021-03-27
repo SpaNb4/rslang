@@ -5,7 +5,7 @@ import classes from './Chapter.module.scss';
 
 import ChapterItem from './ChapterItem/ChapterItem';
 
-import { fetchAggregatedWords, updateCurrentGroup } from '../../../store/book/actions';
+import { fetchAggregatedWords, fetchWords, updateCurrentGroup } from '../../../store/book/actions';
 import { getWordsLoading, getAllWords, getCurrentPage, getAggregatedWordsWords } from '../../../store/book/slices';
 import { getUserId, getToken, getAuthorized } from '../../../store/app/slices';
 import { DictionarySections } from '../../../common/constants';
@@ -37,6 +37,8 @@ function Chapter() {
 	useEffect(() => {
 		if (authorized) {
 			dispatch(fetchAggregatedWords(group, page, userId, token, filterRules));
+		} else {
+			dispatch(fetchWords(group, page));
 		}
 	}, [authorized, group, page, userId, token]);
 
