@@ -9,11 +9,11 @@ import Video from './components/Video/Video';
 import Footer from './components/Footer/Footer';
 import Book from './components/Book/Book';
 
-import { login, register } from './store/app/actions';
 import { getUserId, getToken, getAuthorized } from './store/app/slices';
+import { saveUserAuthData } from './store/app/actions';
 import { fetchUserWords } from './store/dictionary/actions';
-import { globalClasses as c, LocalStorageKeys } from './common/constants';
 import { fetchWords } from './store/book/actions';
+import { globalClasses as c, LocalStorageKeys } from './common/constants';
 
 function App() {
 	const dispatch = useDispatch();
@@ -23,18 +23,9 @@ function App() {
 
 	useEffect(() => {
 		if (!authorized) {
-			const user = localStorage.getItem(LocalStorageKeys.User) || null;
-			if (user) {
-				const userData = JSON.parse(user);
-				dispatch(login(userData.email, userData.password));
-			} else {
-				const user = {
-					name: '',
-					email: '',
-					password: '',
-				};
-				localStorage.setItem(LocalStorageKeys.User, JSON.stringify(user));
-				dispatch(register(user.name, user.email, user.password));
+			const userAuth = localStorage.getItem(LocalStorageKeys.User) || null;
+			if (userAuth) {
+				dispatch(saveUserAuthData(JSON.parse(userAuth)));
 			}
 		}
 		if (authorized) {
