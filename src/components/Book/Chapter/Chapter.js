@@ -5,7 +5,7 @@ import classes from './Chapter.module.scss';
 
 import ChapterItem from './ChapterItem/ChapterItem';
 
-import { fetchAggregatedWords } from '../../../store/book/actions';
+import { fetchAggregatedWords, updateCurrentGroup } from '../../../store/book/actions';
 import { getWordsLoading, getAllWords, getCurrentPage, getAggregatedWordsWords } from '../../../store/book/slices';
 import { getUserId, getToken, getAuthorized } from '../../../store/app/slices';
 import { DictionarySections } from '../../../common/constants';
@@ -22,7 +22,7 @@ function Chapter() {
 	const token = useSelector(getToken);
 	const authorized = useSelector(getAuthorized);
 	const pageCount = 30;
-	const wordsWithoutRemoved = JSON.stringify({
+	const filterRules = JSON.stringify({
 		$or: [
 			{ 'userWord.difficulty': DictionarySections.Hard },
 			{ 'userWord.difficulty': DictionarySections.Trained },
@@ -30,20 +30,29 @@ function Chapter() {
 		],
 	});
 
+	function handlePageClick(data) {
+		dispatch(fetchAggregatedWords(group, data.selected, userId, token, filterRules));
+	}
+
 	useEffect(() => {
 		if (authorized) {
-			console.log('get Aggregated Words');
-			dispatch(fetchAggregatedWords(group, page, userId, token, wordsWithoutRemoved));
+			dispatch(fetchAggregatedWords(group, page, userId, token, filterRules));
 		}
 	}, [authorized, group, page, userId, token]);
 
-	function handlePageClick(data) {
-		dispatch(fetchAggregatedWords(group, data.selected, userId, token, wordsWithoutRemoved));
-	}
+	useEffect(() => {
+		dispatch(updateCurrentGroup(group));
+	}, [group]);
 
-	const chapterItems = authorized
-		? aggregatedWords && aggregatedWords.map((word, index) => <ChapterItem wordData={word} key={index} />)
-		: words && words.map((word, index) => <ChapterItem wordData={word} key={index} />);
+	const chapterItems = authorized ? (
+		aggregatedWords && aggregatedWords.length ? (
+			aggregatedWords.map((word, index) => <ChapterItem wordData={word} key={index} />)
+		) : (
+			<div>No more words...</div>
+		)
+	) : (
+		words && words.map((word, index) => <ChapterItem wordData={word} key={index} />)
+	);
 
 	return (
 		<div className={classes.chapter}>

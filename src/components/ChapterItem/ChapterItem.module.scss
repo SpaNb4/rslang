@@ -1,5 +1,4 @@
-.chapterItem,
-.chapterItemHard {
+.chapterItem {
 	width: 90%;
 	display: flex;
 	align-items: center;
@@ -111,6 +110,6 @@
 	}
 }
 
-.chapterItemHard {
+.chapterItem[id='hard'] {
 	background: $color-lola;
 }
