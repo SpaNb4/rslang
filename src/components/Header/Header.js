@@ -123,7 +123,7 @@ const Header = () => {
 								<DropDown array={menu.sections} name="Учебник" icon={<FaBrain />} />
 							</li>
 							<li className={classes.menuItem}>
-								<DropDown array={menu.sections} name="Тренировки" icon={<FaTableTennis />} />
+								<DropDown array={menu.games} name="Тренировки" icon={<FaTableTennis />} />
 							</li>
 							<li className={classes.menuItem}>
 								<Link className={classes.menuLink} to="/">
