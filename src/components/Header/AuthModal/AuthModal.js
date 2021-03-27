@@ -37,6 +37,7 @@ const AuthModal = ({ hidden, buttonName, callback, reg, title, handleClose }) =>
 	const handleFocus = () => {
 		if (reg) {
 			usernameRef.current.dataset.error = 'false';
+			uploadBtnRef.current.dataset.error = 'false';
 		}
 		emailRef.current.dataset.error = 'false';
 		passwordRef.current.dataset.error = 'false';
@@ -114,6 +115,7 @@ const AuthModal = ({ hidden, buttonName, callback, reg, title, handleClose }) =>
 							value={password}
 							placeholder="Пароль"
 							type="password"
+							autoComplete="on"
 							className={classes.input}
 							name="password"
 							onChange={handlePasswordChange}
