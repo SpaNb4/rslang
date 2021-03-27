@@ -6,6 +6,7 @@ import { buildUrl } from '../../common/helpers';
 import { ExternalUrls, globalClasses as c } from '../../common/constants';
 import classes from './DailyWord.module.scss';
 
+// temp
 function handleVolumeUp(e) {
 	const { audio, meaning, example } = e.currentTarget.dataset;
 	const urlsList = [audio, meaning, example];
