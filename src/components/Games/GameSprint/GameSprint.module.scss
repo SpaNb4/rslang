@@ -6,16 +6,56 @@
 	height: 100%;
 	padding: 0 20px;
 	color: $color-black;
-	background-color: $color-sea-buckthorn;
-	background-image: linear-gradient(315deg, $color-sea-buckthorn 0%, $color-school-bus-yellow 74%);
+	background-color: $color-secondary;
+	background-image: linear-gradient(315deg, $color-secondary 0%, $color-secondary 74%);
 }
 
-.button {
+.buttoncontainer {
 	display: flex;
 	flex-direction: row;
 }
 
-.currWord {
+.buttonArrow {
+	display: flex;
+	flex-direction: row;
+}
+
+.arrow {
+	margin-top: 10px;
+	width: 150px;
+	align-items: center;
+	justify-content: center;
+}
+
+.button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 150px;
+	height: 40px;
+	font-size: 16px;
+	font-weight: 700;
+	color: $color-white;
+	cursor: pointer;
+	background-color: $color-primary;
+	border: none;
+	border-radius: 5px;
+	outline: none;
+	margin-top: 20px;
+	margin-left: 20px;
+
+	&:hover,
+	&:active {
+		background: lighten($color-primary, 10) radial-gradient(circle, transparent 1%, lighten($color-primary, 10) 0)
+			50%/15000%;
+	}
+}
+
+.timer {
+	background-color: $color-primary;
+}
+
+/* .currWord {
 	position: absolute;
 	top: 0;
 	font-size: 36px;
@@ -65,3 +105,4 @@
 		background: $color-apple;
 	}
 }
+*/

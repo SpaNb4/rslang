@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
+import { BsArrowLeft } from 'react-icons/bs';
+import { BsArrowRight } from 'react-icons/bs';
+import { useHotkeys } from 'react-hotkeys-hook';
 //import shuffle from 'lodash/shuffle';
 //import sampleSize from 'lodash/sampleSize';
 //import { useSelector } from 'react-redux';
 //import { getAllWords } from '../../../store/book/slices';
 //import GameStats from '../GameStats/GameStats';
+
 import { PropTypes } from 'prop-types';
+import Timer from './Timer';
 
 import classes from './GameSprint.module.scss';
 
 export default function GameSprint({ wordData }) {
 	const [result, setResult] = useState(null);
 	const [objectWordData, setObjectWordData] = useState(null);
+	const [over, setOver] = useState(false);
 
 	if (objectWordData === null) {
 		generateObjectWordData();
@@ -54,19 +60,52 @@ export default function GameSprint({ wordData }) {
 		});
 	}
 
-	return (
-		objectWordData !== null && (
-			<div className={classes.GameSprint}>
+	function handleTimeout() {
+		setOver(true);
+	}
+
+	useHotkeys(
+		'left',
+		function () {
+			onClickButtonInvalid();
+		},
+		[objectWordData]
+	);
+	useHotkeys(
+		'right',
+		function () {
+			onClickButtonValid();
+		},
+		[objectWordData]
+	);
+
+	let innerContent;
+	if (!over) {
+		innerContent = objectWordData !== null && (
+			<div className={classes.sprint}>
+				<Timer onTimeout={handleTimeout} />
 				<div>{objectWordData.currentWord}</div>
 				<div>{objectWordData.currentWordTranslation}</div>
-				<div className={classes.button}>
-					<button onClick={onClickButtonValid}>Верно</button>
-					<button onClick={onClickButtonInvalid}>Неверно</button>
-					{result !== null && (result ? <div>Ура!</div> : <div>nope</div>)}
+				<div className={classes.buttoncontainer}>
+					<div className={classes.button} onClick={onClickButtonInvalid}>
+						Неверно
+					</div>
+					<div className={classes.button} onClick={onClickButtonValid}>
+						Верно
+					</div>
 				</div>
+				<div className={classes.buttonArrow}>
+					<BsArrowLeft className={classes.arrow}></BsArrowLeft>
+					<BsArrowRight className={classes.arrow}></BsArrowRight>
+				</div>
+				{result !== null && (result ? <div>Ура!</div> : <div>Ошибка</div>)}
 			</div>
-		)
-	);
+		);
+	} else {
+		innerContent = <div className={classes.sprint}>Вы молодец! Игра окончена.</div>;
+	}
+
+	return innerContent;
 }
 
 GameSprint.propTypes = {
