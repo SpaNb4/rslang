@@ -9,13 +9,12 @@ $color-text: #272727;
 // Colors additional
 $color-botticelli: #d6e4ec;
 $color-regent-gray: #7e919f;
-$color-dove-gray: #7e919f;
 $color-silver: #c2c2c2;
 $color-sea-buckthorn: #fbb034;
 $color-school-bus-yellow: #fd0;
 $color-emperor: #525050;
 $color-red: #f00;
-$color-apple: #53b54a;
+$color-apple: #70a36c;
 $color-chestnut: #b54a4a;
 
 // Shadows
@@ -25,6 +24,7 @@ $box-shadow-3: 0 0 1px rgba(117, 131, 142, 0.04), 0 2px 4px rgba(52, 60, 68, 0.1
 
 // Gradients
 $gradient-1: linear-gradient(135deg, $color-primary 0%, $color-secondary 100%);
+$gradient-2: linear-gradient(135deg, $color-secondary 0%, $color-primary 100%);
 
 //  Fonts
 $font-primary: 'Manrope', 'Arial', sans-serif;

@@ -51,11 +51,9 @@ function App() {
 			<main className={c.container}>
 				<Switch>
 					<Route exact path="/">
-						<div>
-							<Features />
-							<Video />
-							<Team />
-						</div>
+						<Features />
+						<Video />
+						<Team />
 					</Route>
 					<Route path="/book/:group" component={Book} />
 					<Route path="/daily" component={DailyWord} />
