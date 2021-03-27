@@ -41,7 +41,7 @@ function Chapter() {
 	const chapterItems = authorized ? (
 		aggregatedWords && aggregatedWords.length ? (
 			aggregatedWords.map((word, index) => <ChapterItem wordData={word} key={index} />)
-		) : (
+		) : loading ? null : (
 			<div>No more words...</div>
 		)
 	) : (

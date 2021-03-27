@@ -29,9 +29,9 @@ function App() {
 				dispatch(login(userData.email, userData.password));
 			} else {
 				const user = {
-					name: '',
-					email: '',
-					password: '',
+					name: 'admin',
+					email: 'admin@gmail.com',
+					password: 'Admin1234!',
 				};
 				localStorage.setItem(LocalStorageKeys.User, JSON.stringify(user));
 				dispatch(register(user.name, user.email, user.password));
