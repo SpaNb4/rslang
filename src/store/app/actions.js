@@ -8,17 +8,20 @@ export const registerFailure = createAction(types.REGISTER_FAILURE);
 export const loginSuccess = createAction(types.LOGIN_SUCCESS);
 export const loginFailure = createAction(types.LOGIN_FAILURE);
 export const logout = createAction(types.LOGOUT_SUCCESS);
+export const menuToggle = createAction(types.MENU_TOGGLE);
 
-export const register = (name, email, password) => async (dispatch) => {
+export const register = (email, password, username, image) => async (dispatch) => {
 	try {
+		const formData = new FormData();
+		formData.append('username', username);
+		formData.append('email', email);
+		formData.append('password', password);
+		formData.append('image', image);
+
 		const { data } = await axios({
 			method: 'post',
 			url: ExternalUrls.Users,
-			data: {
-				name: name,
-				email: email,
-				password: password,
-			},
+			data: formData,
 		});
 		dispatch(registerSuccess(data));
 	} catch (error) {

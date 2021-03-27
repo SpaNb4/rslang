@@ -30,9 +30,9 @@ function App() {
 				dispatch(login(userData.email, userData.password));
 			} else {
 				const user = {
-					name: 'SpaNb4',
-					email: 'spanb4@gmail.com',
-					password: '12345678',
+					name: '',
+					email: '',
+					password: '',
 				};
 				localStorage.setItem(LocalStorageKeys.User, JSON.stringify(user));
 				dispatch(register(user.name, user.email, user.password));
@@ -51,11 +51,9 @@ function App() {
 			<main className={c.container}>
 				<Switch>
 					<Route exact path="/">
-						<div>
-							<Features />
-							<Video />
-							<Team />
-						</div>
+						<Features />
+						<Video />
+						<Team />
 					</Route>
 					<Route path="/book/:group" component={Book} />
 					<Route path="/vocabulary/:group" component={Vocabulary} />

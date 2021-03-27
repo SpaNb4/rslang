@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { fetchUserWords, removeUserWord } from './../../../store/dictionary/actions';
 import { getToken, getUserId } from './../../../store/app/slices';
 import { getUserWordsLoading, getUserWords } from '../../../store/dictionary/slices';
-import { VOCABULARY_SECTIONS } from './../../../common/constants';
+import { menu } from './../../../common/constants';
 import Pagination from '../../Pagination/Pagination';
 import ChapterItem from '../../ChapterItem/ChapterItem';
 import classes from './Chapter.module.scss';
@@ -19,7 +19,7 @@ function Chapter() {
 	const token = useSelector(getToken);
 
 	let sectionName = '';
-	VOCABULARY_SECTIONS.forEach((section) => {
+	menu.dictionary.forEach((section) => {
 		if (section.linkId === group) {
 			sectionName = section.linkName;
 		}

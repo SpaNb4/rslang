@@ -2,40 +2,33 @@
 	display: grid;
 	justify-content: center;
 	justify-items: center;
-	grid-template-columns: repeat(4, minmax(min-content, 420px));
+	grid-template-columns: repeat(2, auto);
 	grid-gap: 40px;
 
 	@include resolution(big-desktop) {
-		grid-template-columns: repeat(2, minmax(min-content, 420px));
+		grid-template-columns: repeat(2, minmax(260px, 350px));
 	}
 
 	@include resolution(tablet) {
-		grid-template-columns: 1fr;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 350px));
 		grid-gap: 20px;
 	}
 }
 
 .card {
+	display: flex;
+	align-items: center;
+	padding: 30px 40px 30px 20px;
+	background: $color-white $gradient-1 no-repeat;
+	background-size: 120px 100%;
 	box-shadow: $box-shadow-2;
 	border-radius: 16px;
-	background: $color-white $gradient-1 no-repeat;
-	display: block;
-	padding: 50px 16px 40px;
-	text-align: center;
-	background-size: 100% 130px;
 
-	@include resolution(tablet) {
-		display: flex;
-		align-items: center;
-		padding: 20px 40px 20px 20px;
-		background-size: 100px 100%;
-	}
-
-	@include resolution(big-mobile) {
+	@include resolution(big-desktop) {
 		display: block;
 		padding: 50px 16px 40px;
 		text-align: center;
-		background-size: 100% 130px;
+		background-size: 100% 150px;
 	}
 }
 
@@ -57,19 +50,18 @@
 }
 
 .avatar {
-	width: 160px;
-	height: 160px;
+	width: 200px;
+	height: 200px;
+	flex-shrink: 0;
+	margin-right: 10px;
 	border: 10px solid $color-white;
 	border-radius: 100%;
 	overflow: hidden;
-	margin: 0 auto 10px;
 
-	@include resolution(tablet) {
-		flex-shrink: 0;
-		margin-right: 10px;
-	}
-
-	@include resolution(big-mobile) {
+	@include resolution(big-desktop) {
+		width: 160px;
+		height: 160px;
 		margin: 0 auto 10px;
+		flex-shrink: 1;
 	}
 }

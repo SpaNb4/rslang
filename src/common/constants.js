@@ -23,61 +23,78 @@ export const DefaultValues = {
 	WordsPerPage: '20',
 };
 
-export const BOOK_SECTIONS = [
-	{
-		linkName: 'Раздел 0',
-		linkId: '0',
-		listName: 'book',
-	},
-	{
-		linkName: 'Раздел 1',
-		linkId: '1',
-		listName: 'book',
-	},
-	{
-		linkName: 'Раздел 2',
-		linkId: '2',
-		listName: 'book',
-	},
-	{
-		linkName: 'Раздел 3',
-		linkId: '3',
-		listName: 'book',
-	},
-	{
-		linkName: 'Раздел 4',
-		linkId: '4',
-		listName: 'book',
-	},
-	{
-		linkName: 'Раздел 5',
-		linkId: '5',
-		listName: 'book',
-	},
-];
-
-export const VOCABULARY_SECTIONS = [
-	{
-		linkName: 'Изучаемые слова',
-		linkId: 'trained',
-		listName: 'vocabulary',
-	},
-	{
-		linkName: 'Сложные слова',
-		linkId: 'hard',
-		listName: 'vocabulary',
-	},
-	{
-		linkName: 'Удалённые слова',
-		linkId: 'removed',
-		listName: 'vocabulary',
-	},
-];
-
 export const menu = {
-	sections: BOOK_SECTIONS,
-	games: ['Саванна', 'Аудиовызов', 'Спринт', 'Своя Игра'],
-	words: VOCABULARY_SECTIONS,
+	sections: [
+		{
+			linkName: 'Раздел 0',
+			linkId: '0',
+			listName: 'book',
+		},
+		{
+			linkName: 'Раздел 1',
+			linkId: '1',
+			listName: 'book',
+		},
+		{
+			linkName: 'Раздел 2',
+			linkId: '2',
+			listName: 'book',
+		},
+		{
+			linkName: 'Раздел 3',
+			linkId: '3',
+			listName: 'book',
+		},
+		{
+			linkName: 'Раздел 4',
+			linkId: '4',
+			listName: 'book',
+		},
+		{
+			linkName: 'Раздел 5',
+			linkId: '5',
+			listName: 'book',
+		},
+	],
+	dictionary: [
+		{
+			linkName: 'Изучаемые слова',
+			linkId: 'trained',
+			listName: 'vocabulary',
+		},
+		{
+			linkName: 'Сложные слова',
+			linkId: 'hard',
+			listName: 'vocabulary',
+		},
+		{
+			linkName: 'Удалённые слова',
+			linkId: 'deleted',
+			listName: 'vocabulary',
+		},
+	],
+	games: [
+		{
+			linkName: 'Саванна',
+			linkId: 'savanna',
+			listName: 'game',
+		},
+		{
+			linkName: 'Спринт',
+			linkId: 'sprint',
+			listName: 'game',
+		},
+		{
+			linkName: 'Аудиовызов',
+			linkId: 'audiogame',
+			listName: 'game',
+		},
+		{
+			linkName: 'Конструктор',
+			linkId: 'kit',
+			listName: 'game',
+		},
+	],
 };
 
 // Dictionary Sections
@@ -159,4 +176,5 @@ export const globalClasses = {
 	container: 'container',
 	section: 'section',
 	sectionTitle: 'section-title',
+	visuallyHidden: 'visually-hidden',
 };
