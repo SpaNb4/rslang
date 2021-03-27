@@ -24,8 +24,8 @@ export const register = (email, password, username, image) => async (dispatch) =
 			url: ExternalUrls.Users,
 			data: formData,
 		});
-		localStorage.setItem(LocalStorageKeys.User, JSON.stringify(data));
-		dispatch(registerSuccess(data));
+		localStorage.setItem(LocalStorageKeys.Avatar, JSON.stringify(data.image));
+		dispatch(login(email, password));
 	} catch (error) {
 		dispatch(registerFailure(error));
 	}
