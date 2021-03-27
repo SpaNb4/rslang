@@ -10,36 +10,39 @@ import Footer from './components/Footer/Footer';
 import Book from './components/Book/Book';
 
 import { login, register } from './store/app/actions';
-import { getUserId, getToken } from './store/app/slices';
+import { getUserId, getToken, getAuthorized } from './store/app/slices';
 import { fetchUserWords } from './store/dictionary/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
+import { fetchWords } from './store/book/actions';
 
 function App() {
 	const dispatch = useDispatch();
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
+	const authorized = useSelector(getAuthorized);
 
 	useEffect(() => {
-		const user = localStorage.getItem(LocalStorageKeys.User) || null;
-		if (user) {
-			const userData = JSON.parse(user);
-			dispatch(login(userData.email, userData.password));
-		} else {
-			const user = {
-				name: '',
-				email: '',
-				password: '',
-			};
-			localStorage.setItem(LocalStorageKeys.User, JSON.stringify(user));
-			dispatch(register(user.name, user.email, user.password));
+		if (!authorized) {
+			const user = localStorage.getItem(LocalStorageKeys.User) || null;
+			if (user) {
+				const userData = JSON.parse(user);
+				dispatch(login(userData.email, userData.password));
+			} else {
+				const user = {
+					name: '',
+					email: '',
+					password: '',
+				};
+				localStorage.setItem(LocalStorageKeys.User, JSON.stringify(user));
+				dispatch(register(user.name, user.email, user.password));
+			}
 		}
-	});
-
-	useEffect(() => {
-		if (userId && token) {
+		if (authorized) {
 			dispatch(fetchUserWords(userId, token));
+		} else {
+			dispatch(fetchWords());
 		}
-	}, [userId, token]);
+	}, [userId, token, authorized]);
 
 	return (
 		<React.Fragment>

@@ -6,6 +6,9 @@
 	margin: 25px auto;
 	padding: 25px 0;
 	box-shadow: $box-shadow-2;
+	border: 1px solid transparent;
+	border-color: transparent;
+	border-radius: 8px;
 
 	.itemImage {
 		flex-basis: 30%;
@@ -57,22 +60,11 @@
 				padding: 15px 0;
 				font-size: 16px;
 			}
-
-			& > button {
-				border: none;
-				font-size: 24px;
-				line-height: 1;
-				background-color: transparent;
-				color: $color-primary;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
 		}
 
 		.itemParagraph {
 			flex-basis: 100%;
-			padding: 15px 0;
+			padding: 0 0 15px 0;
 		}
 	}
 
@@ -82,50 +74,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		flex-wrap: wrap;
+		flex-grow: 2;
 
 		@include resolution(tablet) {
 			flex-basis: 100%;
-		}
-
-		.settingsButton {
-			position: relative;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			color: $color-white;
-			font-size: 24px;
-			line-height: 1;
-			margin: 10px;
-			padding: 2px 1px;
-			border: none;
-			background-color: $color-primary;
-
-			&::after {
-				position: absolute;
-				content: '';
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-				width: 36px;
-				height: 36px;
-				color: transparent;
-				border: 1px solid;
-				border-radius: 5px;
-				z-index: 1;
-				transition: 0.4s;
-			}
-
-			&:hover::after {
-				color: $color-primary;
-			}
-
-			&:disabled {
-				background-color: $color-regent-gray;
-
-				&:hover::after {
-					display: none;
-				}
-			}
 		}
 	}
 
@@ -155,4 +108,8 @@
 			}
 		}
 	}
+}
+
+.chapterItem[id='hard'] {
+	background: $color-lola;
 }
