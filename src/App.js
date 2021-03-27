@@ -29,19 +29,17 @@ function App() {
 				dispatch(login(userData.email, userData.password));
 			} else {
 				const user = {
-					name: 'imisha',
-					email: 'imisha@gmail.com',
-					password: 'imisha15',
+					name: '',
+					email: '',
+					password: '',
 				};
 				localStorage.setItem(LocalStorageKeys.User, JSON.stringify(user));
 				dispatch(register(user.name, user.email, user.password));
 			}
 		}
 		if (authorized) {
-			console.log('get user words');
 			dispatch(fetchUserWords(userId, token));
 		} else {
-			console.log('get all words');
 			dispatch(fetchWords());
 		}
 	}, [userId, token, authorized]);
