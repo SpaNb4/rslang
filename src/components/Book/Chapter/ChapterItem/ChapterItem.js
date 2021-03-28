@@ -38,6 +38,7 @@ function ChapterItem({ wordData }) {
 	const saveToDictionaryRemoved = useCallback(() => {
 		dispatch(updateUserWord(userId, token, wordData, DictionarySections.Removed));
 		setIsWordRemoved(true);
+		setWordDifficulty(DictionarySections.Removed);
 	}, [userId, token, wordData]);
 
 	const handleVolumeUp = useCallback(() => {
