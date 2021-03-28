@@ -1,22 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { fetchUserWords, removeUserWord } from './../../../store/dictionary/actions';
+import { removeUserWord } from './../../../store/dictionary/actions';
 import { getToken, getUserId } from './../../../store/app/slices';
-import { getUserWordsLoading, getUserWords } from '../../../store/dictionary/slices';
-import { menu } from './../../../common/constants';
+import { getUserWordsLoading, getHardWords, getRemovedWords, getTrainedWords } from '../../../store/dictionary/slices';
+import { menu, DefaultValues } from './../../../common/constants';
 import Pagination from '../../Pagination/Pagination';
 import ChapterItem from '../../ChapterItem/ChapterItem';
 import classes from './Chapter.module.scss';
 import Button from '../../Button/Button';
+import {} from './../../../store/dictionary/slices';
 
 function Chapter() {
 	const dispatch = useDispatch();
 	const loading = useSelector(getUserWordsLoading);
-	const words = useSelector(getUserWords);
 	const { group } = useParams();
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
+	const [currentPage, setCurrentPage] = useState(0);
+	const offset = currentPage * DefaultValues.WordsPerPage;
+	const filter = {
+		hard: useSelector(getHardWords),
+		removed: useSelector(getRemovedWords),
+		trained: useSelector(getTrainedWords),
+	};
+	const filteredWords = filter[group];
+	const [pageCount, setPageCount] = useState(0);
+
+	useEffect(() => {
+		setPageCount(Math.ceil(filteredWords.length / DefaultValues.WordsPerPage));
+	}, [filteredWords]);
 
 	let sectionName = '';
 	menu.dictionary.forEach((section) => {
@@ -25,29 +38,19 @@ function Chapter() {
 		}
 	});
 
-	useEffect(() => {
-		if (userId && token) {
-			dispatch(fetchUserWords(userId, token));
-		}
-	}, []);
+	const currentPageData =
+		filteredWords &&
+		filteredWords.slice(offset, offset + DefaultValues.WordsPerPage).map((word, index) => {
+			function restoreWordToBook() {
+				dispatch(removeUserWord(userId, token, word));
+			}
 
-	const filteredWords = words && words.filter((word) => word.difficulty == group);
-
-	const [currentPage, setCurrentPage] = useState(0);
-	const PER_PAGE = 20;
-	const offset = currentPage * PER_PAGE;
-	const currentPageData = filteredWords.slice(offset, offset + PER_PAGE).map((word, index) => {
-		function restoreWordToBook() {
-			dispatch(removeUserWord(userId, token, word));
-		}
-
-		return (
-			<ChapterItem key={index} wordData={word.optional}>
-				<Button handler={restoreWordToBook}>Удалить</Button>
-			</ChapterItem>
-		);
-	});
-	const pageCount = Math.ceil(filteredWords.length / PER_PAGE);
+			return (
+				<ChapterItem key={index} wordData={word.optional}>
+					<Button handler={restoreWordToBook}>Восстановить</Button>
+				</ChapterItem>
+			);
+		});
 
 	function handlePageClick(data) {
 		setCurrentPage(data.selected);

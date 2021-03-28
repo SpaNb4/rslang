@@ -10,4 +10,6 @@ export const getHardWords = (store) =>
 export const getRemovedWords = (store) =>
 	getUserWords(store).filter((word) => word.difficulty === DictionarySections.Removed);
 export const getTrainedWords = (store) =>
-	getUserWords(store).filter((word) => word.difficulty === DictionarySections.Trained);
+	getUserWords(store).filter(
+		(word) => word.difficulty === DictionarySections.Trained || word.difficulty === DictionarySections.Hard
+	);

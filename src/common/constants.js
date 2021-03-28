@@ -69,7 +69,7 @@ export const menu = {
 		},
 		{
 			linkName: 'Удалённые слова',
-			linkId: 'deleted',
+			linkId: 'removed',
 			listName: 'vocabulary',
 		},
 	],
