@@ -22,12 +22,7 @@ export const register = (email, password, username, image) => async (dispatch) =
 		const { data } = await axios({
 			method: 'post',
 			url: ExternalUrls.Users,
-			data: {
-				username: formData.get('username'),
-				email: formData.get('email'),
-				password: formData.get('password'),
-				image: formData.get('image'),
-			},
+			data: formData,
 		});
 		localStorage.setItem(LocalStorageKeys.User, JSON.stringify(data));
 		dispatch(registerSuccess(data));
