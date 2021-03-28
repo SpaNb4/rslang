@@ -5,10 +5,10 @@ import classes from './Chapter.module.scss';
 
 import ChapterItem from './ChapterItem/ChapterItem';
 
-import { fetchAggregatedWords, fetchWords, updateCurrentGroup } from '../../../store/book/actions';
+import { fetchAggregatedWords, fetchWords, updateCurrentGroup, updateCurrentPage } from '../../../store/book/actions';
 import { getWordsLoading, getAllWords, getCurrentPage, getAggregatedWordsWords } from '../../../store/book/slices';
 import { getUserId, getToken, getAuthorized } from '../../../store/app/slices';
-import { DictionarySections } from '../../../common/constants';
+import { DictionarySections, LocalStorageKeys } from '../../../common/constants';
 import Pagination from '../../Pagination/Pagination';
 
 function Chapter() {
@@ -17,7 +17,7 @@ function Chapter() {
 	const words = useSelector(getAllWords);
 	const aggregatedWords = useSelector(getAggregatedWordsWords);
 	const { group } = useParams();
-	const page = useSelector(getCurrentPage);
+	const page = localStorage.getItem(LocalStorageKeys.BookPage) || useSelector(getCurrentPage);
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
 	const authorized = useSelector(getAuthorized);
@@ -32,6 +32,8 @@ function Chapter() {
 
 	function handlePageClick(data) {
 		dispatch(fetchAggregatedWords(group, data.selected, userId, token, filterRules));
+		dispatch(updateCurrentPage(data.selected));
+		localStorage.setItem(LocalStorageKeys.BookPage, data.selected);
 	}
 
 	useEffect(() => {
@@ -63,7 +65,7 @@ function Chapter() {
 			</div>
 			{loading && <React.Fragment>Loading...</React.Fragment>}
 			{chapterItems}
-			<Pagination handlePageClick={handlePageClick} pageCount={pageCount} />
+			<Pagination handlePageClick={handlePageClick} pageCount={pageCount} startPage={Number(page)} />
 		</div>
 	);
 }

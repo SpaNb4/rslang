@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { removeUserWord } from './../../../store/dictionary/actions';
 import { getToken, getUserId } from './../../../store/app/slices';
 import { getUserWordsLoading, getHardWords, getRemovedWords, getTrainedWords } from '../../../store/dictionary/slices';
-import { menu, DefaultValues } from './../../../common/constants';
+import { menu, DefaultValues, LocalStorageKeys } from './../../../common/constants';
 import Pagination from '../../Pagination/Pagination';
 import ChapterItem from '../../ChapterItem/ChapterItem';
 import classes from './Chapter.module.scss';
@@ -17,7 +17,8 @@ function Chapter() {
 	const { group } = useParams();
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
-	const [currentPage, setCurrentPage] = useState(0);
+	const initialPage = localStorage.getItem(LocalStorageKeys.VocabularyPage) || 0;
+	const [currentPage, setCurrentPage] = useState(initialPage);
 	const offset = currentPage * DefaultValues.WordsPerPage;
 	const filter = {
 		hard: useSelector(getHardWords),
@@ -54,6 +55,7 @@ function Chapter() {
 
 	function handlePageClick(data) {
 		setCurrentPage(data.selected);
+		localStorage.setItem(LocalStorageKeys.VocabularyPage, data.selected);
 	}
 
 	return (
@@ -63,7 +65,7 @@ function Chapter() {
 			</div>
 			{loading && <React.Fragment>Loading...</React.Fragment>}
 			{currentPageData}
-			<Pagination handlePageClick={handlePageClick} pageCount={pageCount} />
+			<Pagination handlePageClick={handlePageClick} pageCount={pageCount} startPage={Number(currentPage)} />
 		</div>
 	);
 }

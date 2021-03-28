@@ -14,6 +14,8 @@ export const ExternalUrls = {
 export const LocalStorageKeys = {
 	User: 'user',
 	Avatar: 'avatar',
+	BookPage: 'bookPage',
+	VocabularyPage: 'vocabularyPage',
 };
 
 // Default Values
