@@ -14,6 +14,8 @@ export const ExternalUrls = {
 export const LocalStorageKeys = {
 	User: 'user',
 	Avatar: 'avatar',
+	TokenExpireTime: 't-expire',
+	RefreshTokenExpireTime: 'rt-expire',
 };
 
 // Default Values
@@ -102,6 +104,7 @@ export const DictionarySections = {
 	Hard: 'hard',
 	Removed: 'removed',
 	Trained: 'trained',
+	NotDefined: 'not-defined',
 };
 
 export const ourTeammates = [
@@ -178,3 +181,7 @@ export const globalClasses = {
 	sectionTitle: 'section-title',
 	visuallyHidden: 'visually-hidden',
 };
+
+// Token Expire Time
+export const JWT_EXPIRE_TIME = 3.5 * 60 * 60 * 1000;
+export const JWT_REFRESH_EXPIRE_TIME = 4 * 60 * 60 * 1000;

@@ -24,7 +24,11 @@ function ChapterItem({ wordData }) {
 	const saveToDictionaryHard = useCallback(() => {
 		if (wordDifficulty !== DictionarySections.Hard) {
 			setWordDifficulty(DictionarySections.Hard);
-			dispatch(updateUserWord(userId, token, wordData, DictionarySections.Hard));
+			if (wordDifficulty == DictionarySections.NotDefined) {
+				dispatch(setUserWord(userId, token, wordData, DictionarySections.Hard));
+			} else {
+				dispatch(updateUserWord(userId, token, wordData, DictionarySections.Hard));
+			}
 		} else {
 			setWordDifficulty(DictionarySections.Trained);
 			dispatch(updateUserWord(userId, token, wordData, DictionarySections.Trained));
@@ -52,8 +56,7 @@ function ChapterItem({ wordData }) {
 		if (authorized) {
 			const difficulty = wordData.userWord && wordData.userWord.difficulty;
 			if (!difficulty) {
-				dispatch(setUserWord(userId, token, wordData, DictionarySections.Trained));
-				setWordDifficulty(DictionarySections.Trained);
+				setWordDifficulty(DictionarySections.NotDefined);
 			}
 			if (difficulty && difficulty === DictionarySections.Hard) {
 				setWordDifficulty(DictionarySections.Hard);

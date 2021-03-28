@@ -10,7 +10,7 @@ import Footer from './components/Footer/Footer';
 import Book from './components/Book/Book';
 
 import { getUserId, getToken, getAuthorized } from './store/app/slices';
-import { saveUserAuthData } from './store/app/actions';
+import { saveUserAuthData, refreshToken } from './store/app/actions';
 import { fetchUserWords } from './store/dictionary/actions';
 import { fetchWords } from './store/book/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
@@ -24,8 +24,15 @@ function App() {
 	useEffect(() => {
 		if (!authorized) {
 			const userAuth = localStorage.getItem(LocalStorageKeys.User) || null;
-			if (userAuth) {
-				dispatch(saveUserAuthData(JSON.parse(userAuth)));
+			const tokenExpireTime = localStorage.getItem(LocalStorageKeys.TokenExpireTime) || null;
+			const refreshTokenExpireTime = localStorage.getItem(LocalStorageKeys.RefreshTokenExpireTime) || null;
+			if (userAuth && tokenExpireTime && refreshTokenExpireTime) {
+				const userAuthData = JSON.parse(userAuth);
+				if (Date.now() < JSON.parse(tokenExpireTime)) {
+					dispatch(saveUserAuthData(userAuthData));
+				} else if (Date.now() < JSON.parse(refreshTokenExpireTime)) {
+					dispatch(refreshToken(userAuthData.userId, userAuthData.refreshToken));
+				}
 			}
 		}
 		if (authorized) {
