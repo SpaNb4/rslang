@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { removeUserWord } from './../../../store/dictionary/actions';
 import { getToken, getUserId } from './../../../store/app/slices';
 import { getUserWordsLoading, getHardWords, getRemovedWords, getTrainedWords } from '../../../store/dictionary/slices';
-import { menu, DefaultValues, LocalStorageKeys } from './../../../common/constants';
+import { menu, DefaultValues, LocalStorageKeys, DictionarySections } from './../../../common/constants';
 import Pagination from '../../Pagination/Pagination';
 import ChapterItem from '../../ChapterItem/ChapterItem';
 import classes from './Chapter.module.scss';
@@ -47,7 +47,11 @@ function Chapter() {
 			}
 
 			return (
-				<ChapterItem key={index} wordData={word.optional}>
+				<ChapterItem
+					key={index}
+					wordData={word.optional}
+					id={group == DictionarySections.hard ? null : word.difficulty}
+				>
 					<Button handler={restoreWordToBook}>Восстановить</Button>
 				</ChapterItem>
 			);

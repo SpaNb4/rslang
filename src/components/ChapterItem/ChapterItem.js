@@ -7,9 +7,9 @@ import Button from '../Button/Button';
 import classes from './ChapterItem.module.scss';
 import { PropTypes } from 'prop-types';
 
-function ChapterItem({ wordData, children }) {
+function ChapterItem({ wordData, children, id }) {
 	return (
-		<div className={classes.chapterItem}>
+		<div className={classes.chapterItem} id={id}>
 			<div className={classes.itemImage}>
 				<img src={buildUrl(ExternalUrls.Root, wordData.image)} alt={wordData.word} />
 			</div>
@@ -79,6 +79,7 @@ ChapterItem.propTypes = {
 		textExampleTranslate: PropTypes.string,
 	}).isRequired,
 	children: PropTypes.node.isRequired,
+	id: PropTypes.string,
 };
 
 export default ChapterItem;
