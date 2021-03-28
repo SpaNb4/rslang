@@ -6,3 +6,4 @@ export const getUsername = (store) => getUser(store) && getUser(store).name;
 export const getUserId = (store) => getUser(store) && getUser(store).userId;
 export const getToken = (store) => getUser(store) && getUser(store).token;
 export const getAuthorized = (store) => getSlice(store).auth;
+export const getMenu = (store) => getSlice(store).menuHidden;

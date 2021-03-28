@@ -5,6 +5,7 @@ const initialState = {
 	auth: false,
 	user: null,
 	errorMessage: null,
+	menuHidden: true,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -20,8 +21,16 @@ const reducer = createReducer(initialState, (builder) => {
 			state.user = action.payload;
 			state.auth = true;
 		})
+		.addCase(actions.saveUserAuthData, (state, action) => {
+			state.user = action.payload;
+			state.auth = true;
+		})
 		.addCase(actions.logout, (state) => {
 			state.user = null;
+			state.auth = false;
+		})
+		.addCase(actions.menuToggle, (state, action) => {
+			state.menuHidden = action.payload;
 		})
 		.addDefaultCase((state) => state);
 });

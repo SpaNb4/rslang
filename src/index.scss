@@ -2,15 +2,11 @@ body {
 	min-width: 320px;
 	margin: 0;
 	font-family: $font-primary;
-	font-size: 18px;
+	font-size: 16px;
 	line-height: 1.3;
-	color: $color-dove-gray;
+	color: $color-regent-gray;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-
-	@include resolution(desktop) {
-		font-size: 16px;
-	}
 
 	@include resolution(tablet) {
 		font-size: 14px;
@@ -48,7 +44,7 @@ button {
 
 .container {
 	max-width: 1600px;
-	padding: 0 6.7%;
+	padding: 30px 6.7%;
 	margin: 0 auto;
 }
 
@@ -75,7 +71,11 @@ button {
 
 .section {
 	padding: 25px 0;
-	margin-bottom: 25px;
+	margin-bottom: 50px;
+
+	@include resolution(tablet) {
+		margin-bottom: 25px;
+	}
 
 	&:nth-child(odd) h2::after {
 		background-color: rgba($color-secondary, 0.5);
@@ -84,4 +84,14 @@ button {
 	&:nth-child(even) h2::after {
 		background-color: rgba($color-primary, 0.5);
 	}
+}
+
+.visually-hidden {
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
 }

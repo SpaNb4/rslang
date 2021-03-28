@@ -55,6 +55,9 @@ function ChapterItem({ wordData }) {
 				dispatch(setUserWord(userId, token, wordData, DictionarySections.Trained));
 				setWordDifficulty(DictionarySections.Trained);
 			}
+			if (difficulty && difficulty === DictionarySections.Hard) {
+				setWordDifficulty(DictionarySections.Hard);
+			}
 		}
 	}, [wordData, authorized]);
 

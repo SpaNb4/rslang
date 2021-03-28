@@ -59,21 +59,7 @@
 	}
 }
 
-.menuLink {
-	display: flex;
-	flex-grow: 1;
-	padding: 15px 10px;
-	align-items: center;
-	gap: 10px;
-	color: $color-regent-gray;
-	font-weight: 500;
-
-	&:hover {
-		color: $color-secondary;
-	}
-}
-
-.hamburger,
+.navLink,
 .dropToggle {
 	background-color: transparent;
 	border: none;
@@ -105,9 +91,27 @@
 	}
 }
 
-.dropToggle {
-	font-size: 18px;
+.menuLink {
+	display: flex;
+	flex-basis: 100%;
+	padding: 15px 10px;
+	align-items: center;
+	gap: 10px;
 	color: $color-regent-gray;
+	font-weight: 500;
+
+	&:hover {
+		color: $color-secondary;
+	}
+}
+
+.dropToggle {
+	display: block;
+	margin-left: auto;
+	font-size: 18px;
+	line-height: 1;
+	color: $color-regent-gray;
+	transition: 0.4s ease;
 
 	&:hover {
 		color: $color-secondary;
