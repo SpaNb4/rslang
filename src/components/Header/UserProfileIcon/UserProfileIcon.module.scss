@@ -1,0 +1,18 @@
+.iconContainer {
+	width: 46px;
+	height: 46px;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: $color-lola;
+
+	.profileImage {
+		width: auto;
+		height: 100%;
+	}
+
+	&::after {
+		display: none !important;
+	}
+}

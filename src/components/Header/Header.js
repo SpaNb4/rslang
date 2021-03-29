@@ -11,7 +11,6 @@ import {
 	FaBookDead,
 	FaTableTennis,
 	FaPercentage,
-	FaUserGraduate,
 	FaUserSecret,
 	FaSignInAlt,
 	FaSignOutAlt,
@@ -20,6 +19,8 @@ import {
 } from 'react-icons/fa';
 import classes from './Header.module.scss';
 import { menu, LocalStorageKeys } from './../../common/constants';
+
+import UserProfileIcon from './UserProfileIcon/UserProfileIcon';
 
 const Header = () => {
 	const dispatch = useDispatch();
@@ -157,9 +158,9 @@ const Header = () => {
 						</ul>
 					</div>
 					{auth ? (
-						<Link className={classes.navLink} to="/profile/:id">
-							<FaUserGraduate />
-						</Link>
+						<div>
+							<UserProfileIcon />
+						</div>
 					) : (
 						<Link className={classes.navLink} to="/">
 							<FaUserSecret />
