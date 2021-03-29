@@ -1,11 +1,13 @@
 .OptionsPopup {
 	display: none;
 	position: absolute;
-	bottom: 0;
+	top: 100%;
 	right: 0;
 	width: 270px;
-	box-shadow: $box-shadow-2;
+	padding: 16px 30px;
+	box-shadow: $box-shadow-3;
 	z-index: 2;
+	background-color: $color-white;
 
 	&.OptionsPopupIsOpen {
 		display: block;
@@ -14,8 +16,9 @@
 	.OptionsSection {
 		.SectionItem {
 			display: flex;
-			justify-content: space-evenly;
+			justify-content: space-between;
 			align-items: center;
+			margin: 16px 0;
 		}
 	}
 }

@@ -13,6 +13,7 @@ export const hideLoader = createAction(types.HIDE_LOADER);
 export const fetchAggregatedWordsSuccess = createAction(types.FETCH_AGGREGATED_WORDS_SUCCESS);
 export const fetchAggregatedWordsFailure = createAction(types.FETCH_AGGREGATED_WORDS_FAILURE);
 export const updateIsTranslationOn = createAction(types.UPDATE_IS_TRANSLATION_ON);
+export const updateIsEditDictionaryButtons = createAction(types.UPDATE_IS_EDIT_DICTIONARY_BUTTONS);
 
 export const fetchWords = (currentGroup = DefaultValues.Group, currentPage = DefaultValues.Page) => async (
 	dispatch

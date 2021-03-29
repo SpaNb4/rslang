@@ -12,7 +12,7 @@ import { buildUrl, handleVolumeUp } from '../../../../common/helpers';
 import { ExternalUrls, DictionarySections } from '../../../../common/constants';
 import { setUserWord, updateUserWord } from '../../../../store/dictionary/actions';
 import { getUserId, getAuthorized, getToken } from '../../../../store/app/slices';
-import { getIsTranslationOn } from '../../../../store/book/slices';
+import { getIsTranslationOn, getIsEditDictionaryButtons } from '../../../../store/book/slices';
 function ChapterItem({ wordData }) {
 	const dispatch = useDispatch();
 	const authorized = useSelector(getAuthorized);
@@ -21,6 +21,7 @@ function ChapterItem({ wordData }) {
 	const [wordDifficulty, setWordDifficulty] = useState('');
 	const [isWordRemoved, setIsWordRemoved] = useState(false);
 	const isTranslationOn = useSelector(getIsTranslationOn);
+	const isEditDictionaryButtons = useSelector(getIsEditDictionaryButtons);
 
 	const saveToDictionaryHard = useCallback(() => {
 		if (wordDifficulty !== DictionarySections.Hard) {
@@ -95,7 +96,11 @@ function ChapterItem({ wordData }) {
 					<div>{parse(wordData.textExampleTranslate)}</div>
 				</div>
 			</div>
-			<div className={classes.itemSettings}>
+			<div
+				className={
+					isEditDictionaryButtons ? classes.itemSettings : [classes.itemSettings, classes.Hide].join(' ')
+				}
+			>
 				<Button handler={saveToDictionaryHard} disabled={!authorized} difficulty={wordDifficulty}>
 					Сложное слово
 				</Button>

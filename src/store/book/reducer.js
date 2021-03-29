@@ -10,6 +10,7 @@ const initialState = {
 	loading: false,
 	errorMessage: '',
 	isTranslationOn: true,
+	isEditDictionaryButtons: true,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -40,6 +41,9 @@ const reducer = createReducer(initialState, (builder) => {
 		})
 		.addCase(actions.updateIsTranslationOn, (state, action) => {
 			state.isTranslationOn = action.payload;
+		})
+		.addCase(actions.updateIsEditDictionaryButtons, (state, action) => {
+			state.isEditDictionaryButtons = action.payload;
 		})
 		.addDefaultCase((state) => state);
 });

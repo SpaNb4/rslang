@@ -8,11 +8,11 @@ const OptionsInput = (props) => {
 			<input
 				className={classes.Input}
 				type="checkbox"
-				id="switch"
+				id={props.id}
 				checked={props.checked}
 				onChange={props.toggle}
 			/>
-			<label className={classes.Label} htmlFor="switch" />
+			<label className={classes.Label} htmlFor={props.id} />
 		</div>
 	);
 };
@@ -20,6 +20,7 @@ const OptionsInput = (props) => {
 OptionsInput.propTypes = {
 	checked: PropTypes.bool.isRequired,
 	toggle: PropTypes.func.isRequired,
+	id: PropTypes.string.isRequired,
 };
 
 export default OptionsInput;

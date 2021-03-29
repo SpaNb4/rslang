@@ -7,3 +7,4 @@ export const getCurrentGroup = (store) => getSlice(store).currentGroup;
 export const getCurrentPage = (store) => getSlice(store).currentPage;
 export const getAggregatedWordsWords = (store) => getSlice(store).aggregatedWords;
 export const getIsTranslationOn = (store) => getSlice(store).isTranslationOn;
+export const getIsEditDictionaryButtons = (store) => getSlice(store).isEditDictionaryButtons;
