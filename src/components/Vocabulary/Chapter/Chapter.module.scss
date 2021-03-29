@@ -3,4 +3,25 @@
 		text-align: center;
 		padding: 16px 0;
 	}
+
+	.sectionList {
+		display: flex;
+		justify-content: center;
+		gap: 10px;
+	}
+
+	.sectionListTitle {
+		text-align: center;
+		margin-bottom: 20px;
+	}
+
+	.noWords {
+		text-align: center;
+		margin-top: 50px;
+	}
+
+	.activeSection {
+		border-bottom: 2px solid $color-primary;
+		padding-bottom: 5px;
+	}
 }

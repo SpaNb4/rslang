@@ -27,10 +27,7 @@ function Chapter() {
 	};
 	const filteredWords = filter[group];
 	const [pageCount, setPageCount] = useState(0);
-
-	useEffect(() => {
-		setPageCount(Math.ceil(filteredWords.length / DefaultValues.WordsPerPage));
-	}, [filteredWords]);
+	const [currentSection, setCurrentSection] = useState(0);
 
 	let sectionName = '';
 	menu.dictionary.forEach((section) => {
@@ -41,35 +38,79 @@ function Chapter() {
 
 	const currentPageData =
 		filteredWords &&
-		filteredWords.slice(offset, offset + DefaultValues.WordsPerPage).map((word, index) => {
-			function restoreWordToBook() {
-				dispatch(removeUserWord(userId, token, word));
-			}
+		filteredWords
+			.slice(offset, offset + DefaultValues.WordsPerPage)
+			.filter((word) => currentSection === word.optional.group)
+			.map((word, index) => {
+				return (
+					<ChapterItem
+						key={index}
+						wordData={word.optional}
+						id={group === DictionarySections.Hard ? null : word.difficulty}
+					>
+						<Button handler={() => restoreWordToBook(word)}>Восстановить</Button>
+					</ChapterItem>
+				);
+			});
 
-			return (
-				<ChapterItem
-					key={index}
-					wordData={word.optional}
-					id={group === DictionarySections.Hard ? null : word.difficulty}
-				>
-					<Button handler={restoreWordToBook}>Восстановить</Button>
-				</ChapterItem>
-			);
-		});
+	useEffect(() => {
+		setPageCount(Math.ceil(currentPageData.length / DefaultValues.WordsPerPage));
+	}, [currentPageData]);
+
+	function restoreWordToBook(word) {
+		dispatch(removeUserWord(userId, token, word));
+	}
 
 	function handlePageClick(data) {
 		setCurrentPage(data.selected);
 		localStorage.setItem(LocalStorageKeys.VocabularyPage, data.selected);
 	}
 
+	function sectionClickHandler(index) {
+		setCurrentSection(index);
+	}
+
+	const sectionList = (
+		<ul className={classes.sectionList}>
+			{menu.sections.map((item, index) => {
+				return (
+					<li
+						className={index === currentSection ? classes.activeSection : null}
+						onClick={() => sectionClickHandler(index)}
+						key={index}
+					>
+						{item.linkName}
+					</li>
+				);
+			})}
+		</ul>
+	);
+
 	return (
 		<div className={classes.chapter}>
 			<div className={classes.chapterTitle}>
 				<h2>{sectionName}</h2>
 			</div>
+			<div className={classes.sectionListTitle}>
+				<h3>Раздел учебника</h3>
+			</div>
+			{sectionList}
 			{loading && <React.Fragment>Loading...</React.Fragment>}
-			{currentPageData}
-			<Pagination handlePageClick={handlePageClick} pageCount={pageCount} startPage={Number(currentPage)} />
+			{currentPageData.length ? (
+				<>
+					{currentPageData}
+					<Pagination
+						handlePageClick={handlePageClick}
+						pageCount={pageCount}
+						startPage={Number(currentPage)}
+					/>
+				</>
+			) : (
+				<h3 className={classes.noWords}>
+					В данной разделе нет слов, чтобы их добавить, перейдите в данный раздел учебника и нажмите
+					соответствующие кнопки
+				</h3>
+			)}
 		</div>
 	);
 }
