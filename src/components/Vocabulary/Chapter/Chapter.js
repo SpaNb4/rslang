@@ -25,9 +25,9 @@ function Chapter() {
 		removed: useSelector(getRemovedWords),
 		trained: useSelector(getTrainedWords),
 	};
-	const filteredWords = filter[group];
 	const [pageCount, setPageCount] = useState(0);
 	const [currentSection, setCurrentSection] = useState(0);
+	const filteredWords = filter[group].filter((word) => currentSection === word.optional.group);
 
 	let sectionName = '';
 	menu.dictionary.forEach((section) => {
@@ -38,24 +38,21 @@ function Chapter() {
 
 	const currentPageData =
 		filteredWords &&
-		filteredWords
-			.slice(offset, offset + DefaultValues.WordsPerPage)
-			.filter((word) => currentSection === word.optional.group)
-			.map((word, index) => {
-				return (
-					<ChapterItem
-						key={index}
-						wordData={word.optional}
-						id={group === DictionarySections.Hard ? null : word.difficulty}
-					>
-						<Button handler={() => restoreWordToBook(word)}>Восстановить</Button>
-					</ChapterItem>
-				);
-			});
+		filteredWords.slice(offset, offset + DefaultValues.WordsPerPage).map((word, index) => {
+			return (
+				<ChapterItem
+					key={index}
+					wordData={word.optional}
+					id={group === DictionarySections.Hard ? null : word.difficulty}
+				>
+					<Button handler={() => restoreWordToBook(word)}>Восстановить</Button>
+				</ChapterItem>
+			);
+		});
 
 	useEffect(() => {
-		setPageCount(Math.ceil(currentPageData.length / DefaultValues.WordsPerPage));
-	}, [currentPageData]);
+		setPageCount(Math.ceil(filteredWords.length / DefaultValues.WordsPerPage));
+	}, [filteredWords]);
 
 	function restoreWordToBook(word) {
 		dispatch(removeUserWord(userId, token, word));
@@ -99,11 +96,13 @@ function Chapter() {
 			{currentPageData.length ? (
 				<>
 					{currentPageData}
-					<Pagination
-						handlePageClick={handlePageClick}
-						pageCount={pageCount}
-						startPage={Number(currentPage)}
-					/>
+					{filteredWords.length <= DefaultValues.WordsPerPage ? null : (
+						<Pagination
+							handlePageClick={handlePageClick}
+							pageCount={pageCount}
+							startPage={Number(currentPage)}
+						/>
+					)}
 				</>
 			) : (
 				<h3 className={classes.noWords}>
