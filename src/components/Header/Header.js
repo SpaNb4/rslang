@@ -133,7 +133,7 @@ const Header = () => {
 								</Link>
 							</li>
 							<li className={classes.menuItem}>
-								<Link className={classes.menuLink} to="/daily">
+								<Link className={classes.menuLink} to="/quiz">
 									<FaGraduationCap />
 									<span>Викторина</span>
 								</Link>

@@ -75,31 +75,31 @@
 	user-select: none;
 	cursor: pointer;
 
+	.checkmark {
+		position: absolute;
+		left: 0;
+		top: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 21px;
+		width: 21px;
+		color: $color-white;
+		background-color: $color-botticelli;
+		border-radius: 8px;
+
+		svg {
+			opacity: 0;
+			transition: opacity 0.4s ease;
+		}
+	}
+
 	input {
 		position: absolute;
 		opacity: 0;
 		height: 0;
 		width: 0;
 		cursor: pointer;
-
-		.checkmark {
-			position: absolute;
-			left: 0;
-			top: 0;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			height: 21px;
-			width: 21px;
-			color: $color-white;
-			background-color: $color-botticelli;
-			border-radius: 8px;
-
-			svg {
-				opacity: 0;
-				transition: opacity 0.4s ease;
-			}
-		}
 
 		&:checked ~ .checkmark {
 			background-color: $color-sea-buckthorn;
