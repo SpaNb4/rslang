@@ -1,8 +1,8 @@
 .root {
-	padding: 20px 0;
 	text-align: center;
 	font-size: 1.1em;
-	color: $color-text;
+	color: $color-emperor;
+	font-weight: 600;
 }
 
 .date {
@@ -29,6 +29,7 @@
 }
 
 .form {
+	max-width: 500px;
 	display: inline-flex;
 	flex-direction: column;
 	gap: 15px;
@@ -55,8 +56,8 @@
 
 	legend {
 		color: $color-chestnut;
-		margin-bottom: 20px;
-		font-weight: 600;
+		margin: 0 auto 20px;
+		font-size: 1.1em;
 	}
 }
 
@@ -64,28 +65,30 @@
 	display: flex;
 	flex-direction: column;
 	gap: 15px;
-	padding-left: 25px;
 }
 
 .label {
-	position: relative;
-	padding-left: 35px;
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	padding: 15px 25px;
 	text-align: left;
+	background-color: rgba($color-sea-buckthorn, 0.65);
 	border: none;
+	border-radius: 8px;
 	user-select: none;
 	cursor: pointer;
 
 	.checkmark {
-		position: absolute;
-		left: 0;
-		top: 0;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		height: 21px;
-		width: 21px;
+		flex-shrink: 0;
+		height: 36px;
+		width: 36px;
 		color: $color-white;
 		background-color: $color-botticelli;
+		transition: opacity 0.4s ease;
 		border-radius: 8px;
 
 		svg {
@@ -110,7 +113,7 @@
 		}
 	}
 
-	&:hover input ~ .checkmark {
+	&:hover input:not(:checked) ~ .checkmark {
 		background-color: $color-silver;
 	}
 

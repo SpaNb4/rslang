@@ -2,6 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import * as actions from './actions';
 
 const initialState = {
+	words: [],
 	keys: [],
 	answers: {
 		0: '',
@@ -13,6 +14,9 @@ const initialState = {
 
 const reducer = createReducer(initialState, (builder) => {
 	builder
+		.addCase(actions.setWords, (state, action) => {
+			state.words = action.payload;
+		})
 		.addCase(actions.fetchKeys, (state, action) => {
 			state.keys = action.payload;
 		})
@@ -22,6 +26,7 @@ const reducer = createReducer(initialState, (builder) => {
 		.addCase(actions.submit, (state) => {
 			state.submitted = true;
 		})
+		.addCase(actions.reset, () => initialState)
 		.addDefaultCase((state) => state);
 });
 

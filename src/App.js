@@ -8,7 +8,7 @@ import Team from './components/Team/Team';
 import Video from './components/Video/Video';
 import Footer from './components/Footer/Footer';
 import Book from './components/Book/Book';
-import DailyQuiz from './components/DailyQuiz/DailyQuiz';
+import Quiz from './components/Quiz/Quiz';
 
 import { getUserId, getToken, getAuthorized } from './store/app/slices';
 import { saveUserAuthData } from './store/app/actions';
@@ -47,7 +47,7 @@ function App() {
 						<Team />
 					</Route>
 					<Route path="/book/:group" component={Book} />
-					<Route path="/quiz" component={DailyQuiz} />
+					<Route path="/quiz" component={Quiz} />
 				</Switch>
 			</main>
 			<Footer />

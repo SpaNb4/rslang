@@ -2,54 +2,66 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllWords } from '../../store/book/slices';
 import { differenceBy, sampleSize } from 'lodash';
-import { getAnswers, getKeys, getSubmitted } from '../../store/quiz/slices';
-import { fetchKeys, submit } from '../../store/quiz/actions';
-import classes from './DailyQuiz.module.scss';
+import { getAnswers, getKeys, getSubmitted, getWords } from '../../store/quiz/slices';
+import { fetchKeys, setWords, submit } from '../../store/quiz/actions';
 import Loader from '../Loader/Loader';
-import DailyQuizItem from './DailyQuizItem';
+import DailyQuizItem from './QuizItem';
 import { globalClasses as c } from '../../common/constants';
+import classes from './Quiz.module.scss';
 
-const questionsData = ['правильный перевод', 'правильное значение', 'правильную транскрипцию'];
+// const questionsData = ['правильный перевод', 'правильное значение', 'правильную транскрипцию'];
 
-const DailyQuiz = () => {
+const questionsData = [
+	{
+		question: 'правильный перевод',
+		key: 'wordTranslate',
+	},
+	{
+		question: '',
+		key: 'textMeaningTranslate',
+	},
+	{
+		question: 'правильную транскрипцию',
+		key: 'transcription',
+	},
+];
+
+const Quiz = () => {
 	const dispatch = useDispatch();
 	const [date, setDate] = useState(null);
 	const [errors, setErrors] = useState(null);
 
 	//temp
 	const allWords = useSelector(getAllWords);
+	const words = useSelector(getWords);
 	const submitted = useSelector(getSubmitted);
+	const answers = useSelector(getAnswers);
+	const keys = useSelector(getKeys);
 
-	const [randomWords, setRandomWords] = useState([]);
 	const [variants, setVariants] = useState([]);
 
 	useEffect(() => {
-		if (allWords.length) {
-			setRandomWords(sampleSize(allWords, questionsData.length));
+		let timeout;
+		if (allWords.length && !words.length) {
+			timeout = setTimeout(() => dispatch(setWords(sampleSize(allWords, questionsData.length))), 1000);
 		}
-	}, [allWords]);
+		return () => {
+			clearTimeout(timeout);
+		};
+	}, [allWords, words]);
 
 	useEffect(() => {
 		setDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
 	}, []);
 
 	useEffect(() => {
-		if (randomWords.length) {
-			const variants = [
-				randomWords.map((data) => data.wordTranslate),
-				randomWords.map((data) => data.textMeaningTranslate),
-				randomWords.map((data) => data.transcription),
-			];
-
-			const keys = variants.map((variant, index) => variant[index]);
+		if (words.length) {
+			const variants = questionsData.map((_, index) => words.map((word) => word[questionsData[index].key]));
 
 			setVariants(variants);
-			dispatch(fetchKeys(keys));
+			dispatch(fetchKeys(variants.map((variant, index) => variant[index])));
 		}
-	}, [randomWords]);
-
-	const answers = useSelector(getAnswers);
-	const keys = useSelector(getKeys);
+	}, [words]);
 
 	const handleSubmit = (evt) => {
 		evt.preventDefault();
@@ -63,15 +75,15 @@ const DailyQuiz = () => {
 			<span className={classes.date}>{date}</span>
 			<h5 className={classes.title}>Викторина</h5>
 
-			{randomWords.length && variants.length ? (
+			{words.length && variants.length ? (
 				<form className={classes.form} onSubmit={handleSubmit} data-submit={submitted}>
-					{randomWords.map((wordData, index) => {
+					{words.map((wordData, index) => {
 						return (
 							<DailyQuizItem
 								key={`quiz-${index}`}
 								variants={variants[index]}
 								word={wordData.word}
-								question={questionsData[index]}
+								question={questionsData[index].question}
 								keyIndex={index}
 							/>
 						);
@@ -99,4 +111,4 @@ const DailyQuiz = () => {
 	);
 };
 
-export default DailyQuiz;
+export default Quiz;
