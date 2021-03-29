@@ -1,18 +1,23 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import classes from './Options.module.scss';
 
 import OptionsInput from './OptionsInput';
 
+import { getIsTranslationOn } from '../../../../store/book/slices';
+import { updateIsTranslationOn } from '../../../../store/book/actions';
+
 const Options = (props) => {
+	const dispatch = useDispatch();
 	const computedClasses = [classes.OptionsPopup];
 	if (props.isOpen) {
 		computedClasses.push(classes.OptionsPopupIsOpen);
 	}
-	const [isTranslationOn, setIsTranslationOn] = useState(true);
+	const isTranslationOn = useSelector(getIsTranslationOn);
 
 	const toggleTranslation = useCallback(() => {
-		setIsTranslationOn(!isTranslationOn);
+		dispatch(updateIsTranslationOn(!isTranslationOn));
 	}, [isTranslationOn]);
 
 	return (

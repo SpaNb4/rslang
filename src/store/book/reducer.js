@@ -9,6 +9,7 @@ const initialState = {
 	currentPage: DefaultValues.Page,
 	loading: false,
 	errorMessage: '',
+	isTranslationOn: true,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -36,6 +37,9 @@ const reducer = createReducer(initialState, (builder) => {
 		})
 		.addCase(actions.hideLoader, (state) => {
 			state.loading = false;
+		})
+		.addCase(actions.updateIsTranslationOn, (state, action) => {
+			state.isTranslationOn = action.payload;
 		})
 		.addDefaultCase((state) => state);
 });

@@ -12,6 +12,7 @@ import { buildUrl, handleVolumeUp } from '../../../../common/helpers';
 import { ExternalUrls, DictionarySections } from '../../../../common/constants';
 import { setUserWord, updateUserWord } from '../../../../store/dictionary/actions';
 import { getUserId, getAuthorized, getToken } from '../../../../store/app/slices';
+import { getIsTranslationOn } from '../../../../store/book/slices';
 function ChapterItem({ wordData }) {
 	const dispatch = useDispatch();
 	const authorized = useSelector(getAuthorized);
@@ -19,6 +20,7 @@ function ChapterItem({ wordData }) {
 	const token = useSelector(getToken);
 	const [wordDifficulty, setWordDifficulty] = useState('');
 	const [isWordRemoved, setIsWordRemoved] = useState(false);
+	const isTranslationOn = useSelector(getIsTranslationOn);
 
 	const saveToDictionaryHard = useCallback(() => {
 		if (wordDifficulty !== DictionarySections.Hard) {
@@ -72,7 +74,11 @@ function ChapterItem({ wordData }) {
 					</div>
 					<div>{parse(wordData.textMeaning)}</div>
 				</div>
-				<div className={classes.itemParagraph}>
+				<div
+					className={
+						isTranslationOn ? classes.itemParagraph : [classes.itemParagraph, classes.Hide].join(' ')
+					}
+				>
 					<div>{parse(wordData.textMeaningTranslate)}</div>
 				</div>
 				<div className={classes.itemParagraph}>
@@ -81,7 +87,11 @@ function ChapterItem({ wordData }) {
 					</div>
 					<div>{parse(wordData.textExample)}</div>
 				</div>
-				<div className={classes.itemParagraph}>
+				<div
+					className={
+						isTranslationOn ? classes.itemParagraph : [classes.itemParagraph, classes.Hide].join(' ')
+					}
+				>
 					<div>{parse(wordData.textExampleTranslate)}</div>
 				</div>
 			</div>
