@@ -1,19 +1,26 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { PropTypes } from 'prop-types';
 import classes from './Options.module.scss';
-import { FaCheck } from 'react-icons/fa';
+
+import OptionsInput from './OptionsInput';
 
 const Options = (props) => {
-	const display = props.isOpen ? 'block' : 'none';
+	const computedClasses = [classes.OptionsPopup];
+	if (props.isOpen) {
+		computedClasses.push(classes.OptionsPopupIsOpen);
+	}
+	const [isTranslationOn, setIsTranslationOn] = useState(true);
+
+	const toggleTranslation = useCallback(() => {
+		setIsTranslationOn(!isTranslationOn);
+	}, [isTranslationOn]);
+
 	return (
-		<div className={classes.OptionsPopup} data-display={display}>
+		<div className={computedClasses.join(' ')}>
 			<div className={classes.OptionsSection}>
 				<div className={classes.SectionItem}>
 					<div className={classes.ItemLabel}>Translation</div>
-					<div className={classes.IconContainer}>
-						<input className={classes.ItemInput} id="translationCheck" type="checkbox" />
-						<FaCheck className={classes.IconCheck} />
-					</div>
+					<OptionsInput toggle={toggleTranslation} checked={isTranslationOn} />
 				</div>
 			</div>
 		</div>
