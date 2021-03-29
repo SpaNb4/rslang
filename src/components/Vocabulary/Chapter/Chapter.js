@@ -50,7 +50,7 @@ function Chapter() {
 				<ChapterItem
 					key={index}
 					wordData={word.optional}
-					id={group == DictionarySections.hard ? null : word.difficulty}
+					id={group === DictionarySections.Hard ? null : word.difficulty}
 				>
 					<Button handler={restoreWordToBook}>Восстановить</Button>
 				</ChapterItem>
