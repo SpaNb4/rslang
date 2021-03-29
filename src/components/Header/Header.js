@@ -16,7 +16,7 @@ import {
 	FaSignInAlt,
 	FaSignOutAlt,
 	FaUserPlus,
-	FaGhost,
+	FaGraduationCap,
 	FaHome,
 } from 'react-icons/fa';
 import classes from './Header.module.scss';
@@ -134,8 +134,8 @@ const Header = () => {
 							</li>
 							<li className={classes.menuItem}>
 								<Link className={classes.menuLink} to="/daily">
-									<FaGhost />
-									<span>Слово дня</span>
+									<FaGraduationCap />
+									<span>Викторина</span>
 								</Link>
 							</li>
 							{auth ? (

@@ -9,21 +9,6 @@ import Loader from '../Loader/Loader';
 import DailyQuizItem from './DailyQuizItem';
 import { globalClasses as c } from '../../common/constants';
 
-// const questionsData = [
-// 	{
-// 		property: 'translation',
-// 		question: 'правильный перевод',
-// 	},
-// 	{
-// 		property: 'meaning',
-// 		question: 'правильное значение',
-// 	},
-// 	{
-// 		property: 'transcription',
-// 		question: 'правильную транскрипцию',
-// 	},
-// ];
-
 const questionsData = ['правильный перевод', 'правильное значение', 'правильную транскрипцию'];
 
 const DailyQuiz = () => {
