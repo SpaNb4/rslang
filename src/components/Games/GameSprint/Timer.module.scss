@@ -1,16 +1,42 @@
-.timer {
-	display: flex;
-	border: 1px solid $color-black;
-	border-radius: 75px;
-	width: 70px;
-	margin-left: 80px;
-	margin-top: 10px;
+.numbers {
+	line-height: 80px;
+	color: $color-black;
+	display: inline-block;
+	font-size: 30px;
 }
 
-.numbers {
-	font-size: 50px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 70px;
+.countdown {
+	position: relative;
+	text-align: center;
+	width: 80px;
+	height: 80px;
+}
+
+.svg {
+	position: absolute;
+	top: -10px;
+	right: 10px;
+	width: 80px;
+	height: 80px;
+	transform: rotateY(-180deg) rotateZ(-90deg);
+
+	.circle {
+		stroke-dasharray: 175px;
+		stroke-dashoffset: 0;
+		stroke-linecap: round;
+		stroke-width: 2px;
+		stroke: $color-black;
+		fill: none;
+		animation: countdown 61s linear infinite forwards;
+	}
+}
+
+@keyframes countdown {
+	from {
+		stroke-dashoffset: 0;
+	}
+
+	to {
+		stroke-dashoffset: 175px;
+	}
 }

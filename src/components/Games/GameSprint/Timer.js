@@ -15,13 +15,17 @@ export default function Timer({ onTimeout }) {
 				setCounter(nextCounter);
 			}, 1000);
 	}, [counter]);
+
 	return (
-		<div className={classes.timer}>
+		<div className={classes.countdown}>
 			<div className={classes.numbers}> {counter === 0 ? '0' : counter}</div>
+			<svg className={classes.svg}>
+				<circle className={classes.circle} r="28" cx="30" cy="30"></circle>
+			</svg>
 		</div>
 	);
 }
 
 Timer.propTypes = {
-	onTimeout: PropTypes.function,
+	onTimeout: PropTypes.func,
 };

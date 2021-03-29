@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 
@@ -17,26 +17,22 @@ import { fetchUserWords } from './store/dictionary/actions';
 import { fetchWords } from './store/book/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
 import GameSprint from './components/Games/GameSprint/GameSprint';
-
-const words = [
-	{ word: 'name', wordTranslate: 'имя', audio: '' },
-	{
-		word: 'cat',
-		wordTranslate: 'кот',
-		audio: '',
-	},
-	{
-		word: 'dog',
-		wordTranslate: 'собака',
-		audio: '',
-	},
-];
+import { getAllWords } from './store/book/slices';
 
 function App() {
 	const dispatch = useDispatch();
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
+
 	const authorized = useSelector(getAuthorized);
+	const [words, setWords] = useState(null);
+	const allWords = useSelector(getAllWords);
+
+	useEffect(() => {
+		if (allWords.length) {
+			setWords(allWords);
+		}
+	}, [allWords]);
 
 	useEffect(() => {
 		if (!authorized) {
@@ -55,7 +51,7 @@ function App() {
 	return (
 		<React.Fragment>
 			<Header />
-			<GameSprint wordData={words} />
+			{words && <GameSprint wordData={words} />}
 			<main className={c.container}>
 				<Switch>
 					<Route exact path="/">

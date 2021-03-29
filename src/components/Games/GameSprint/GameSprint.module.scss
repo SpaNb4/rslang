@@ -4,9 +4,7 @@
 	align-items: center;
 	justify-content: center;
 	height: 100%;
-	padding: 0 20px;
 	color: $color-black;
-	background-color: $color-secondary;
 	background-image: linear-gradient(315deg, $color-secondary 0%, $color-secondary 74%);
 }
 
@@ -42,7 +40,8 @@
 	border-radius: 5px;
 	outline: none;
 	margin-top: 20px;
-	margin-left: 20px;
+	margin-left: 5px;
+	margin-right: 5px;
 
 	&:hover,
 	&:active {
@@ -51,58 +50,33 @@
 	}
 }
 
-.timer {
-	background-color: $color-primary;
-}
-
-/* .currWord {
-	position: absolute;
-	top: 0;
-	font-size: 36px;
-}
-
-.wordList {
+.border {
+	border: 1px solid $color-black;
+	align-items: center;
 	display: flex;
+	flex-direction: column;
+	margin-top: 10px;
+	margin-bottom: 50px;
+	border-radius: 5px;
+}
+
+.color {
+	background-color: $color-secondary;
+	color: $color-black;
+}
+
+.buttonaudio {
+	border: none;
+	font-size: 24px;
+	line-height: 1;
+	background-color: transparent;
+	color: $color-primary;
+	display: flex;
+	align-items: center;
 	justify-content: center;
-	flex-wrap: wrap;
-	gap: 10px;
-}
 
-.wordListItem {
-	padding: 10px 10px;
-	font-size: 20px;
-
-	&:hover {
-		cursor: pointer;
-		box-shadow: 0 0 3px 2px $color-emperor;
-		background: rgba(255, 255, 255, 0.25);
-		transition: box-shadow 0.5s, background-color 0.5s;
-	}
-
-	span {
-		font-size: 14px;
+	&:hover,
+	&:active {
+		color: lighten($color-primary, 30);
 	}
 }
-
-.wrongWord {
-	background: $color-chestnut;
-	border-radius: 5px;
-
-	&:hover {
-		cursor: default;
-		box-shadow: none;
-		background: $color-chestnut;
-	}
-}
-
-.correctWord {
-	background: $color-apple;
-	border-radius: 5px;
-
-	&:hover {
-		cursor: default;
-		box-shadow: none;
-		background: $color-apple;
-	}
-}
-*/
