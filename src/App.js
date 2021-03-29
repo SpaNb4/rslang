@@ -8,6 +8,7 @@ import Team from './components/Team/Team';
 import Video from './components/Video/Video';
 import Footer from './components/Footer/Footer';
 import Book from './components/Book/Book';
+import Vocabulary from './components/Vocabulary/Vocabulary';
 
 import { getUserId, getToken, getAuthorized } from './store/app/slices';
 import { saveUserAuthData, refreshToken } from './store/app/actions';
@@ -59,6 +60,7 @@ function App() {
 						<Team />
 					</Route>
 					<Route path="/book/:group" component={Book} />
+					<Route path="/vocabulary/:group" component={Vocabulary} />
 				</Switch>
 			</main>
 			<Footer />

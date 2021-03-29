@@ -16,13 +16,15 @@ export const LocalStorageKeys = {
 	Avatar: 'avatar',
 	TokenExpireTime: 't-expire',
 	RefreshTokenExpireTime: 'rt-expire',
+	BookPage: 'bookPage',
+	VocabularyPage: 'vocabularyPage',
 };
 
 // Default Values
 export const DefaultValues = {
 	Group: '0',
 	Page: '0',
-	WordsPerPage: '20',
+	WordsPerPage: 20,
 };
 
 export const menu = {
@@ -61,18 +63,18 @@ export const menu = {
 	dictionary: [
 		{
 			linkName: 'Изучаемые слова',
-			linkId: '6',
-			listName: 'book',
+			linkId: 'trained',
+			listName: 'vocabulary',
 		},
 		{
 			linkName: 'Сложные слова',
-			linkId: '7',
-			listName: 'book',
+			linkId: 'hard',
+			listName: 'vocabulary',
 		},
 		{
 			linkName: 'Удалённые слова',
-			linkId: '8',
-			listName: 'book',
+			linkId: 'removed',
+			listName: 'vocabulary',
 		},
 	],
 	games: [

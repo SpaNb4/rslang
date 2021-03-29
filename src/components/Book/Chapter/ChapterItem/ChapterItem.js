@@ -2,14 +2,13 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import parse from 'html-react-parser';
-import classes from './ChapterItem.module.scss';
-import * as _ from 'lodash';
+import classes from '../../../ChapterItem//ChapterItem.module.scss';
 
 import { FaVolumeUp } from 'react-icons/fa';
 
 import Button from '../../../Button/Button';
 
-import { buildUrl } from '../../../../common/helpers';
+import { buildUrl, handleVolumeUp } from '../../../../common/helpers';
 import { ExternalUrls, DictionarySections } from '../../../../common/constants';
 import { setUserWord, updateUserWord } from '../../../../store/dictionary/actions';
 import { getUserId, getAuthorized, getToken } from '../../../../store/app/slices';
@@ -40,18 +39,6 @@ function ChapterItem({ wordData }) {
 		setIsWordRemoved(true);
 		setWordDifficulty(DictionarySections.Removed);
 	}, [userId, token, wordData]);
-
-	const handleVolumeUp = useCallback(() => {
-		const { audio, audioMeaning, audioExample } = wordData;
-		const urlList = [audio, audioMeaning, audioExample];
-		const audioList = urlList.map((url) => new Audio(buildUrl(ExternalUrls.Root, url)));
-		for (let i = 0; i < audioList.length - 1; i += 1) {
-			audioList[i].onended = () => {
-				audioList[i + 1].play();
-			};
-		}
-		_.first(audioList).play();
-	});
 
 	useEffect(() => {
 		if (authorized) {
