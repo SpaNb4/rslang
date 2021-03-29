@@ -7,7 +7,7 @@ function Button(props) {
 		<button
 			type="button"
 			onClick={props.handler}
-			className={classes.button}
+			className={classes.Button}
 			disabled={props.disabled}
 			difficulty={props.difficulty}
 		>

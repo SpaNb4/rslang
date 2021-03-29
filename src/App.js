@@ -26,11 +26,17 @@ function App() {
 			const userAuth = localStorage.getItem(LocalStorageKeys.User) || null;
 			const tokenExpireTime = localStorage.getItem(LocalStorageKeys.TokenExpireTime) || null;
 			const refreshTokenExpireTime = localStorage.getItem(LocalStorageKeys.RefreshTokenExpireTime) || null;
+
 			if (userAuth && tokenExpireTime && refreshTokenExpireTime) {
 				const userAuthData = JSON.parse(userAuth);
-				if (Date.now() < JSON.parse(tokenExpireTime)) {
+
+				const isTokenExpired = Date.now() > JSON.parse(tokenExpireTime);
+				if (!isTokenExpired) {
 					dispatch(saveUserAuthData(userAuthData));
-				} else if (Date.now() < JSON.parse(refreshTokenExpireTime)) {
+				}
+
+				const isRefreshTokenExpired = Date.now() < JSON.parse(refreshTokenExpireTime);
+				if (isTokenExpired && !isRefreshTokenExpired) {
 					dispatch(refreshToken(userAuthData.userId, userAuthData.refreshToken));
 				}
 			}

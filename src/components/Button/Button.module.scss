@@ -1,4 +1,4 @@
-.button {
+.Button {
 	position: relative;
 	cursor: pointer;
 	display: flex;
@@ -27,7 +27,7 @@
 	}
 }
 
-.button[difficulty='hard'] {
+.Button[difficulty='hard'] {
 	background: $color-regent-gray;
 
 	&:hover {

@@ -1,0 +1,53 @@
+.OptionsPopup {
+	display: none;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 270px;
+	box-shadow: $box-shadow-2;
+	z-index: 2;
+
+	&[data-display='block'] {
+		display: block;
+	}
+
+	&[data-display='none'] {
+		display: none;
+	}
+
+	.OptionsSection {
+		.SectionItem {
+			display: flex;
+			justify-content: space-evenly;
+			align-items: center;
+
+			.IconContainer {
+				width: 24px;
+				height: 24px;
+				position: relative;
+				cursor: pointer;
+				z-index: inherit;
+
+				.ItemInput {
+					opacity: 0;
+					width: 100%;
+					height: 100%;
+					z-index: 3;
+				}
+
+				.IconCheck {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					z-index: 2;
+				}
+
+				.ItemInput:checked + .IconCheck {
+					color: $color-primary;
+				}
+			}
+		}
+	}
+}

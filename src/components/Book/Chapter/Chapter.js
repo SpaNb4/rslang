@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import classes from './Chapter.module.scss';
 
 import ChapterItem from './ChapterItem/ChapterItem';
+import OptionsControl from './OptionsControl/OptionsControl';
+import Options from './Options/Options';
 
 import { fetchAggregatedWords, fetchWords, updateCurrentGroup } from '../../../store/book/actions';
 import { getWordsLoading, getAllWords, getCurrentPage, getAggregatedWordsWords } from '../../../store/book/slices';
@@ -20,6 +22,7 @@ function Chapter() {
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
 	const authorized = useSelector(getAuthorized);
+	const [isOptionsOpen, setIsOptionsOpen] = useState(false);
 
 	useEffect(() => {
 		if (authorized) {
@@ -40,6 +43,10 @@ function Chapter() {
 		dispatch(updateCurrentGroup(group));
 	}, [group]);
 
+	const openOptions = useCallback(() => {
+		setIsOptionsOpen(!isOptionsOpen);
+	}, [isOptionsOpen]);
+
 	const chapterItems = authorized ? (
 		aggregatedWords && aggregatedWords.length ? (
 			aggregatedWords.map((word, index) => <ChapterItem wordData={word} key={index} />)
@@ -52,8 +59,10 @@ function Chapter() {
 
 	return (
 		<div className={classes.chapter}>
-			<div className={classes.chapterTitle}>
-				<h2>{`Раздел ${group}`}</h2>
+			<div className={classes.chapterHeader}>
+				<h2 className={classes.chapterTitle}>{`Раздел ${group}`}</h2>
+				<OptionsControl openOptions={openOptions} />
+				<Options isOpen={isOptionsOpen} />
 			</div>
 			{loading && <React.Fragment>Loading...</React.Fragment>}
 			{chapterItems}
