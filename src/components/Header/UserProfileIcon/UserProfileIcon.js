@@ -18,9 +18,12 @@ function UserProfileIcon() {
 	}, [authorized]);
 
 	const icon = imageSrc ? (
-		<div className={classes.iconContainer}>
-			<img className={classes.profileImage} src={imageSrc} alt="user profile image" />
-		</div>
+		<div
+			className={classes.iconContainer}
+			style={{
+				background: `no-repeat center/cover url(${imageSrc})`,
+			}}
+		/>
 	) : (
 		<FaUserGraduate />
 	);
