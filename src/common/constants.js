@@ -38,6 +38,8 @@ export const DefaultValues = {
 	Group: '0',
 	Page: '0',
 	WordsPerPage: '20',
+	delay: 1000,
+	attemptesNumber: 3,
 };
 
 export const menu = {
@@ -222,3 +224,18 @@ export const globalClasses = {
 	button: 'button',
 	visuallyHidden: 'visually-hidden',
 };
+
+export const questionsData = [
+	{
+		question: 'правильный перевод',
+		key: 'wordTranslate',
+	},
+	{
+		question: '',
+		key: 'textMeaningTranslate',
+	},
+	{
+		question: 'правильную транскрипцию',
+		key: 'transcription',
+	},
+];

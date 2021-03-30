@@ -1,29 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllWords } from '../../store/book/slices';
+import { getUserWords } from '../../store/dictionary/slices';
 import { differenceBy, sampleSize } from 'lodash';
 import { getAnswers, getAttempts, getKeys, getSubmitted, getWords } from '../../store/quiz/slices';
 import { fetchAttempts, fetchKeys, reset, setWords, submit } from '../../store/quiz/actions';
 import Loader from '../Loader/Loader';
 import DailyQuizItem from './QuizItem';
-import { globalClasses as c, LocalStorageKeys as l } from '../../common/constants';
+import { globalClasses as c, LocalStorageKeys as l, questionsData, DefaultValues as d } from '../../common/constants';
 import classes from './Quiz.module.scss';
 import { FaUndoAlt } from 'react-icons/fa';
-
-const questionsData = [
-	{
-		question: 'правильный перевод',
-		key: 'wordTranslate',
-	},
-	{
-		question: '',
-		key: 'textMeaningTranslate',
-	},
-	{
-		question: 'правильную транскрипцию',
-		key: 'transcription',
-	},
-];
 
 const Quiz = () => {
 	const dispatch = useDispatch();
@@ -32,7 +17,7 @@ const Quiz = () => {
 	const [variants, setVariants] = useState([]);
 
 	//temp
-	const allWords = useSelector(getAllWords);
+	const userWords = useSelector(getUserWords);
 	const words = useSelector(getWords);
 	const submitted = useSelector(getSubmitted);
 	const answers = useSelector(getAnswers);
@@ -44,43 +29,48 @@ const Quiz = () => {
 	}, []);
 
 	useEffect(() => {
-		const localAttempts = localStorage.getItem(l.QuizAttempts) || null;
-
-		if (localAttempts) {
-			dispatch(fetchAttempts(localAttempts));
-		} else {
-			localStorage.setItem(l.QuizAttempts, attempts);
-		}
-	}, [words]);
-
-	useEffect(() => {
 		if (date) {
 			const localDate = localStorage.getItem(l.QuizDate) || null;
 
 			if (!localDate) {
 				localStorage.setItem(l.QuizDate, date);
 			} else if (localDate !== date) {
-				dispatch(submit(3));
+				dispatch(submit(d.attemptesNumber));
 			}
 		}
 	}, [date]);
 
 	useEffect(() => {
 		let timeout;
-		if (allWords.length && !words.length) {
-			timeout = setTimeout(() => dispatch(setWords(sampleSize(allWords, questionsData.length))), 1000);
+		if (userWords.length && !words.length) {
+			timeout = setTimeout(() => dispatch(setWords(sampleSize(userWords, questionsData.length))), d.delay);
 		}
+
 		return () => {
 			clearTimeout(timeout);
 		};
-	}, [allWords, words]);
+	}, [userWords, words]);
 
 	useEffect(() => {
 		if (words.length) {
-			const variants = questionsData.map((_, index) => words.map((word) => word[questionsData[index].key]));
+			const variants = questionsData.map((_, index) =>
+				words.map((word) => word.optional[questionsData[index].key])
+			);
 
 			setVariants(variants);
 			dispatch(fetchKeys(variants.map((variant, index) => variant[index])));
+		}
+	}, [words]);
+
+	useEffect(() => {
+		if (words.length) {
+			const localAttempts = localStorage.getItem(l.QuizAttempts) || null;
+
+			if (localAttempts) {
+				dispatch(fetchAttempts(localAttempts));
+			} else {
+				localStorage.setItem(l.QuizAttempts, attempts);
+			}
 		}
 	}, [words]);
 
@@ -99,57 +89,65 @@ const Quiz = () => {
 		<div className={classes.root}>
 			<span className={classes.date}>{date}</span>
 			<h5 className={classes.title}>Викторина</h5>
-			<p className={classes.attempts}>
-				{attempts ? (
-					<>
-						У вас осталось {attempts} попытк{attempts > 1 ? 'и' : 'а'}
-					</>
-				) : (
-					<>У вас больше нет попыток. Возвращайтесь завтра</>
-				)}
-			</p>
-			{words.length && variants.length ? (
-				<form className={classes.form} onSubmit={handleSubmit} aria-disabled={submitted}>
-					{words.map((wordData, index) => {
-						return (
-							<DailyQuizItem
-								key={`quiz-${index}`}
-								variants={variants[index]}
-								word={wordData.word}
-								question={questionsData[index].question}
-								keyIndex={index}
-							/>
-						);
-					})}
-
-					<button type="submit" className={c.button}>
-						Проверить ответы
-					</button>
-				</form>
-			) : (
-				<Loader />
-			)}
-			{submitted && (
+			{userWords.length ? (
 				<>
-					<p className={classes.errors}>
-						{errors ? (
-							<>
-								У вас {errors} ошибк{errors > 1 ? 'и' : 'а'}
-							</>
-						) : (
-							<>Поздравляем! У вас нет ошибок</>
-						)}
-					</p>
-					<button
-						type="button"
-						onClick={handleClick}
-						className={classes.restartButton}
-						aria-disabled={!attempts}
-					>
-						<FaUndoAlt />
-						<span>Сыграть еще раз</span>
-					</button>
+					{words.length && variants.length ? (
+						<>
+							<p className={classes.attempts}>
+								{attempts ? (
+									<>
+										Осталось {attempts} попытк{attempts > 1 ? 'и' : 'а'}
+									</>
+								) : (
+									<>Попытки закончились. Возвращайтесь завтра</>
+								)}
+							</p>
+							<form className={classes.form} onSubmit={handleSubmit} aria-disabled={submitted}>
+								{words.map(({ optional }, index) => {
+									return (
+										<DailyQuizItem
+											key={`quiz-${index}`}
+											variants={variants[index]}
+											word={optional.word}
+											question={questionsData[index].question}
+											keyIndex={index}
+										/>
+									);
+								})}
+
+								<button type="submit" className={c.button}>
+									Проверить ответы
+								</button>
+							</form>
+						</>
+					) : (
+						<Loader />
+					)}
+					{submitted && (
+						<>
+							<p className={classes.errors}>
+								{errors ? (
+									<>
+										У вас {errors} ошибк{errors > 1 ? 'и' : 'а'}
+									</>
+								) : (
+									<>Поздравляем! У вас нет ошибок</>
+								)}
+							</p>
+							<button
+								type="button"
+								onClick={handleClick}
+								className={classes.restartButton}
+								aria-disabled={!attempts}
+							>
+								<FaUndoAlt />
+								<span>Сыграть еще раз</span>
+							</button>
+						</>
+					)}
 				</>
+			) : (
+				<p className={classes.errors}>нет изученных слов</p>
 			)}
 		</div>
 	);

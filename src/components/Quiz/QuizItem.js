@@ -5,7 +5,7 @@ import QuizInput from './QuizInput';
 import classes from './Quiz.module.scss';
 
 const QuizItem = ({ word, variants, question, keyIndex }) => {
-	const shuffledVariants = useMemo(() => shuffle(variants), []);
+	const shuffledVariants = useMemo(() => shuffle(variants), [variants]);
 
 	return (
 		<fieldset className={classes.fieldset}>
