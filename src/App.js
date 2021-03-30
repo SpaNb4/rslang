@@ -51,7 +51,6 @@ function App() {
 	return (
 		<React.Fragment>
 			<Header />
-			{words && <GameSprint wordData={words} />}
 			<main className={c.container}>
 				<Switch>
 					<Route exact path="/">
@@ -62,6 +61,7 @@ function App() {
 					<Route path="/book/:group" component={Book} />
 					<Route path="/vocabulary/:group" component={Vocabulary} />
 					<Route path="/quiz" component={Quiz} />
+					<Route path="/game/sprint">{words && <GameSprint wordData={words} />}</Route>
 				</Switch>
 			</main>
 			<Footer />

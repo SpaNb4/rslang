@@ -94,6 +94,7 @@ function GameSprintMain({ wordData, onResult }) {
 				<Timer onTimeout={handleTimeout} />
 				<div className={classes.sprint}>
 					{result !== null && (result ? <div>Ура!</div> : <div>Упс, ошибка</div>)}
+					{result === null && <div>Удачи!</div>}
 					<div className={classes.border}>
 						<button type="button" className={classes.buttonaudio} onClick={handlePlaySound}>
 							<FaVolumeUp />
