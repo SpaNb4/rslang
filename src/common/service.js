@@ -1,4 +1,5 @@
 import { LocalStorageKeys } from './constants';
+import * as _ from 'lodash';
 
 export function checkIsTokenExpired() {
 	let isTokenExpired;
@@ -20,16 +21,16 @@ export function saveRemovedPagesToLocalStorage(userId, group, page) {
 			if (removedPages[userId][group]) {
 				removedPages = {
 					...removedPages,
-					userId: { ...removedPages[userId], [group]: [...removedPages[userId][group], page] },
+					[userId]: { ...removedPages[userId], [group]: _.sortBy([...removedPages[userId][group], page]) },
 				};
 			} else {
-				removedPages = { ...removedPages, userId: { ...removedPages[userId], [group]: [page] } };
+				removedPages = { ...removedPages, [userId]: { ...removedPages[userId], [group]: [page] } };
 			}
 		} else {
-			removedPages = { ...removedPages, userId: { [group]: [page] } };
+			removedPages = { ...removedPages, [userId]: { [group]: [page] } };
 		}
 	} else {
-		removedPages = { userId: { [group]: [page] } };
+		removedPages = { [userId]: { [group]: [page] } };
 	}
 	localStorage.setItem(LocalStorageKeys.RemovedPages, JSON.stringify(removedPages));
 }

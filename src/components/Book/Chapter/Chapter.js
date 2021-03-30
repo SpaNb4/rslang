@@ -58,19 +58,35 @@ function Chapter() {
 	}
 
 	useEffect(() => {
-		if (removedWords && removedWords.length === DefaultValues.WordsPerPage) {
-			dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: +page }));
-			saveRemovedPagesToLocalStorage(userId, group, page);
-			const nextPage = String(+page + 1);
-			setPage(nextPage);
+		const currentPage = +page;
+		if (removedWords && removedWords.length === DefaultValues.WordsPerPage && currentPage < pageCount) {
+			console.log(currentPage);
+			dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: currentPage }));
+			saveRemovedPagesToLocalStorage(userId, +group - 1, currentPage);
+			setRemovedWords([]);
+
+			if (removedPages) {
+				let page;
+				for (let nextPage = currentPage + 1; nextPage < pageCount - 1 && !page; nextPage += 1) {
+					if (!removedPages.includes(nextPage)) {
+						page = nextPage;
+						handlePageClick({ selected: page });
+					}
+				}
+			} else {
+				let nextPage = currentPage + 1;
+				handlePageClick(nextPage);
+			}
 		}
-	}, [removedWords, page, group]);
+	}, [removedWords, page, group, removedPages]);
+
+	console.log(page);
 
 	useEffect(() => {
 		if (removedPages && removedPages.length === pageCount) {
 			setIsNoMoreWords(true);
 		}
-	}, [removedPages]);
+	}, [removedPages, page]);
 
 	useEffect(() => {
 		if (authorized) {

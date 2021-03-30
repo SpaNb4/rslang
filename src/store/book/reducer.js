@@ -1,6 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import * as actions from './actions';
 import { DefaultValues } from '../../common/constants';
+import * as _ from 'lodash';
 
 const initialState = {
 	words: [],
@@ -48,7 +49,7 @@ const reducer = createReducer(initialState, (builder) => {
 		})
 		.addCase(actions.updateRemovedPagesForGroup, (state, { payload: { group, page } }) => {
 			if (state.removedPages[group]) {
-				state.removedPages = { ...state.removedPages, [group]: [...state.removedPages[group], page] };
+				state.removedPages = { ...state.removedPages, [group]: _.sortBy([...state.removedPages[group], page]) };
 			} else {
 				state.removedPages = { ...state.removedPages, [group]: [page] };
 			}
