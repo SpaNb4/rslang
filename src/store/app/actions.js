@@ -2,12 +2,13 @@ import * as types from './action-types';
 import axios from 'axios';
 import { createAction } from '@reduxjs/toolkit';
 import { ExternalUrls, LocalStorageKeys } from '../../common/constants';
+import { updateAttempts } from '../../common/helpers';
 
 export const registerSuccess = createAction(types.REGISTER_SUCCESS);
 export const registerFailure = createAction(types.REGISTER_FAILURE);
 export const loginSuccess = createAction(types.LOGIN_SUCCESS);
 export const loginFailure = createAction(types.LOGIN_FAILURE);
-export const logout = createAction(types.LOGOUT_SUCCESS);
+export const logoutSuccess = createAction(types.LOGOUT_SUCCESS);
 export const saveUserAuthData = createAction(types.SAVE_USER_AUTH_DATA);
 export const menuToggle = createAction(types.MENU_TOGGLE);
 
@@ -44,7 +45,15 @@ export const login = (email, password) => async (dispatch) => {
 		});
 		localStorage.setItem(LocalStorageKeys.User, JSON.stringify(data));
 		dispatch(loginSuccess(data));
+		// update quiz attempts
+		updateAttempts();
 	} catch (error) {
 		dispatch(loginFailure(error));
 	}
+};
+
+export const logout = () => (dispatch) => {
+	dispatch(logoutSuccess());
+	// update quiz attempts
+	updateAttempts();
 };

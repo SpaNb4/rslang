@@ -1,16 +1,21 @@
 .root {
-	padding-bottom: 10px;
+	padding: 10px 0;
 	text-align: center;
 	font-size: 1.1em;
 	color: $color-emperor;
 	font-weight: 600;
 }
 
+.title {
+	color: $color-chestnut;
+	font-size: 1.8em;
+	margin-bottom: 15px;
+}
+
 .date {
 	display: inline-block;
 	position: relative;
 	padding: 10px 0;
-	margin-bottom: 15px;
 
 	&::after {
 		content: '';
@@ -24,12 +29,9 @@
 	}
 }
 
-.title {
-	font-size: 1.5em;
-}
-
 .attempts {
-	padding: 20px 0;
+	margin-bottom: 20px;
+	padding: 10px 0;
 }
 
 .form {

@@ -25,7 +25,7 @@ const reducer = createReducer(initialState, (builder) => {
 			state.user = action.payload;
 			state.auth = true;
 		})
-		.addCase(actions.logout, (state) => {
+		.addCase(actions.logoutSuccess, (state) => {
 			state.user = null;
 			state.auth = false;
 		})
