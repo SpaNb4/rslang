@@ -8,12 +8,12 @@ import { FaVolumeUp } from 'react-icons/fa';
 
 import Button from '../../../Button/Button';
 
-import { buildUrl, handleVolumeUp } from '../../../../common/helpers';
+import { buildUrl } from '../../../../common/helpers';
 import { ExternalUrls, DictionarySections } from '../../../../common/constants';
 import { setUserWord, updateUserWord } from '../../../../store/dictionary/actions';
 import { getUserId, getAuthorized, getToken } from '../../../../store/app/slices';
 import { getIsTranslationOn, getIsEditDictionaryButtons, getWordsLoading } from '../../../../store/book/slices';
-function ChapterItem({ wordData, saveToRemoved }) {
+function ChapterItem({ wordData, saveToRemoved, handleVolume, isPlayDisabled }) {
 	const dispatch = useDispatch();
 	const loading = useSelector(getWordsLoading);
 	const authorized = useSelector(getAuthorized);
@@ -69,7 +69,7 @@ function ChapterItem({ wordData, saveToRemoved }) {
 					<div>{wordData.word}</div>
 					<div>{wordData.transcription}</div>
 					<div>{wordData.wordTranslate}</div>
-					<Button handler={handleVolumeUp}>
+					<Button handler={() => handleVolume(wordData)} disabled={isPlayDisabled}>
 						<FaVolumeUp />
 					</Button>
 				</div>
@@ -155,6 +155,8 @@ ChapterItem.propTypes = {
 		page: PropTypes.number,
 	}).isRequired,
 	saveToRemoved: PropTypes.func,
+	handleVolume: PropTypes.func,
+	isPlayDisabled: PropTypes.bool,
 };
 
 export default ChapterItem;

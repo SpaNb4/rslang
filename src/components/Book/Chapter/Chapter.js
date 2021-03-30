@@ -22,8 +22,9 @@ import {
 	getRemovedPagesForGroup,
 } from '../../../store/book/slices';
 import { getUserId, getToken, getAuthorized } from '../../../store/app/slices';
-import { DictionarySections, LocalStorageKeys, DefaultValues, menu } from '../../../common/constants';
+import { DictionarySections, LocalStorageKeys, DefaultValues, menu, ExternalUrls } from '../../../common/constants';
 import Pagination from '../../Pagination/Pagination';
+import { handleVolumeUp, buildUrl } from '../../../common/helpers';
 
 function Chapter() {
 	const dispatch = useDispatch();
@@ -48,6 +49,7 @@ function Chapter() {
 	const removedPages = useSelector(getRemovedPagesForGroup);
 	const [isNoMoreWords, setIsNoMoreWords] = useState(false);
 	const [forcedPage, setForcedPage] = useState();
+	const [isCurrentlyPlaying, setIsCurrentlyPlaying] = useState(false);
 
 	function handlePageClick(data) {
 		setPage(data.selected);
@@ -90,13 +92,36 @@ function Chapter() {
 		[removedWords]
 	);
 
+	const handleVolume = useCallback((wordData) => {
+		handleVolumeUp(wordData);
+		const { audio, audioMeaning, audioExample } = wordData;
+		const urlList = [audio, audioMeaning, audioExample];
+		const audioList = urlList.map((url) => new Audio(buildUrl(ExternalUrls.Root, url)));
+		setIsCurrentlyPlaying(true);
+		audioList[audioList.length - 1].onended = () => {
+			setIsCurrentlyPlaying(false);
+		};
+		for (let i = 0; i < audioList.length - 1; i += 1) {
+			audioList[i].onended = () => {
+				audioList[i + 1].play();
+			};
+		}
+		_.first(audioList).play();
+	});
+
 	const chapterItems = authorized ? (
 		isNoMoreWords ? (
 			<div>Все слова удалены из раздела</div>
 		) : (
 			aggregatedWords &&
 			_.differenceBy(aggregatedWords, removedWords, 'word').map((word, index) => (
-				<ChapterItem wordData={word} key={index} saveToRemoved={saveToRemoved} />
+				<ChapterItem
+					wordData={word}
+					key={index}
+					saveToRemoved={saveToRemoved}
+					handleVolume={handleVolume}
+					isPlayDisabled={isCurrentlyPlaying ? true : false}
+				/>
 			))
 		)
 	) : (
