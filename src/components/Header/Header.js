@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import AuthModal from './AuthModal/AuthModal';
 import DropDown from './DropDown/DropDown';
 import { login, logout, menuToggle, register } from '../../store/app/actions';
@@ -22,10 +22,11 @@ import classes from './Header.module.scss';
 import { menu, LocalStorageKeys } from './../../common/constants';
 import { reset } from '../../store/quiz/actions';
 
+const quizLink = 'quiz';
+const statsLink = 'stats';
+
 const Header = () => {
 	const dispatch = useDispatch();
-
-	console.log(useParams());
 
 	const menuHidden = useSelector(getMenu);
 	const auth = useSelector(getAuthorized);
@@ -103,6 +104,16 @@ const Header = () => {
 		};
 	}, [menuHidden, loginHidden, registerHidden]);
 
+	const { pathname } = useLocation();
+
+	const [currentQuiz, setCurrentQuiz] = useState(false);
+	const [currentStats, setCurrentStats] = useState(false);
+
+	useEffect(() => {
+		setCurrentQuiz(pathname.includes(quizLink));
+		setCurrentStats(pathname.includes(statsLink));
+	}, [pathname]);
+
 	return (
 		<>
 			<header className={classes.header}>
@@ -132,15 +143,20 @@ const Header = () => {
 								<DropDown array={menu.games} name="Тренировки" icon={<FaTableTennis />} />
 							</li>
 							<li className={classes.menuItem}>
-								<Link className={classes.menuLink} to="/">
-									<FaPercentage />
-									<span>Статистика</span>
+								<Link
+									className={classes.menuLink}
+									to={`/${quizLink}`}
+									aria-current={currentQuiz}
+									onClick={handleQuizReset}
+								>
+									<FaGraduationCap />
+									<span>Викторина</span>
 								</Link>
 							</li>
 							<li className={classes.menuItem}>
-								<Link className={classes.menuLink} to="/quiz" onClick={handleQuizReset}>
-									<FaGraduationCap />
-									<span>Викторина</span>
+								<Link className={classes.menuLink} to={`/${statsLink}`} aria-current={currentStats}>
+									<FaPercentage />
+									<span>Статистика</span>
 								</Link>
 							</li>
 							{auth ? (

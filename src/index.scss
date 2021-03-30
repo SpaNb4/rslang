@@ -29,7 +29,7 @@ body {
 
 a {
 	text-decoration: none;
-	transition: 0.4s ease;
+	transition: $transition;
 	outline: none;
 }
 
@@ -45,7 +45,7 @@ ul {
 button {
 	font-family: inherit;
 	cursor: pointer;
-	transition: 0.4s ease;
+	transition: $transition;
 	outline: none;
 }
 

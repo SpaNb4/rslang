@@ -25,7 +25,7 @@
 	right: 0;
 	min-width: 280px;
 	max-width: 400px;
-	transition: 0.4s ease;
+	transition: $transition;
 	z-index: 10;
 
 	&[aria-hidden='true'] {
@@ -43,7 +43,6 @@
 	top: 0;
 	right: 0;
 	min-height: 100vh;
-	padding: 20px 0;
 	background-color: $color-white;
 	box-shadow: $box-shadow-1;
 }
@@ -53,11 +52,10 @@
 	align-items: center;
 	justify-content: space-between;
 	flex-wrap: wrap;
-	padding: 0 15px;
 
-	&:not(:last-child) {
-		border-bottom: 1px solid #d6e4ec;
-	}
+	// &:not(:last-child) {
+	// 	// border-bottom: 1px solid #d6e4ec;
+	// }
 }
 
 .navLink,
@@ -95,14 +93,51 @@
 .menuLink {
 	display: flex;
 	flex-basis: 100%;
-	padding: 15px 10px;
+	padding: 15px 30px;
 	align-items: center;
 	gap: 10px;
-	color: $color-regent-gray;
+	color: $color-text;
 	font-weight: 500;
 
-	&:hover {
-		color: $color-secondary;
+	&:not(.innerLink):hover {
+		@include color($color-emperor);
+	}
+
+	&[aria-current='true'] {
+		background-color: $color-silver;
+		pointer-events: none;
+
+		svg {
+			fill: $color-text;
+		}
+	}
+}
+
+.innerLink {
+	padding-left: 50px;
+
+	&[data-color='ocean-green'] {
+		@include color($color-ocean-green);
+	}
+
+	&[data-color='scarlet'] {
+		@include color($color-scarlet);
+	}
+
+	&[data-color='secondary'] {
+		@include color($color-secondary);
+	}
+
+	&[data-color='cinnamon'] {
+		@include color($color-cinnamon);
+	}
+
+	&[data-color='sea-buckthorn'] {
+		@include color($color-sea-buckthorn);
+	}
+
+	&[data-color='cardinal'] {
+		@include color($color-cardinal);
 	}
 }
 
@@ -112,7 +147,6 @@
 	font-size: 18px;
 	line-height: 1;
 	color: $color-regent-gray;
-	transition: 0.4s ease;
 
 	&:hover {
 		color: $color-secondary;
