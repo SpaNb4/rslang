@@ -23,6 +23,7 @@
 
 		&[aria-label='disabled'] {
 			cursor: not-allowed;
+			pointer-events: none;
 		}
 	}
 

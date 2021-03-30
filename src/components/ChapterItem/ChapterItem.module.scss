@@ -119,7 +119,29 @@
 }
 
 .chapterItem[id='hard'] {
-	background: $color-lola;
+	&[data-color='ocean-green'] {
+		@include cardColor($color-ocean-green);
+	}
+
+	&[data-color='scarlet'] {
+		@include cardColor($color-scarlet);
+	}
+
+	&[data-color='secondary'] {
+		@include cardColor($color-secondary);
+	}
+
+	&[data-color='cinnamon'] {
+		@include cardColor($color-cinnamon);
+	}
+
+	&[data-color='sea-buckthorn'] {
+		@include cardColor($color-sea-buckthorn);
+	}
+
+	&[data-color='cardinal'] {
+		@include cardColor($color-cardinal);
+	}
 }
 
 .chapterItem[id='removed'] {

@@ -13,7 +13,7 @@ import { ExternalUrls, DictionarySections } from '../../../../common/constants';
 import { setUserWord, updateUserWord } from '../../../../store/dictionary/actions';
 import { getUserId, getAuthorized, getToken } from '../../../../store/app/slices';
 import { getIsTranslationOn, getIsEditDictionaryButtons, getWordsLoading } from '../../../../store/book/slices';
-function ChapterItem({ wordData, saveToRemoved, handleVolume, isPlayDisabled }) {
+function ChapterItem({ wordData, saveToRemoved, handleVolume, isPlayDisabled, color }) {
 	const dispatch = useDispatch();
 	const loading = useSelector(getWordsLoading);
 	const authorized = useSelector(getAuthorized);
@@ -60,7 +60,7 @@ function ChapterItem({ wordData, saveToRemoved, handleVolume, isPlayDisabled }) 
 	}, [wordData, authorized]);
 
 	return (
-		<div className={classes.chapterItem} id={wordDifficulty}>
+		<div className={classes.chapterItem} id={wordDifficulty} data-color={color}>
 			<div className={classes.itemImage}>
 				<img src={buildUrl(ExternalUrls.Root, wordData.image)} alt={wordData.word} />
 			</div>
@@ -69,7 +69,7 @@ function ChapterItem({ wordData, saveToRemoved, handleVolume, isPlayDisabled }) 
 					<div>{wordData.word}</div>
 					<div>{wordData.transcription}</div>
 					<div>{wordData.wordTranslate}</div>
-					<Button handler={() => handleVolume(wordData)} disabled={isPlayDisabled}>
+					<Button handler={() => handleVolume(wordData)} disabled={isPlayDisabled} color={color}>
 						<FaVolumeUp />
 					</Button>
 				</div>
@@ -105,10 +105,10 @@ function ChapterItem({ wordData, saveToRemoved, handleVolume, isPlayDisabled }) 
 					isEditDictionaryButtons ? classes.itemSettings : [classes.itemSettings, classes.Hide].join(' ')
 				}
 			>
-				<Button handler={saveToDictionaryHard} disabled={!authorized} difficulty={wordDifficulty}>
+				<Button handler={saveToDictionaryHard} disabled={!authorized} difficulty={wordDifficulty} color={color}>
 					Сложное слово
 				</Button>
-				<Button handler={saveToDictionaryRemoved} disabled={!authorized || loading}>
+				<Button handler={saveToDictionaryRemoved} disabled={!authorized || loading} color={color}>
 					Удалить
 				</Button>
 			</div>
@@ -157,6 +157,7 @@ ChapterItem.propTypes = {
 	saveToRemoved: PropTypes.func,
 	handleVolume: PropTypes.func,
 	isPlayDisabled: PropTypes.bool,
+	color: PropTypes.string,
 };
 
 export default ChapterItem;

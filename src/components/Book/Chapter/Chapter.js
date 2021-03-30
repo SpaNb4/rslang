@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import * as _ from 'lodash';
 import classes from './Chapter.module.scss';
+import titleClasses from './ChapterTitle.module.scss';
 import menuClasses from '../../Header/Header.module.scss';
 
 import ChapterItem from './ChapterItem/ChapterItem';
@@ -121,11 +122,21 @@ function Chapter() {
 					saveToRemoved={saveToRemoved}
 					handleVolume={handleVolume}
 					isPlayDisabled={isCurrentlyPlaying ? true : false}
+					color={menu.sections[+word.group].color}
 				/>
 			))
 		)
 	) : (
-		words && words.map((word, index) => <ChapterItem wordData={word} key={index} />)
+		words &&
+		words.map((word, index) => (
+			<ChapterItem
+				wordData={word}
+				key={index}
+				handleVolume={handleVolume}
+				isPlayDisabled={isCurrentlyPlaying ? true : false}
+				color={menu.sections[+word.group].color}
+			/>
+		))
 	);
 
 	const gamesList = (
@@ -151,7 +162,9 @@ function Chapter() {
 		<div className={classes.chapter}>
 			<div className={classes.chapterHeader}>
 				<div className={classes.chapterTitleContainer}>
-					<h2 className={classes.chapterTitle}>{`Раздел ${group}`}</h2>
+					<h2 className={titleClasses.chapterTitle} data-color={menu.sections[+group - 1].color}>
+						{`Раздел ${group}`}
+					</h2>
 					<OptionsControl openOptions={openOptions} />
 					<Options isOpen={isOptionsOpen} />
 				</div>
