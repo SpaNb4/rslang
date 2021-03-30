@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import classes from './Options.module.scss';
 
-import OptionsInput from './OptionsInput';
+import OptionsInput from './OptionsInput/OptionsInput';
 
 import { getIsTranslationOn, getIsEditDictionaryButtons } from '../../../../store/book/slices';
 import { updateIsTranslationOn, updateIsEditDictionaryButtons } from '../../../../store/book/actions';

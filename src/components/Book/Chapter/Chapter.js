@@ -1,8 +1,9 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import * as _ from 'lodash';
 import classes from './Chapter.module.scss';
+import menuClasses from '../../Header/Header.module.scss';
 
 import ChapterItem from './ChapterItem/ChapterItem';
 import OptionsControl from './OptionsControl/OptionsControl';
@@ -21,7 +22,7 @@ import {
 	getRemovedPagesForGroup,
 } from '../../../store/book/slices';
 import { getUserId, getToken, getAuthorized } from '../../../store/app/slices';
-import { DictionarySections, LocalStorageKeys, DefaultValues } from '../../../common/constants';
+import { DictionarySections, LocalStorageKeys, DefaultValues, menu } from '../../../common/constants';
 import Pagination from '../../Pagination/Pagination';
 
 function Chapter() {
@@ -102,12 +103,34 @@ function Chapter() {
 		words && words.map((word, index) => <ChapterItem wordData={word} key={index} />)
 	);
 
+	const gamesList = (
+		<ul className={classes.gamesList}>
+			{menu.games.map(({ listName, linkName, linkId, icon, color }, index) => {
+				return (
+					<li className={[menuClasses.menuItem, classes.gamesListItem].join(' ')} key={index}>
+						<Link
+							className={[menuClasses.menuLink, menuClasses.innerLink, classes.listItemLink].join(' ')}
+							to={`/${listName}/${linkId}`}
+							data-color={color}
+						>
+							{icon}
+							<span>{linkName}</span>
+						</Link>
+					</li>
+				);
+			})}
+		</ul>
+	);
+
 	return (
 		<div className={classes.chapter}>
 			<div className={classes.chapterHeader}>
-				<h2 className={classes.chapterTitle}>{`Раздел ${group}`}</h2>
-				<OptionsControl openOptions={openOptions} />
-				<Options isOpen={isOptionsOpen} />
+				<div className={classes.chapterTitleContainer}>
+					<h2 className={classes.chapterTitle}>{`Раздел ${group}`}</h2>
+					<OptionsControl openOptions={openOptions} />
+					<Options isOpen={isOptionsOpen} />
+				</div>
+				<div className={classes.gamesListContainer}>{gamesList}</div>
 			</div>
 			{loading && <React.Fragment>Loading...</React.Fragment>}
 			{chapterItems}
