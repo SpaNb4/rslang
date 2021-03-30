@@ -138,7 +138,7 @@ const Quiz = () => {
 								type="button"
 								onClick={handleClick}
 								className={classes.restartButton}
-								aria-disabled={!attempts}
+								aria-disabled={attempts < 1}
 							>
 								<FaUndoAlt />
 								<span>Сыграть еще раз</span>
