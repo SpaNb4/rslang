@@ -4,6 +4,7 @@ import { PropTypes } from 'prop-types';
 import { FaCamera, FaTimes } from 'react-icons/fa';
 import classes from './AuthModal.module.scss';
 import { globalClasses as c } from '../../../common/constants';
+import { updateAttempts } from '../../../common/helpers';
 
 const AuthModal = ({ hidden, buttonName, callback, reg, title, handleClose }) => {
 	const dispatch = useDispatch();
@@ -31,6 +32,7 @@ const AuthModal = ({ hidden, buttonName, callback, reg, title, handleClose }) =>
 			uploadBtnRef.current.dataset.error = 'true';
 		} else {
 			dispatch(callback(email, password, username, image));
+			updateAttempts();
 		}
 	};
 

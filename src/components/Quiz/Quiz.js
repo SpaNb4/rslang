@@ -37,6 +37,9 @@ const Quiz = () => {
 			if (!localDate) {
 				localStorage.setItem(l.QuizDate, date);
 			} else if (localDate !== date) {
+				console.log(localDate, date);
+
+				console.log(true);
 				updateAttempts();
 			}
 		}
@@ -103,40 +106,50 @@ const Quiz = () => {
 				<Loader />
 			) : (
 				<>
-					<span className={classes.date}>{date}</span>
-					{words.length && variants.length ? (
+					{userWords.length ? (
 						<>
-							<p className={classes.attempts}>
-								{attempts > 0 ? (
-									<>
-										Осталось {attempts} попытк{attempts > 1 ? 'и' : 'а'}
-									</>
-								) : (
-									<>Попытки закончились. Возвращайтесь завтра</>
-								)}
-							</p>
-							{showForm && (
-								<form className={classes.form} onSubmit={handleSubmit} aria-disabled={submitted}>
-									{words.map(({ optional }, index) => {
-										return (
-											<DailyQuizItem
-												key={`quiz-${index}`}
-												variants={variants[index]}
-												word={optional.word}
-												question={questionsData[index].question}
-												keyIndex={index}
-											/>
-										);
-									})}
+							<span className={classes.date}>{date}</span>
+							{words.length && variants.length ? (
+								<>
+									<p className={classes.attempts}>
+										{attempts > 0 ? (
+											<>
+												Осталось {attempts} попытк{attempts > 1 ? 'и' : 'а'}
+											</>
+										) : (
+											<>Попытки закончились. Возвращайтесь завтра</>
+										)}
+									</p>
+									{showForm && (
+										<form
+											className={classes.form}
+											onSubmit={handleSubmit}
+											aria-disabled={submitted}
+										>
+											{words.map(({ optional }, index) => {
+												return (
+													<DailyQuizItem
+														key={`quiz-${index}`}
+														variants={variants[index]}
+														word={optional.word}
+														question={questionsData[index].question}
+														keyIndex={index}
+													/>
+												);
+											})}
 
-									<button type="submit" className={c.button}>
-										Проверить ответы
-									</button>
-								</form>
+											<button type="submit" className={c.button}>
+												Проверить ответы
+											</button>
+										</form>
+									)}
+								</>
+							) : (
+								<Loader />
 							)}
 						</>
 					) : (
-						<Loader />
+						<p className={classes.errors}>нет изученных слов</p>
 					)}
 				</>
 			)}
@@ -168,6 +181,3 @@ const Quiz = () => {
 };
 
 export default Quiz;
-{
-	/* <p className={classes.errors}>нет изученных слов</p> */
-}

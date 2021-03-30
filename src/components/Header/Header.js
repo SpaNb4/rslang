@@ -20,6 +20,7 @@ import {
 } from 'react-icons/fa';
 import classes from './Header.module.scss';
 import { menu, LocalStorageKeys } from './../../common/constants';
+import { updateAttempts } from '../../common/helpers';
 // import { reset } from '../../store/quiz/actions';
 
 const quizLink = 'quiz';
@@ -69,10 +70,9 @@ const Header = () => {
 
 	const handleLogout = useCallback(() => {
 		localStorage.removeItem(LocalStorageKeys.User);
+		updateAttempts();
 
 		dispatch(logout());
-
-		// close menu
 		dispatch(menuToggle(true));
 	}, []);
 
