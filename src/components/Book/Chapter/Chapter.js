@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import classes from './Chapter.module.scss';
@@ -6,9 +6,10 @@ import classes from './Chapter.module.scss';
 import ChapterItem from './ChapterItem/ChapterItem';
 
 import { fetchAggregatedWords, fetchWords, updateCurrentGroup } from '../../../store/book/actions';
-import { getWordsLoading, getAllWords, getCurrentPage, getAggregatedWordsWords } from '../../../store/book/slices';
+import { getWordsLoading, getAllWords, getAggregatedWordsWords } from '../../../store/book/slices';
 import { getUserId, getToken, getAuthorized } from '../../../store/app/slices';
-import { DictionarySections } from '../../../common/constants';
+import { DictionarySections, LocalStorageKeys } from '../../../common/constants';
+import Pagination from '../../Pagination/Pagination';
 
 function Chapter() {
 	const dispatch = useDispatch();
@@ -16,20 +17,26 @@ function Chapter() {
 	const words = useSelector(getAllWords);
 	const aggregatedWords = useSelector(getAggregatedWordsWords);
 	const { group } = useParams();
-	const page = useSelector(getCurrentPage);
+	const [page, setPage] = useState(localStorage.getItem(LocalStorageKeys.BookPage) || '1');
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
 	const authorized = useSelector(getAuthorized);
+	const pageCount = 30;
+	const filterRules = JSON.stringify({
+		$or: [
+			{ 'userWord.difficulty': DictionarySections.Hard },
+			{ 'userWord.difficulty': DictionarySections.Trained },
+			{ userWord: null },
+		],
+	});
+
+	function handlePageClick(data) {
+		setPage(data.selected);
+		localStorage.setItem(LocalStorageKeys.BookPage, data.selected);
+	}
 
 	useEffect(() => {
 		if (authorized) {
-			const filterRules = JSON.stringify({
-				$or: [
-					{ 'userWord.difficulty': DictionarySections.Hard },
-					{ 'userWord.difficulty': DictionarySections.Trained },
-					{ userWord: null },
-				],
-			});
 			dispatch(fetchAggregatedWords(group, page, userId, token, filterRules));
 		} else {
 			dispatch(fetchWords(group, page));
@@ -57,6 +64,7 @@ function Chapter() {
 			</div>
 			{loading && <React.Fragment>Loading...</React.Fragment>}
 			{chapterItems}
+			<Pagination handlePageClick={handlePageClick} pageCount={pageCount} startPage={Number(page)} />
 		</div>
 	);
 }

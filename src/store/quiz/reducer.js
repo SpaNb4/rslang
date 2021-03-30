@@ -10,7 +10,6 @@ const initialState = {
 		2: '',
 	},
 	submitted: false,
-	attempts: 3,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -24,11 +23,8 @@ const reducer = createReducer(initialState, (builder) => {
 		.addCase(actions.changeAnswer, (state, action) => {
 			state.answers = { ...state.answers, ...action.payload };
 		})
-		.addCase(actions.submitForm, (state) => {
+		.addCase(actions.submit, (state) => {
 			state.submitted = true;
-		})
-		.addCase(actions.fetchAttempts, (state, action) => {
-			state.attempts = action.payload;
 		})
 		.addCase(actions.reset, () => initialState)
 		.addDefaultCase((state) => state);

@@ -29,6 +29,8 @@ export const ExternalUrls = {
 export const LocalStorageKeys = {
 	User: 'user',
 	Avatar: 'avatar',
+	BookPage: 'bookPage',
+	VocabularyPage: 'vocabularyPage',
 	QuizAttempts: 'quizAttempts',
 	QuizDate: 'quizDate',
 };
@@ -37,9 +39,9 @@ export const LocalStorageKeys = {
 export const DefaultValues = {
 	Group: '0',
 	Page: '0',
-	WordsPerPage: '20',
+	WordsPerPage: 20,
 	delay: 1000,
-	attemptesNumber: 3,
+	attemptsNumber: 3,
 };
 
 export const menu = {

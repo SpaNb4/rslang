@@ -6,8 +6,10 @@ import { buildUrl } from '../../common/helpers';
 
 export const fetchUserWordsSuccess = createAction(types.FETCH_USER_WORDS_SUCCESS);
 export const createUserWordSuccess = createAction(types.CREATE_USER_WORD_SUCCESS);
+export const deleteUserWordSuccess = createAction(types.DELETE_USER_WORD_SUCCESS);
 export const fetchUserWordsFailure = createAction(types.FETCH_USER_WORDS_FAILURE);
 export const createUserWordFailure = createAction(types.CREATE_USER_WORD_FAILURE);
+export const deleteUserWordFailure = createAction(types.DELETE_USER_WORD_FAILURE);
 export const showLoader = createAction(types.SHOW_LOADER);
 export const hideLoader = createAction(types.HIDE_LOADER);
 
@@ -80,21 +82,16 @@ export const updateUserWord = (userId, token, wordData, section) => async (dispa
 };
 
 export const removeUserWord = (userId, token, wordData) => async (dispatch) => {
-	const wordId = wordData.id || wordData._id;
 	try {
-		const { data } = await axios({
+		await axios({
 			method: 'delete',
-			url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', wordId),
-			params: {
-				id: userId,
-				wordId: wordId,
-			},
+			url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', wordData.wordId),
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
 		});
-		dispatch(createUserWordSuccess(data));
+		dispatch(deleteUserWordSuccess(wordData.wordId));
 	} catch (error) {
-		dispatch(createUserWordFailure(error));
+		dispatch(deleteUserWordFailure(error));
 	}
 };

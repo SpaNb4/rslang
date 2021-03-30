@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserWords } from '../../store/dictionary/slices';
 import { differenceBy, sampleSize } from 'lodash';
-import { getAnswers, getAttempts, getKeys, getSubmitted, getWords } from '../../store/quiz/slices';
-import { fetchAttempts, fetchKeys, reset, setWords, submit } from '../../store/quiz/actions';
+import { getAnswers, getKeys, getSubmitted, getWords } from '../../store/quiz/slices';
+import { fetchKeys, reset, setWords, submit } from '../../store/quiz/actions';
 import Loader from '../Loader/Loader';
 import DailyQuizItem from './QuizItem';
 import { globalClasses as c, LocalStorageKeys as l, questionsData, DefaultValues as d } from '../../common/constants';
@@ -15,14 +15,14 @@ const Quiz = () => {
 	const [date, setDate] = useState(null);
 	const [errors, setErrors] = useState(null);
 	const [variants, setVariants] = useState([]);
+	const [attempts, setAttempts] = useState(d.attemptsNumber);
+	const [showForm, setShowForm] = useState(true);
 
-	//temp
 	const userWords = useSelector(getUserWords);
 	const words = useSelector(getWords);
 	const submitted = useSelector(getSubmitted);
 	const answers = useSelector(getAnswers);
 	const keys = useSelector(getKeys);
-	const attempts = useSelector(getAttempts);
 
 	useEffect(() => {
 		setDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
@@ -35,7 +35,7 @@ const Quiz = () => {
 			if (!localDate) {
 				localStorage.setItem(l.QuizDate, date);
 			} else if (localDate !== date) {
-				dispatch(submit(d.attemptesNumber));
+				dispatch(submit(d.attemptsNumber));
 			}
 		}
 	}, [date]);
@@ -63,22 +63,30 @@ const Quiz = () => {
 	}, [words]);
 
 	useEffect(() => {
+		if (attempts < 1 && !submitted) {
+			setShowForm(false);
+		}
+	}, [attempts]);
+
+	useEffect(() => {
 		if (words.length) {
 			const localAttempts = localStorage.getItem(l.QuizAttempts) || null;
 
 			if (localAttempts) {
-				dispatch(fetchAttempts(localAttempts));
+				setAttempts(localAttempts);
 			} else {
 				localStorage.setItem(l.QuizAttempts, attempts);
 			}
 		}
-	}, [words]);
+	}, [words, submitted]);
 
 	const handleSubmit = (evt) => {
 		evt.preventDefault();
 
 		setErrors(differenceBy(Object.values(answers), Object.values(keys)).length);
-		dispatch(submit(attempts - 1));
+
+		localStorage.setItem(l.QuizAttempts, attempts - 1);
+		dispatch(submit());
 	};
 
 	const handleClick = () => {
@@ -94,7 +102,7 @@ const Quiz = () => {
 					{words.length && variants.length ? (
 						<>
 							<p className={classes.attempts}>
-								{attempts ? (
+								{attempts > 0 ? (
 									<>
 										Осталось {attempts} попытк{attempts > 1 ? 'и' : 'а'}
 									</>
@@ -102,23 +110,25 @@ const Quiz = () => {
 									<>Попытки закончились. Возвращайтесь завтра</>
 								)}
 							</p>
-							<form className={classes.form} onSubmit={handleSubmit} aria-disabled={submitted}>
-								{words.map(({ optional }, index) => {
-									return (
-										<DailyQuizItem
-											key={`quiz-${index}`}
-											variants={variants[index]}
-											word={optional.word}
-											question={questionsData[index].question}
-											keyIndex={index}
-										/>
-									);
-								})}
+							{showForm && (
+								<form className={classes.form} onSubmit={handleSubmit} aria-disabled={submitted}>
+									{words.map(({ optional }, index) => {
+										return (
+											<DailyQuizItem
+												key={`quiz-${index}`}
+												variants={variants[index]}
+												word={optional.word}
+												question={questionsData[index].question}
+												keyIndex={index}
+											/>
+										);
+									})}
 
-								<button type="submit" className={c.button}>
-									Проверить ответы
-								</button>
-							</form>
+									<button type="submit" className={c.button}>
+										Проверить ответы
+									</button>
+								</form>
+							)}
 						</>
 					) : (
 						<Loader />
