@@ -9,7 +9,6 @@ import Pagination from '../../Pagination/Pagination';
 import ChapterItem from '../../ChapterItem/ChapterItem';
 import classes from './Chapter.module.scss';
 import Button from '../../Button/Button';
-import {} from './../../../store/dictionary/slices';
 
 function Chapter() {
 	const dispatch = useDispatch();
@@ -17,9 +16,8 @@ function Chapter() {
 	const { group } = useParams();
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
-	const initialPage = localStorage.getItem(LocalStorageKeys.VocabularyPage) || 0;
-	const [currentPage, setCurrentPage] = useState(initialPage);
-	const offset = currentPage * DefaultValues.WordsPerPage;
+	const [page, setPage] = useState(localStorage.getItem(LocalStorageKeys.VocabularyPage) || '1');
+	const offset = page * DefaultValues.WordsPerPage;
 	const filter = {
 		hard: useSelector(getHardWords),
 		removed: useSelector(getRemovedWords),
@@ -59,7 +57,7 @@ function Chapter() {
 	}
 
 	function handlePageClick(data) {
-		setCurrentPage(data.selected);
+		setPage(data.selected);
 		localStorage.setItem(LocalStorageKeys.VocabularyPage, data.selected);
 	}
 
@@ -97,11 +95,7 @@ function Chapter() {
 				<>
 					{currentPageData}
 					{filteredWords.length <= DefaultValues.WordsPerPage ? null : (
-						<Pagination
-							handlePageClick={handlePageClick}
-							pageCount={pageCount}
-							startPage={Number(currentPage)}
-						/>
+						<Pagination handlePageClick={handlePageClick} pageCount={pageCount} startPage={Number(page)} />
 					)}
 				</>
 			) : (
