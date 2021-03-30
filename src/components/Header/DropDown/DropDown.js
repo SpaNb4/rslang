@@ -15,12 +15,6 @@ const DropDown = ({ array, name, icon }) => {
 		[hiddenDropdown]
 	);
 
-	const dropDownItems =
-		array.length &&
-		array.map((item, index) => (
-			<DropDownItem listName={item.listName} linkName={item.linkName} linkId={item.linkId} key={index} />
-		));
-
 	return (
 		<>
 			<a href="#" className={classes.menuLink} aria-label="toggle dropdown" onClick={handleDropdownToggle}>
@@ -31,7 +25,7 @@ const DropDown = ({ array, name, icon }) => {
 				</span>
 			</a>
 			<ul className={classes.dropdown} aria-expanded={hiddenDropdown}>
-				{dropDownItems}
+				{array.length && array.map((item, index) => <DropDownItem {...item} key={index} />)}
 			</ul>
 		</>
 	);

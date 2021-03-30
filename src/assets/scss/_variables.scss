@@ -2,20 +2,24 @@
 $color-white: #fbfbfb;
 $color-black: #000;
 $color-primary: #94447c;
-$color-lola: #e3d8e0;
 $color-secondary: #49c0b8;
+$color-text: #272727;
 
 // Colors additional
 $color-botticelli: #d6e4ec;
 $color-regent-gray: #7e919f;
 $color-silver: #c2c2c2;
+$color-lola: #e3d8e0;
 $color-sea-buckthorn: #fbb034;
 $color-school-bus-yellow: #fd0;
 $color-emperor: #525050;
 $color-red: #f00;
 $color-apple: #70a36c;
-$color-chestnut: #b54a4a;
 $color-ocean-green: #3aa76d;
+$color-chestnut: #b54a4a;
+$color-cinnamon: #e25822;
+$color-scarlet: #ed1b07;
+$color-cardinal: #ce2029;
 
 // Shadows
 $box-shadow-1: 0 2px 8px rgba(117, 131, 142, 0.04), 0 16px 24px rgba(52, 60, 68, 0.12);
@@ -28,3 +32,5 @@ $gradient-2: linear-gradient(135deg, $color-secondary 0%, $color-primary 100%);
 
 //  Fonts
 $font-primary: 'Manrope', 'Arial', sans-serif;
+
+$transition: 0.4s ease;

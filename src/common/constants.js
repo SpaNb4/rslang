@@ -1,5 +1,20 @@
 import React from 'react';
-import { FaMobileAlt } from 'react-icons/fa';
+import {
+	FaMobileAlt,
+	FaDiceOne,
+	FaDiceTwo,
+	FaDiceThree,
+	FaDiceFour,
+	FaDiceFive,
+	FaDiceSix,
+	FaHippo,
+	FaHeadset,
+	FaFlagCheckered,
+	FaIgloo,
+	FaTrash,
+	FaUnlock,
+	FaSkullCrossbones,
+} from 'react-icons/fa';
 
 // URLs
 export const ExternalUrls = {
@@ -33,31 +48,43 @@ export const menu = {
 			linkName: 'Раздел 0',
 			linkId: '0',
 			listName: 'book',
+			icon: <FaDiceOne />,
+			color: 'ocean-green',
 		},
 		{
 			linkName: 'Раздел 1',
 			linkId: '1',
 			listName: 'book',
+			icon: <FaDiceTwo />,
+			color: 'scarlet',
 		},
 		{
 			linkName: 'Раздел 2',
 			linkId: '2',
 			listName: 'book',
+			icon: <FaDiceThree />,
+			color: 'secondary',
 		},
 		{
 			linkName: 'Раздел 3',
 			linkId: '3',
 			listName: 'book',
+			icon: <FaDiceFour />,
+			color: 'cinnamon',
 		},
 		{
 			linkName: 'Раздел 4',
 			linkId: '4',
 			listName: 'book',
+			icon: <FaDiceFive />,
+			color: 'sea-buckthorn',
 		},
 		{
 			linkName: 'Раздел 5',
 			linkId: '5',
 			listName: 'book',
+			icon: <FaDiceSix />,
+			color: 'cardinal',
 		},
 	],
 	dictionary: [
@@ -65,16 +92,22 @@ export const menu = {
 			linkName: 'Изучаемые слова',
 			linkId: 'trained',
 			listName: 'vocabulary',
+			icon: <FaUnlock />,
+			color: 'ocean-green',
 		},
 		{
 			linkName: 'Сложные слова',
 			linkId: 'hard',
 			listName: 'vocabulary',
+			icon: <FaSkullCrossbones />,
+			color: 'sea-buckthorn',
 		},
 		{
 			linkName: 'Удалённые слова',
 			linkId: 'removed',
 			listName: 'vocabulary',
+			icon: <FaTrash />,
+			color: 'scarlet',
 		},
 	],
 	games: [
@@ -82,21 +115,29 @@ export const menu = {
 			linkName: 'Саванна',
 			linkId: 'savanna',
 			listName: 'game',
+			icon: <FaHippo />,
+			color: 'cinnamon',
 		},
 		{
 			linkName: 'Спринт',
 			linkId: 'sprint',
 			listName: 'game',
+			icon: <FaFlagCheckered />,
+			color: 'ocean-green',
 		},
 		{
 			linkName: 'Аудиовызов',
 			linkId: 'audiogame',
 			listName: 'game',
+			icon: <FaHeadset />,
+			color: 'cardinal',
 		},
 		{
 			linkName: 'Конструктор',
 			linkId: 'kit',
 			listName: 'game',
+			icon: <FaIgloo />,
+			color: 'secondary',
 		},
 	],
 };
@@ -181,6 +222,7 @@ export const globalClasses = {
 	container: 'container',
 	section: 'section',
 	sectionTitle: 'section-title',
+	button: 'button',
 	visuallyHidden: 'visually-hidden',
 };
 

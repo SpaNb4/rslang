@@ -8,7 +8,7 @@
 	background: $gradient-1;
 	z-index: 15;
 	overflow: hidden;
-	transition: 0.4s ease;
+	transition: $transition;
 
 	&[aria-hidden='true'] {
 		transform: scale(0);
@@ -60,7 +60,7 @@
 	padding: 10px;
 	border: 2px solid $color-botticelli;
 	border-radius: 8px;
-	transition: 0.4s ease;
+	transition: $transition;
 
 	&::placeholder {
 		color: $color-emperor;

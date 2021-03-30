@@ -1,0 +1,131 @@
+.root {
+	text-align: center;
+	font-size: 1.1em;
+	color: $color-emperor;
+	font-weight: 600;
+}
+
+.date {
+	display: inline-block;
+	position: relative;
+	padding: 10px 0;
+	margin-bottom: 15px;
+
+	&::after {
+		content: '';
+		position: absolute;
+		left: 50%;
+		bottom: 0;
+		transform: translateX(-50%);
+		width: 120%;
+		height: 1px;
+		background-color: $color-primary;
+	}
+}
+
+.title {
+	margin-bottom: 25px;
+	font-size: 1.5em;
+}
+
+.form {
+	max-width: 500px;
+	display: inline-flex;
+	flex-direction: column;
+	gap: 15px;
+
+	button {
+		max-width: 250px;
+		margin: 0 auto;
+	}
+
+	&[data-submit='true'] {
+		pointer-events: none;
+
+		button {
+			color: $color-white;
+			background-color: $color-emperor;
+		}
+	}
+}
+
+.fieldset {
+	padding: 0;
+	border: none;
+	margin-bottom: 20px;
+
+	legend {
+		color: $color-chestnut;
+		margin: 0 auto 20px;
+		font-size: 1.1em;
+	}
+}
+
+.inputWrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.label {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	padding: 15px 25px;
+	text-align: left;
+	background-color: rgba($color-sea-buckthorn, 0.65);
+	border: none;
+	border-radius: 8px;
+	user-select: none;
+	cursor: pointer;
+
+	.checkmark {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-shrink: 0;
+		height: 36px;
+		width: 36px;
+		color: $color-white;
+		background-color: $color-botticelli;
+		transition: opacity 0.4s ease;
+		border-radius: 8px;
+
+		svg {
+			opacity: 0;
+			transition: opacity 0.4s ease;
+		}
+	}
+
+	input {
+		position: absolute;
+		opacity: 0;
+		height: 0;
+		width: 0;
+		cursor: pointer;
+
+		&:checked ~ .checkmark {
+			background-color: $color-sea-buckthorn;
+		}
+
+		&:checked ~ .checkmark svg {
+			opacity: 1;
+		}
+	}
+
+	&:hover input:not(:checked) ~ .checkmark {
+		background-color: $color-silver;
+	}
+
+	input[data-error='true']:checked ~ .checkmark {
+		background-color: $color-ocean-green;
+	}
+
+	input[data-error='false']:checked ~ .checkmark {
+		background-color: $color-red;
+	}
+}
+
+.errors {
+	padding-top: 25px;
+}

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import AuthModal from './AuthModal/AuthModal';
 import DropDown from './DropDown/DropDown';
 import { login, logout, menuToggle, register } from '../../store/app/actions';
@@ -15,10 +15,14 @@ import {
 	FaSignInAlt,
 	FaSignOutAlt,
 	FaUserPlus,
-	FaHome,
+	FaGraduationCap,
 } from 'react-icons/fa';
 import classes from './Header.module.scss';
 import { menu, LocalStorageKeys } from './../../common/constants';
+import { reset } from '../../store/quiz/actions';
+
+const quizLink = 'quiz';
+const statsLink = 'stats';
 
 import UserProfileIcon from './UserProfileIcon/UserProfileIcon';
 
@@ -73,6 +77,10 @@ const Header = () => {
 		dispatch(menuToggle(true));
 	}, []);
 
+	const handleQuizReset = useCallback(() => {
+		dispatch(reset());
+	});
+
 	useEffect(() => {
 		if (auth) {
 			setRegisterHidden(true);
@@ -97,13 +105,20 @@ const Header = () => {
 		};
 	}, [menuHidden, loginHidden, registerHidden]);
 
+	const { pathname } = useLocation();
+
+	const [currentQuiz, setCurrentQuiz] = useState(false);
+	const [currentStats, setCurrentStats] = useState(false);
+
+	useEffect(() => {
+		setCurrentQuiz(pathname.includes(quizLink));
+		setCurrentStats(pathname.includes(statsLink));
+	}, [pathname]);
+
 	return (
 		<>
 			<header className={classes.header}>
 				<nav className={classes.nav} onClick={(evt) => evt.stopPropagation()}>
-					<Link to="/" className={classes.navLink} onClick={handleClose}>
-						<FaHome />
-					</Link>
 					<button
 						type="button"
 						className={classes.navLink}
@@ -112,7 +127,9 @@ const Header = () => {
 					>
 						<FaHamburger />
 					</button>
-					<h2 className={classes.title}>RS Lang</h2>
+					<Link to="/" onClick={handleClose} className={classes.homeLink}>
+						<h2>RS Lang</h2>
+					</Link>
 					<div className={classes.menuWrapper} aria-hidden={menuHidden}>
 						<ul className={classes.menu}>
 							{auth && (
@@ -127,7 +144,18 @@ const Header = () => {
 								<DropDown array={menu.games} name="Тренировки" icon={<FaTableTennis />} />
 							</li>
 							<li className={classes.menuItem}>
-								<Link className={classes.menuLink} to="/">
+								<Link
+									className={classes.menuLink}
+									to={`/${quizLink}`}
+									aria-current={currentQuiz}
+									onClick={handleQuizReset}
+								>
+									<FaGraduationCap />
+									<span>Викторина</span>
+								</Link>
+							</li>
+							<li className={classes.menuItem}>
+								<Link className={classes.menuLink} to={`/${statsLink}`} aria-current={currentStats}>
 									<FaPercentage />
 									<span>Статистика</span>
 								</Link>
@@ -163,7 +191,7 @@ const Header = () => {
 						</div>
 					) : (
 						<Link className={classes.navLink} to="/">
-							<FaUserSecret />
+							<FaUserSecret size={24} />
 						</Link>
 					)}
 				</nav>

@@ -9,6 +9,7 @@ import Video from './components/Video/Video';
 import Footer from './components/Footer/Footer';
 import Book from './components/Book/Book';
 import Vocabulary from './components/Vocabulary/Vocabulary';
+import Quiz from './components/Quiz/Quiz';
 
 import { getUserId, getToken, getAuthorized } from './store/app/slices';
 import { saveUserAuthData, refreshToken } from './store/app/actions';
@@ -61,6 +62,7 @@ function App() {
 					</Route>
 					<Route path="/book/:group" component={Book} />
 					<Route path="/vocabulary/:group" component={Vocabulary} />
+					<Route path="/quiz" component={Quiz} />
 				</Switch>
 			</main>
 			<Footer />
