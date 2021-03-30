@@ -32,6 +32,7 @@ export const LocalStorageKeys = {
 	TokenExpireTime: 't-expire',
 	BookPage: 'bookPage',
 	VocabularyPage: 'vocabularyPage',
+	RemovedPages: 'removed-pages',
 };
 
 // Default Values

@@ -53,6 +53,9 @@ const reducer = createReducer(initialState, (builder) => {
 				state.removedPages = { ...state.removedPages, [group]: [page] };
 			}
 		})
+		.addCase(actions.updateRemovedPages, (state, action) => {
+			state.removedPages = action.payload;
+		})
 		.addDefaultCase((state) => state);
 });
 

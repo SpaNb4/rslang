@@ -26,6 +26,7 @@ import { getUserId, getToken, getAuthorized } from '../../../store/app/slices';
 import { DictionarySections, LocalStorageKeys, DefaultValues, menu, ExternalUrls } from '../../../common/constants';
 import Pagination from '../../Pagination/Pagination';
 import { handleVolumeUp, buildUrl } from '../../../common/helpers';
+import { saveRemovedPagesToLocalStorage } from '../../../common/service';
 
 function Chapter() {
 	const dispatch = useDispatch();
@@ -49,7 +50,6 @@ function Chapter() {
 	const [removedWords, setRemovedWords] = useState([]);
 	const removedPages = useSelector(getRemovedPagesForGroup);
 	const [isNoMoreWords, setIsNoMoreWords] = useState(false);
-	const [forcedPage, setForcedPage] = useState();
 	const [isCurrentlyPlaying, setIsCurrentlyPlaying] = useState(false);
 
 	function handlePageClick(data) {
@@ -60,9 +60,9 @@ function Chapter() {
 	useEffect(() => {
 		if (removedWords && removedWords.length === DefaultValues.WordsPerPage) {
 			dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: +page }));
+			saveRemovedPagesToLocalStorage(userId, group, page);
 			const nextPage = String(+page + 1);
 			setPage(nextPage);
-			setForcedPage(+nextPage);
 		}
 	}, [removedWords, page, group]);
 
@@ -177,7 +177,6 @@ function Chapter() {
 				pageCount={pageCount}
 				startPage={Number(page)}
 				removedPages={removedPages}
-				forcedPage={forcedPage}
 			/>
 		</div>
 	);

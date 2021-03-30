@@ -14,8 +14,9 @@ import Quiz from './components/Quiz/Quiz';
 import { getUserId, getToken, getAuthorized } from './store/app/slices';
 import { saveUserAuthData } from './store/app/actions';
 import { fetchUserWords } from './store/dictionary/actions';
-import { fetchWords } from './store/book/actions';
+import { fetchWords, updateRemovedPages } from './store/book/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
+import { getRemovedPagesFromLocalStorage } from './common/service';
 
 function App() {
 	const dispatch = useDispatch();
@@ -38,6 +39,10 @@ function App() {
 		}
 		if (authorized) {
 			dispatch(fetchUserWords(userId, token));
+
+			const removedPages = getRemovedPagesFromLocalStorage(userId);
+
+			dispatch(updateRemovedPages(removedPages));
 		} else {
 			dispatch(fetchWords());
 		}

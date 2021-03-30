@@ -17,6 +17,7 @@ export const fetchAggregatedWordsFailure = createAction(types.FETCH_AGGREGATED_W
 export const updateIsTranslationOn = createAction(types.UPDATE_IS_TRANSLATION_ON);
 export const updateIsEditDictionaryButtons = createAction(types.UPDATE_IS_EDIT_DICTIONARY_BUTTONS);
 export const updateRemovedPagesForGroup = createAction(types.UPDATE_REMOVED_PAGES_FOR_GROUP);
+export const updateRemovedPages = createAction(types.UPDATE_REMOVED_PAGES);
 
 export const fetchWords = (currentGroup = DefaultValues.Group, currentPage = DefaultValues.Page) => async (
 	dispatch
