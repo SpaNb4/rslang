@@ -12,21 +12,21 @@ import { buildUrl, handleVolumeUp } from '../../../../common/helpers';
 import { ExternalUrls, DictionarySections } from '../../../../common/constants';
 import { setUserWord, updateUserWord } from '../../../../store/dictionary/actions';
 import { getUserId, getAuthorized, getToken } from '../../../../store/app/slices';
-import { getIsTranslationOn, getIsEditDictionaryButtons } from '../../../../store/book/slices';
-function ChapterItem({ wordData }) {
+import { getIsTranslationOn, getIsEditDictionaryButtons, getWordsLoading } from '../../../../store/book/slices';
+function ChapterItem({ wordData, saveToRemoved }) {
 	const dispatch = useDispatch();
+	const loading = useSelector(getWordsLoading);
 	const authorized = useSelector(getAuthorized);
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
 	const [wordDifficulty, setWordDifficulty] = useState('');
-	const [isWordRemoved, setIsWordRemoved] = useState(false);
 	const isTranslationOn = useSelector(getIsTranslationOn);
 	const isEditDictionaryButtons = useSelector(getIsEditDictionaryButtons);
 
 	const saveToDictionaryHard = useCallback(() => {
 		if (wordDifficulty !== DictionarySections.Hard) {
 			setWordDifficulty(DictionarySections.Hard);
-			if (wordDifficulty == DictionarySections.NotDefined) {
+			if (wordDifficulty === DictionarySections.NotDefined) {
 				dispatch(setUserWord(userId, token, wordData, DictionarySections.Hard));
 			} else {
 				dispatch(updateUserWord(userId, token, wordData, DictionarySections.Hard));
@@ -38,10 +38,14 @@ function ChapterItem({ wordData }) {
 	}, [wordDifficulty, userId, token, wordData]);
 
 	const saveToDictionaryRemoved = useCallback(() => {
-		dispatch(updateUserWord(userId, token, wordData, DictionarySections.Removed));
-		setIsWordRemoved(true);
+		if (wordDifficulty === DictionarySections.NotDefined) {
+			dispatch(setUserWord(userId, token, wordData, DictionarySections.Removed));
+		} else {
+			dispatch(updateUserWord(userId, token, wordData, DictionarySections.Removed));
+		}
+		saveToRemoved(wordData);
 		setWordDifficulty(DictionarySections.Removed);
-	}, [userId, token, wordData]);
+	}, [userId, token, wordData, wordDifficulty]);
 
 	useEffect(() => {
 		if (authorized) {
@@ -104,7 +108,7 @@ function ChapterItem({ wordData }) {
 				<Button handler={saveToDictionaryHard} disabled={!authorized} difficulty={wordDifficulty}>
 					Сложное слово
 				</Button>
-				<Button handler={saveToDictionaryRemoved} disabled={!authorized || isWordRemoved}>
+				<Button handler={saveToDictionaryRemoved} disabled={!authorized || loading}>
 					Удалить
 				</Button>
 			</div>
@@ -150,6 +154,7 @@ ChapterItem.propTypes = {
 		group: PropTypes.number,
 		page: PropTypes.number,
 	}).isRequired,
+	saveToRemoved: PropTypes.func.isRequired,
 };
 
 export default ChapterItem;

@@ -12,7 +12,7 @@ import Vocabulary from './components/Vocabulary/Vocabulary';
 import Quiz from './components/Quiz/Quiz';
 
 import { getUserId, getToken, getAuthorized } from './store/app/slices';
-import { saveUserAuthData, refreshToken } from './store/app/actions';
+import { saveUserAuthData } from './store/app/actions';
 import { fetchUserWords } from './store/dictionary/actions';
 import { fetchWords } from './store/book/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
@@ -27,19 +27,12 @@ function App() {
 		if (!authorized) {
 			const userAuth = localStorage.getItem(LocalStorageKeys.User) || null;
 			const tokenExpireTime = localStorage.getItem(LocalStorageKeys.TokenExpireTime) || null;
-			const refreshTokenExpireTime = localStorage.getItem(LocalStorageKeys.RefreshTokenExpireTime) || null;
 
-			if (userAuth && tokenExpireTime && refreshTokenExpireTime) {
+			if (userAuth && tokenExpireTime) {
 				const userAuthData = JSON.parse(userAuth);
-
 				const isTokenExpired = Date.now() > JSON.parse(tokenExpireTime);
 				if (!isTokenExpired) {
 					dispatch(saveUserAuthData(userAuthData));
-				}
-
-				const isRefreshTokenExpired = Date.now() < JSON.parse(refreshTokenExpireTime);
-				if (isTokenExpired && !isRefreshTokenExpired) {
-					dispatch(refreshToken(userAuthData.userId, userAuthData.refreshToken));
 				}
 			}
 		}

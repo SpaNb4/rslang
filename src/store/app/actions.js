@@ -1,8 +1,7 @@
 import * as types from './action-types';
 import axios from 'axios';
 import { createAction } from '@reduxjs/toolkit';
-import { ExternalUrls, LocalStorageKeys, JWT_EXPIRE_TIME, JWT_REFRESH_EXPIRE_TIME } from '../../common/constants';
-import { buildUrl } from '../../common/helpers';
+import { ExternalUrls, LocalStorageKeys, JWT_EXPIRE_TIME } from '../../common/constants';
 
 export const registerSuccess = createAction(types.REGISTER_SUCCESS);
 export const registerFailure = createAction(types.REGISTER_FAILURE);
@@ -43,35 +42,11 @@ export const login = (email, password) => async (dispatch) => {
 			},
 		});
 		localStorage.setItem(LocalStorageKeys.User, JSON.stringify(data));
-
 		const tokenExpireTime = JWT_EXPIRE_TIME + Date.now();
 		localStorage.setItem(LocalStorageKeys.TokenExpireTime, JSON.stringify(tokenExpireTime));
-		const refreshTokenExpireTime = JWT_REFRESH_EXPIRE_TIME + Date.now();
-		localStorage.setItem(LocalStorageKeys.RefreshTokenExpireTime, JSON.stringify(refreshTokenExpireTime));
 
 		dispatch(loginSuccess(data));
 	} catch (error) {
 		dispatch(loginFailure(error));
-	}
-};
-
-export const refreshToken = (userId, refreshToken) => async () => {
-	try {
-		const { data } = await axios({
-			method: 'get',
-			url: buildUrl(ExternalUrls.Users, '/', userId, '/tokens'),
-			params: {
-				id: userId,
-				tokenId: refreshToken,
-			},
-			headers: {
-				Authorization: `Bearer ${refreshToken}`,
-			},
-		});
-		console.log(data);
-		// dispatch(loginSuccess(data));
-	} catch (error) {
-		console.log(error);
-		// dispatch(loginFailure(error));
 	}
 };

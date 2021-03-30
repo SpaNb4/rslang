@@ -30,7 +30,6 @@ export const LocalStorageKeys = {
 	User: 'user',
 	Avatar: 'avatar',
 	TokenExpireTime: 't-expire',
-	RefreshTokenExpireTime: 'rt-expire',
 	BookPage: 'bookPage',
 	VocabularyPage: 'vocabularyPage',
 };
@@ -45,43 +44,43 @@ export const DefaultValues = {
 export const menu = {
 	sections: [
 		{
-			linkName: 'Раздел 0',
-			linkId: '0',
+			linkName: 'Раздел 1',
+			linkId: '1',
 			listName: 'book',
 			icon: <FaDiceOne />,
 			color: 'ocean-green',
 		},
 		{
-			linkName: 'Раздел 1',
-			linkId: '1',
+			linkName: 'Раздел 2',
+			linkId: '2',
 			listName: 'book',
 			icon: <FaDiceTwo />,
 			color: 'scarlet',
 		},
 		{
-			linkName: 'Раздел 2',
-			linkId: '2',
+			linkName: 'Раздел 3',
+			linkId: '3',
 			listName: 'book',
 			icon: <FaDiceThree />,
 			color: 'secondary',
 		},
 		{
-			linkName: 'Раздел 3',
-			linkId: '3',
+			linkName: 'Раздел 4',
+			linkId: '4',
 			listName: 'book',
 			icon: <FaDiceFour />,
 			color: 'cinnamon',
 		},
 		{
-			linkName: 'Раздел 4',
-			linkId: '4',
+			linkName: 'Раздел 5',
+			linkId: '5',
 			listName: 'book',
 			icon: <FaDiceFive />,
 			color: 'sea-buckthorn',
 		},
 		{
-			linkName: 'Раздел 5',
-			linkId: '5',
+			linkName: 'Раздел 6',
+			linkId: '6',
 			listName: 'book',
 			icon: <FaDiceSix />,
 			color: 'cardinal',
@@ -228,4 +227,3 @@ export const globalClasses = {
 
 // Token Expire Time
 export const JWT_EXPIRE_TIME = 3.5 * 60 * 60 * 1000;
-export const JWT_REFRESH_EXPIRE_TIME = 4 * 60 * 60 * 1000;

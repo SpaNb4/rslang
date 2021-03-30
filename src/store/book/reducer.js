@@ -11,6 +11,7 @@ const initialState = {
 	errorMessage: '',
 	isTranslationOn: true,
 	isEditDictionaryButtons: true,
+	removedPages: {},
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -44,6 +45,9 @@ const reducer = createReducer(initialState, (builder) => {
 		})
 		.addCase(actions.updateIsEditDictionaryButtons, (state, action) => {
 			state.isEditDictionaryButtons = action.payload;
+		})
+		.addCase(actions.updateRemovedPagesForGroup, (state, { payload: { group, page } }) => {
+			state.removedPages = { ...state.removedPages, group: state.removedPages[group].push(page) };
 		})
 		.addDefaultCase((state) => state);
 });
