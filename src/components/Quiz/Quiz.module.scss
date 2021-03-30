@@ -1,4 +1,5 @@
 .root {
+	padding-bottom: 10px;
 	text-align: center;
 	font-size: 1.1em;
 	color: $color-emperor;
@@ -24,8 +25,11 @@
 }
 
 .title {
-	margin-bottom: 25px;
 	font-size: 1.5em;
+}
+
+.attempts {
+	padding: 20px 0;
 }
 
 .form {
@@ -39,7 +43,7 @@
 		margin: 0 auto;
 	}
 
-	&[data-submit='true'] {
+	&[aria-disabled='true'] {
 		pointer-events: none;
 
 		button {
@@ -127,5 +131,25 @@
 }
 
 .errors {
-	padding-top: 25px;
+	padding: 25px 0;
+}
+
+.restartButton {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+	margin: 0 auto;
+	color: $color-emperor;
+	font: inherit;
+	background-color: transparent;
+	border: none;
+
+	&:hover {
+		color: $color-primary;
+	}
+
+	&[aria-disabled='true'] {
+		display: none;
+	}
 }

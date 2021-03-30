@@ -20,7 +20,7 @@ import {
 } from 'react-icons/fa';
 import classes from './Header.module.scss';
 import { menu, LocalStorageKeys } from './../../common/constants';
-import { reset } from '../../store/quiz/actions';
+// import { reset } from '../../store/quiz/actions';
 
 const quizLink = 'quiz';
 const statsLink = 'stats';
@@ -76,9 +76,9 @@ const Header = () => {
 		dispatch(menuToggle(true));
 	}, []);
 
-	const handleQuizReset = useCallback(() => {
-		dispatch(reset());
-	});
+	// const handleQuizReset = useCallback(() => {
+	// 	dispatch(reset());
+	// });
 
 	useEffect(() => {
 		if (auth) {
@@ -147,7 +147,7 @@ const Header = () => {
 									className={classes.menuLink}
 									to={`/${quizLink}`}
 									aria-current={currentQuiz}
-									onClick={handleQuizReset}
+									// onClick={handleQuizReset}
 								>
 									<FaGraduationCap />
 									<span>Викторина</span>
