@@ -154,7 +154,7 @@ ChapterItem.propTypes = {
 		group: PropTypes.number,
 		page: PropTypes.number,
 	}).isRequired,
-	saveToRemoved: PropTypes.func.isRequired,
+	saveToRemoved: PropTypes.func,
 };
 
 export default ChapterItem;

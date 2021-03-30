@@ -3,7 +3,14 @@ import ReactPaginate from 'react-paginate';
 import classes from './Pagination.module.scss';
 import { PropTypes } from 'prop-types';
 
-function Pagination({ handlePageClick, pageCount, startPage }) {
+function Pagination({ handlePageClick, pageCount, startPage, forcedPage, removedPages }) {
+	function ariaLabelBuilder(pageIndex) {
+		if (removedPages && removedPages.includes(pageIndex)) {
+			return 'disabled';
+		}
+		return 'active';
+	}
+
 	return (
 		<ReactPaginate
 			previousLabel={'<'}
@@ -18,6 +25,8 @@ function Pagination({ handlePageClick, pageCount, startPage }) {
 			containerClassName={classes.pagination}
 			activeClassName={classes.activePage}
 			activeLinkClassName={classes.activeLink}
+			forcePage={forcedPage}
+			ariaLabelBuilder={ariaLabelBuilder}
 		/>
 	);
 }
@@ -26,6 +35,8 @@ Pagination.propTypes = {
 	handlePageClick: PropTypes.func.isRequired,
 	pageCount: PropTypes.number.isRequired,
 	startPage: PropTypes.number.isRequired,
+	forcedPage: PropTypes.number,
+	removedPages: PropTypes.arrayOf(PropTypes.number),
 };
 
 export default Pagination;

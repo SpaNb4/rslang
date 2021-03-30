@@ -47,7 +47,11 @@ const reducer = createReducer(initialState, (builder) => {
 			state.isEditDictionaryButtons = action.payload;
 		})
 		.addCase(actions.updateRemovedPagesForGroup, (state, { payload: { group, page } }) => {
-			state.removedPages = { ...state.removedPages, group: state.removedPages[group].push(page) };
+			if (state.removedPages[group]) {
+				state.removedPages = { ...state.removedPages, [group]: [...state.removedPages[group], page] };
+			} else {
+				state.removedPages = { ...state.removedPages, [group]: [page] };
+			}
 		})
 		.addDefaultCase((state) => state);
 });

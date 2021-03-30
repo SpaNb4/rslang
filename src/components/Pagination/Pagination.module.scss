@@ -20,6 +20,10 @@
 		&:hover {
 			color: $color-primary;
 		}
+
+		&[aria-label='disabled'] {
+			cursor: not-allowed;
+		}
 	}
 
 	li.activePage {

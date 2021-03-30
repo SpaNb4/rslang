@@ -44,8 +44,9 @@ function Chapter() {
 		],
 	});
 	const [removedWords, setRemovedWords] = useState([]);
-	const removedPages = useSelector((store) => getRemovedPagesForGroup(store, group));
+	const removedPages = useSelector(getRemovedPagesForGroup);
 	const [isNoMoreWords, setIsNoMoreWords] = useState(false);
+	const [forcedPage, setForcedPage] = useState();
 
 	function handlePageClick(data) {
 		setPage(data.selected);
@@ -53,14 +54,16 @@ function Chapter() {
 	}
 
 	useEffect(() => {
-		if (removedWords.length === DefaultValues.WordsPerPage) {
+		if (removedWords && removedWords.length === DefaultValues.WordsPerPage) {
 			dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: +page }));
-			setPage(String(+page + 1));
+			const nextPage = String(+page + 1);
+			setPage(nextPage);
+			setForcedPage(+nextPage);
 		}
 	}, [removedWords, page, group]);
 
 	useEffect(() => {
-		if (removedPages.length === pageCount) {
+		if (removedPages && removedPages.length === pageCount) {
 			setIsNoMoreWords(true);
 		}
 	}, [removedPages]);
@@ -85,8 +88,6 @@ function Chapter() {
 		},
 		[removedWords]
 	);
-
-	console.log(removedWords);
 
 	const chapterItems = authorized ? (
 		isNoMoreWords ? (
@@ -115,6 +116,7 @@ function Chapter() {
 				pageCount={pageCount}
 				startPage={Number(page)}
 				removedPages={removedPages}
+				forcedPage={forcedPage}
 			/>
 		</div>
 	);
