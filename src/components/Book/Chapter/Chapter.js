@@ -190,7 +190,7 @@ function Chapter() {
 				handlePageClick={handlePageClick}
 				pageCount={pageCount}
 				startPage={Number(page)}
-				removedPages={removedPages}
+				removedPages={(authorized && removedPages) || []}
 				forcePage={Number(page)}
 			/>
 		</div>
