@@ -247,3 +247,5 @@ export const questionsData = [
 
 // Token Expire Time
 export const JWT_EXPIRE_TIME = 3.5 * 60 * 60 * 1000;
+
+export const MIN_WORD_COUNT = 5;

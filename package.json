@@ -22,7 +22,8 @@
 		"react-scripts": "4.0.3",
 		"react-spring": "^8.0.27",
 		"redux": "^4.0.5",
-		"redux-thunk": "^2.3.0"
+		"redux-thunk": "^2.3.0",
+		"screenfull": "^5.1.0"
 	},
 	"scripts": {
 		"start": "craco start",

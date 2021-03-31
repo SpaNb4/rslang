@@ -12,6 +12,7 @@ import correctSound from '../../../assets/audio/correctAnswer.wav';
 import wrongSound from '../../../assets/audio/wrongAnswer.wav';
 import GameStats from '../GameStats/GameStats';
 import { playSound } from './../../../common/utils';
+import GameContainer from '../GameContainer/GameContainer';
 
 export default function AudioGame() {
 	const [words, setWords] = useState(null);
@@ -139,81 +140,83 @@ export default function AudioGame() {
 	}
 
 	return (
-		<div className={classes.audioGame}>
-			{isGameOver ? (
-				<GameStats corrAnswersWords={corrAnswersWords} wrongAnswersWords={wrongAnswersWords} />
-			) : (
-				currWord && (
-					<>
-						{!isWordClicked && (
-							<div
-								ref={audioRef}
-								className={classes.audioWrapper}
-								onClick={(e) => audioClickHandler(e, currWord)}
+		<GameContainer>
+			<div className={classes.audioGame}>
+				{isGameOver ? (
+					<GameStats corrAnswersWords={corrAnswersWords} wrongAnswersWords={wrongAnswersWords} />
+				) : (
+					currWord && (
+						<>
+							{!isWordClicked && (
+								<div
+									ref={audioRef}
+									className={classes.audioWrapper}
+									onClick={(e) => audioClickHandler(e, currWord)}
+								>
+									<AiFillSound className={classes.audio} />
+								</div>
+							)}
+
+							{isWordClicked && (
+								<>
+									<div className={classes.imgWrapper}>
+										<img src={`${ExternalUrls.Main}` + currWord.image} />
+									</div>
+									<div className={classes.currWordWrapper}>
+										<AiFillSound
+											className={classes.smallAudio}
+											onClick={(e) => audioClickHandler(e, currWord)}
+										/>
+										<h3 className={classes.currWord}>{currWord.word}</h3>
+									</div>
+								</>
+							)}
+
+							{commonWords && (
+								<div className={classes.wordList}>
+									{commonWords.map((word, index) => {
+										if (word === currWord) {
+											return (
+												<div
+													className={
+														isWordClicked
+															? [classes.wordListItem, classes.correctWord].join(' ')
+															: classes.wordListItem
+													}
+													key={index}
+													onClick={handleCorrectWordClick}
+												>
+													<span>{index + 1}</span> {word.wordTranslate}
+												</div>
+											);
+										} else {
+											return (
+												<div
+													className={
+														isWordClicked
+															? [classes.wordListItem, classes.wrongWord].join(' ')
+															: classes.wordListItem
+													}
+													key={index}
+													onClick={handleWrongWordClick}
+												>
+													<span>{index + 1}</span> {word.wordTranslate}
+												</div>
+											);
+										}
+									})}
+								</div>
+							)}
+							<button
+								className={classes.btn}
+								onClick={() => nextClickHandler({ target: audioRef.current }, currWord)}
 							>
-								<AiFillSound className={classes.audio} />
-							</div>
-						)}
-
-						{isWordClicked && (
-							<>
-								<div className={classes.imgWrapper}>
-									<img src={`${ExternalUrls.Main}` + currWord.image} />
-								</div>
-								<div className={classes.currWordWrapper}>
-									<AiFillSound
-										className={classes.smallAudio}
-										onClick={(e) => audioClickHandler(e, currWord)}
-									/>
-									<h3 className={classes.currWord}>{currWord.word}</h3>
-								</div>
-							</>
-						)}
-
-						{commonWords && (
-							<div className={classes.wordList}>
-								{commonWords.map((word, index) => {
-									if (word === currWord) {
-										return (
-											<div
-												className={
-													isWordClicked
-														? [classes.wordListItem, classes.correctWord].join(' ')
-														: classes.wordListItem
-												}
-												key={index}
-												onClick={handleCorrectWordClick}
-											>
-												<span>{index + 1}</span> {word.wordTranslate}
-											</div>
-										);
-									} else {
-										return (
-											<div
-												className={
-													isWordClicked
-														? [classes.wordListItem, classes.wrongWord].join(' ')
-														: classes.wordListItem
-												}
-												key={index}
-												onClick={handleWrongWordClick}
-											>
-												<span>{index + 1}</span> {word.wordTranslate}
-											</div>
-										);
-									}
-								})}
-							</div>
-						)}
-						<button
-							className={classes.btn}
-							onClick={() => nextClickHandler({ target: audioRef.current }, currWord)}
-						>
-							{isWordClicked ? 'Далее' : 'Не знаю'}
-						</button>
-					</>
-				)
-			)}
-		</div>
+								{isWordClicked ? 'Далее' : 'Не знаю'}
+							</button>
+						</>
+					)
+				)}
+			</div>
+		</GameContainer>
 	);
 }

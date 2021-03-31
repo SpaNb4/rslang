@@ -1,0 +1,7 @@
+.gameContainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	// header + footer + main_container_padding = 206
+	min-height: calc(100vh - 206px);
+}

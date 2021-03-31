@@ -17,6 +17,7 @@ import { fetchUserWords } from './store/dictionary/actions';
 import { fetchWords, updateRemovedPages } from './store/book/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
 import { getRemovedPagesFromLocalStorage } from './common/service';
+import GameRoutes from './components/Games/GameRoutes';
 
 function App() {
 	const dispatch = useDispatch();
@@ -61,6 +62,7 @@ function App() {
 					<Route path="/book/:group" component={Book} />
 					<Route path="/vocabulary/:group" component={Vocabulary} />
 					<Route path="/quiz" component={Quiz} />
+					<Route path="/game/:specific_game" component={GameRoutes} />
 				</Switch>
 			</main>
 			<Footer />

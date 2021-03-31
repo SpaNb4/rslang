@@ -3,9 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import sampleSize from 'lodash/sampleSize';
 import shuffle from 'lodash/shuffle';
-import { getAllWords } from '../../store/book/slices';
-import { getCurrCharIndex, getCurrWordIndex, getCurrentWord, getRandomWords, getAnswers } from '../../store/kit/slices';
-import { setRandomWords, increaseCharIndex, setCurrentWord, addAnswer } from './../../store/kit/actions';
+import { getAllWords } from '../../../store/book/slices';
+import {
+	getCurrCharIndex,
+	getCurrWordIndex,
+	getCurrentWord,
+	getRandomWords,
+	getAnswers,
+} from '../../../store/kit/slices';
+import { setRandomWords, increaseCharIndex, setCurrentWord, addAnswer } from '../../../store/kit/actions';
 import classes from './Kit.module.scss';
 import { FaStar } from 'react-icons/fa';
 

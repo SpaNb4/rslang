@@ -1,22 +1,36 @@
+/* eslint-disable no-undef */
 import React, { useState, useEffect } from 'react';
 import shuffle from 'lodash/shuffle';
 import sampleSize from 'lodash/sampleSize';
 import { useSpring, animated } from 'react-spring';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
-import { getAllWords } from '../../../store/book/slices';
 import classes from './Savanna.module.scss';
 
 import correctSound from '../../../assets/audio/correctAnswer.wav';
 import wrongSound from '../../../assets/audio/wrongAnswer.wav';
 import GameStats from '../GameStats/GameStats';
 import { playSound } from './../../../common/utils';
+import GameContainer from '../GameContainer/GameContainer';
+import { PropTypes } from 'prop-types';
+import { useSelector } from 'react-redux';
+import { getAggregatedWordsWords } from './../../../store/book/slices';
+import { MIN_WORD_COUNT } from './../../../common/constants';
+import { useDispatch } from 'react-redux';
+import { fetchAggregatedWords } from '../../../store/book/actions';
+import { getToken, getUserId } from './../../../store/app/slices';
 
-export default function Savanna() {
+function Savanna(props) {
+	const dispatch = useDispatch();
+	const userId = useSelector(getUserId);
+	const token = useSelector(getToken);
+	const prevPageWords = useSelector(getAggregatedWordsWords);
+	const currWords = props.location.state.words;
 	const [words, setWords] = useState(null);
-	const [currWord, setCurrWord] = useState(null);
+
 	const [currWordIndex, setCurrWordIndex] = useState(0);
+	const [currWord, setCurrWord] = useState(null);
+	const randomWordCount = 3;
 	const [randomWords, setRandomWords] = useState(null);
 	const [commonWords, setCommonWords] = useState(null);
 	const [livesCount, setLivesCount] = useState(5);
@@ -24,9 +38,16 @@ export default function Savanna() {
 	const [corrAnswersWords, setCorrAnswersWords] = useState([]);
 	const [wrongAnswersWords, setWrongAnswersWords] = useState([]);
 	const [isWordClicked, setIsWordClicked] = useState(false);
-	const allWords = useSelector(getAllWords);
+	const [isGameStart, setIsGameStart] = useState(false);
 
-	const randomWordCount = 3;
+	useEffect(() => {
+		if (props.location.state.page !== 0 && props.location.state.words.length <= MIN_WORD_COUNT) {
+			dispatch(fetchAggregatedWords(null, props.location.state.page - 1, userId, token));
+		} else if (props.location.state.page === 0) {
+			setIsGameStart(false);
+		}
+	}, []);
+
 	const maxLivesCount = 5;
 	const lives = [...Array(maxLivesCount)].map((_, index) => {
 		if (index < livesCount) {
@@ -37,10 +58,16 @@ export default function Savanna() {
 	});
 
 	useEffect(() => {
-		if (allWords.length) {
-			setWords(allWords);
+		if (prevPageWords.length >= MIN_WORD_COUNT) {
+			setIsGameStart(true);
 		}
-	}, [allWords]);
+	}, [prevPageWords]);
+
+	useEffect(() => {
+		if (isGameStart) {
+			setWords([...prevPageWords, ...currWords]);
+		}
+	}, [isGameStart]);
 
 	useEffect(() => {
 		if (words) {
@@ -80,17 +107,19 @@ export default function Savanna() {
 	}, [livesCount]);
 
 	function handleWrongWordClick() {
-		checkEndWords();
+		if (isGameStart) {
+			checkEndWords();
 
-		if (!isGameOver) {
-			setTimeout(() => {
-				setCurrWordIndex(currWordIndex + 1);
-			}, 500);
-			setWrongAnswersWords([...wrongAnswersWords, currWord]);
-			setLivesCount(livesCount - 1);
-			setIsWordClicked(true);
+			if (!isGameOver) {
+				setTimeout(() => {
+					setCurrWordIndex(currWordIndex + 1);
+				}, 500);
+				setWrongAnswersWords([...wrongAnswersWords, currWord]);
+				setLivesCount(livesCount - 1);
+				setIsWordClicked(true);
 
-			playSound(wrongSound);
+				playSound(wrongSound);
+			}
 		}
 	}
 
@@ -138,61 +167,75 @@ export default function Savanna() {
 
 	const animation = useSpring({
 		config: { duration: 3000 },
-		from: { top: 0 },
-		to: { top: 200 },
+		from: { top: 70 },
+		to: { top: 400 },
 		reset: true,
 		onRest: handleWrongWordClick,
 	});
 
 	return (
-		<div className={classes.savanna} fullscreen="true">
-			<div className={classes.lives}>{lives.reverse()}</div>
-			{isGameOver ? (
-				<GameStats corrAnswersWords={corrAnswersWords} wrongAnswersWords={wrongAnswersWords} />
+		<GameContainer>
+			{isGameStart ? (
+				<div className={classes.savanna} fullscreen="true">
+					<div className={classes.lives}>{lives.reverse()}</div>
+					{isGameOver ? (
+						<GameStats corrAnswersWords={corrAnswersWords} wrongAnswersWords={wrongAnswersWords} />
+					) : (
+						currWord && (
+							<>
+								<animated.h3 style={animation} className={classes.currWord}>
+									{currWord.word}
+								</animated.h3>
+								{commonWords && (
+									<div className={classes.wordList}>
+										{commonWords.map((word, index) => {
+											if (word === currWord) {
+												return (
+													<div
+														className={
+															isWordClicked
+																? [classes.wordListItem, classes.correctWord].join(' ')
+																: classes.wordListItem
+														}
+														key={index}
+														onClick={handleCorrectWordClick}
+													>
+														<span>{index + 1}</span> {word.wordTranslate}
+													</div>
+												);
+											} else {
+												return (
+													<div
+														className={
+															isWordClicked
+																? [classes.wordListItem, classes.wrongWord].join(' ')
+																: classes.wordListItem
+														}
+														key={index}
+														onClick={handleWrongWordClick}
+													>
+														<span>{index + 1}</span> {word.wordTranslate}
+													</div>
+												);
+											}
+										})}
+									</div>
+								)}
+							</>
+						)
+					)}
+				</div>
 			) : (
-				currWord && (
-					<>
-						<animated.h3 style={animation} className={classes.currWord}>
-							{currWord.word}
-						</animated.h3>
-						{commonWords && (
-							<div className={classes.wordList}>
-								{commonWords.map((word, index) => {
-									if (word === currWord) {
-										return (
-											<div
-												className={
-													isWordClicked
-														? [classes.wordListItem, classes.correctWord].join(' ')
-														: classes.wordListItem
-												}
-												key={index}
-												onClick={handleCorrectWordClick}
-											>
-												<span>{index + 1}</span> {word.wordTranslate}
-											</div>
-										);
-									} else {
-										return (
-											<div
-												className={
-													isWordClicked
-														? [classes.wordListItem, classes.wrongWord].join(' ')
-														: classes.wordListItem
-												}
-												key={index}
-												onClick={handleWrongWordClick}
-											>
-												<span>{index + 1}</span> {word.wordTranslate}
-											</div>
-										);
-									}
-								})}
-							</div>
-						)}
-					</>
-				)
+				<h2>Не хватает слов для игры</h2>
 			)}
-		</div>
+		</GameContainer>
 	);
 }
+
+Savanna.propTypes = {
+	location: PropTypes.shape({
+		state: PropTypes.object,
+	}),
+};
+
+export default Savanna;

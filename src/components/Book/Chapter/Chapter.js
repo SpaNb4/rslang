@@ -143,7 +143,13 @@ function Chapter() {
 					<li className={[menuClasses.menuItem, classes.gamesListItem].join(' ')} key={index}>
 						<Link
 							className={[menuClasses.menuLink, menuClasses.innerLink, classes.listItemLink].join(' ')}
-							to={`/${listName}/${linkId}`}
+							to={{
+								pathname: `/${listName}/${linkId}`,
+								state: {
+									words: aggregatedWords,
+									page,
+								},
+							}}
 							data-color={color}
 						>
 							{icon}
