@@ -53,12 +53,12 @@ input[type='radio'] {
 		height: 36px;
 		background-color: $color-silver;
 		border-radius: 100%;
-		transition: $transition;
 		cursor: pointer;
 
 		&:hover {
 			background-color: rgba($color-emperor, 0.3);
 			box-shadow: $box-shadow-3;
+			transition: $transition;
 		}
 	}
 

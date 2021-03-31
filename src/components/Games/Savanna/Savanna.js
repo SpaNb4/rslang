@@ -14,9 +14,9 @@ import { PropTypes } from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { finishGame } from './../../../store/game/actions';
 
-function Savanna({ data }) {
+function Savanna({ wordData }) {
 	const dispatch = useDispatch();
-	const words = data;
+	const words = wordData;
 	const [currWordIndex, setCurrWordIndex] = useState(0);
 	const [currWord, setCurrWord] = useState(null);
 	const randomWordCount = 3;
@@ -194,7 +194,7 @@ function Savanna({ data }) {
 }
 
 Savanna.propTypes = {
-	data: PropTypes.array,
+	wordData: PropTypes.array,
 };
 
 export default Savanna;

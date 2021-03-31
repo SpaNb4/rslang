@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllWords } from '../../store/book/slices';
 import { getAnswers, getGameOver } from '../../store/game/slices';
 
@@ -14,26 +14,33 @@ import Savanna from './Savanna/Savanna';
 import GameSprint from './GameSprint/GameSprint';
 import { menu } from '../../common/constants';
 import classes from './Game.module.scss';
+import { updateGame } from '../../store/game/actions';
 
 const Game = () => {
+	const dispatch = useDispatch();
 	const { pathname } = useLocation();
 	const allWords = useSelector(getAllWords);
 	const gameOver = useSelector(getGameOver);
 	const answers = useSelector(getAnswers);
-	const { linkName, rules } = menu.games.find((elem) => pathname.includes(elem.linkId));
+	const { linkName, linkId, rules } = menu.games.find((elem) => pathname.includes(elem.linkId));
 
-	const renderGame = useCallback((data) => {
-		switch (linkName) {
-			case 'Аудиовызов':
-				return <AudioGame wordData={data} />;
-			case 'Конструктор':
-				return <Kit wordData={data} />;
-			case 'Саванна':
-				return <Savanna wordData={data} />;
-			case 'Спринт':
-				return <GameSprint wordData={data} />;
-		}
-	}, []);
+	useEffect(() => dispatch(updateGame(linkId)), [linkId]);
+
+	const renderGame = useCallback(
+		(data) => {
+			switch (linkName) {
+				case 'Аудиовызов':
+					return <AudioGame wordData={data} />;
+				case 'Конструктор':
+					return <Kit wordData={data} />;
+				case 'Саванна':
+					return <Savanna wordData={data} />;
+				case 'Спринт':
+					return <GameSprint wordData={data} />;
+			}
+		},
+		[linkId]
+	);
 
 	return (
 		<main className={classes.root}>

@@ -13,9 +13,9 @@ import { playSound } from './../../../common/utils';
 import { PropTypes } from 'prop-types';
 import { finishGame } from './../../../store/game/actions';
 
-function AudioGame({ data }) {
+function AudioGame({ wordData }) {
 	const dispatch = useDispatch();
-	const words = data;
+	const words = wordData;
 	const [currWord, setCurrWord] = useState(null);
 	const [currWordIndex, setCurrWordIndex] = useState(0);
 	const [randomWords, setRandomWords] = useState(null);
@@ -209,7 +209,7 @@ function AudioGame({ data }) {
 }
 
 AudioGame.propTypes = {
-	data: PropTypes.array,
+	wordData: PropTypes.array,
 };
 
 export default AudioGame;
