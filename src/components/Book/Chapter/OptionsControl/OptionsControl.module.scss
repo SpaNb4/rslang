@@ -11,6 +11,8 @@
 	z-index: 2;
 	border: none;
 	background: none;
+	box-shadow: $box-shadow-2;
+	border-radius: 50%;
 
 	&::before {
 		background: $color-lola;
