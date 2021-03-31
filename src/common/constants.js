@@ -178,5 +178,6 @@ export const globalClasses = {
 	container: 'container',
 	section: 'section',
 	sectionTitle: 'section-title',
+	pageTitle: 'page-title',
 	visuallyHidden: 'visually-hidden',
 };

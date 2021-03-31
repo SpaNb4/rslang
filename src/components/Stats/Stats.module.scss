@@ -1,0 +1,49 @@
+.root {
+	overflow-x: auto;
+}
+
+.sub {
+	text-align: center;
+	margin-bottom: 15px;
+	font-size: 1.1rem;
+}
+
+.wrapper {
+	max-width: 600px;
+	margin: 0 auto 40px;
+	display: flex;
+	justify-content: center;
+}
+
+.table {
+	width: 100%;
+	border: 2px solid $color-secondary;
+	border-collapse: collapse;
+	font-size: 0.9rem;
+
+	td,
+	th {
+		padding: 10px 0.5rem;
+		border: 2px solid $color-secondary;
+	}
+
+	td {
+		text-align: left;
+
+		&:not(:first-child) {
+			text-align: right;
+		}
+	}
+}
+
+.header {
+	color: $color-primary;
+	font-weight: 600;
+	background-color: rgba($color-secondary, 0.3);
+}
+
+.result {
+	color: $color-chestnut;
+	font-weight: 600;
+	background-color: rgba($color-chestnut, 0.3);
+}

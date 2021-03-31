@@ -15,6 +15,7 @@ import { saveUserAuthData } from './store/app/actions';
 import { fetchUserWords } from './store/dictionary/actions';
 import { fetchWords } from './store/book/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
+import Stats from './components/Stats/Stats';
 
 function App() {
 	const dispatch = useDispatch();
@@ -48,6 +49,7 @@ function App() {
 					</Route>
 					<Route path="/book/:group" component={Book} />
 					<Route path="/vocabulary/:group" component={Vocabulary} />
+					<Route path="/stats" component={Stats} />
 				</Switch>
 			</main>
 			<Footer />
