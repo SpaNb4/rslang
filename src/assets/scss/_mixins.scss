@@ -44,3 +44,20 @@
 		}
 	}
 }
+
+@mixin buttonColor($color) {
+	background-color: $color;
+
+	&:hover,
+	&:active {
+		background: lighten($color, 10) radial-gradient(circle, transparent 1%, lighten($color, 10) 0);
+	}
+}
+
+@mixin cardColor($color) {
+	background-color: rgba($color, 0.4);
+}
+
+@mixin chapterTitleColor($color) {
+	color: $color;
+}

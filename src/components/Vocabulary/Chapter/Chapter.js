@@ -26,6 +26,7 @@ function Chapter() {
 	const [pageCount, setPageCount] = useState(0);
 	const [currentSection, setCurrentSection] = useState(0);
 	const filteredWords = filter[group].filter((word) => currentSection === word.optional.group);
+	const [isCurrentlyPlaying, setIsCurrentlyPlaying] = useState(false);
 
 	let sectionName = '';
 	menu.dictionary.forEach((section) => {
@@ -42,6 +43,9 @@ function Chapter() {
 					key={index}
 					wordData={word.optional}
 					id={group === DictionarySections.Hard ? null : word.difficulty}
+					isPlayDisabled={isCurrentlyPlaying ? true : false}
+					setIsCurrentlyPlaying={setIsCurrentlyPlaying}
+					color={menu.sections[+word.optional.group].color}
 				>
 					<Button handler={() => restoreWordToBook(word)}>Восстановить</Button>
 				</ChapterItem>

@@ -1,15 +1,15 @@
 import React from 'react';
 import parse from 'html-react-parser';
 import { FaVolumeUp } from 'react-icons/fa';
-import { buildUrl, handleVolumeUp } from '../../common/helpers';
+import { buildUrl, handleVolume } from '../../common/helpers';
 import { ExternalUrls } from '../../common/constants';
 import Button from '../Button/Button';
 import classes from './ChapterItem.module.scss';
 import { PropTypes } from 'prop-types';
 
-function ChapterItem({ wordData, children, id }) {
+function ChapterItem({ wordData, children, id, setIsCurrentlyPlaying, isPlayDisabled, color }) {
 	return (
-		<div className={classes.chapterItem} id={id}>
+		<div className={classes.chapterItem} id={id} data-color={color}>
 			<div className={classes.itemImage}>
 				<img src={buildUrl(ExternalUrls.Root, wordData.image)} alt={wordData.word} />
 			</div>
@@ -18,7 +18,7 @@ function ChapterItem({ wordData, children, id }) {
 					<div>{wordData.word}</div>
 					<div>{wordData.transcription}</div>
 					<div>{wordData.wordTranslate}</div>
-					<Button handler={() => handleVolumeUp(wordData)}>
+					<Button handler={() => handleVolume(wordData, setIsCurrentlyPlaying)} disabled={isPlayDisabled}>
 						<FaVolumeUp />
 					</Button>
 				</div>
@@ -80,6 +80,9 @@ ChapterItem.propTypes = {
 	}).isRequired,
 	children: PropTypes.node.isRequired,
 	id: PropTypes.string,
+	setIsCurrentlyPlaying: PropTypes.func.isRequired,
+	isPlayDisabled: PropTypes.bool.isRequired,
+	color: PropTypes.string.isRequired,
 };
 
 export default ChapterItem;

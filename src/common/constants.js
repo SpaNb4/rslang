@@ -29,10 +29,12 @@ export const ExternalUrls = {
 export const LocalStorageKeys = {
 	User: 'user',
 	Avatar: 'avatar',
+	TokenExpireTime: 't-expire',
 	BookPage: 'bookPage',
 	VocabularyPage: 'vocabularyPage',
 	QuizAttempts: 'quizAttempts',
 	QuizDate: 'quizDate',
+	RemovedPages: 'removed-pages',
 };
 
 // Default Values
@@ -48,42 +50,42 @@ export const menu = {
 	sections: [
 		{
 			linkName: 'Раздел 1',
-			linkId: '0',
+			linkId: '1',
 			listName: 'book',
 			icon: <FaDiceOne />,
 			color: 'ocean-green',
 		},
 		{
 			linkName: 'Раздел 2',
-			linkId: '1',
+			linkId: '2',
 			listName: 'book',
 			icon: <FaDiceTwo />,
 			color: 'scarlet',
 		},
 		{
 			linkName: 'Раздел 3',
-			linkId: '2',
+			linkId: '3',
 			listName: 'book',
 			icon: <FaDiceThree />,
 			color: 'secondary',
 		},
 		{
 			linkName: 'Раздел 4',
-			linkId: '3',
+			linkId: '4',
 			listName: 'book',
 			icon: <FaDiceFour />,
 			color: 'cinnamon',
 		},
 		{
 			linkName: 'Раздел 5',
-			linkId: '4',
+			linkId: '5',
 			listName: 'book',
 			icon: <FaDiceFive />,
 			color: 'sea-buckthorn',
 		},
 		{
 			linkName: 'Раздел 6',
-			linkId: '5',
+			linkId: '6',
 			listName: 'book',
 			icon: <FaDiceSix />,
 			color: 'cardinal',
@@ -149,6 +151,7 @@ export const DictionarySections = {
 	Hard: 'hard',
 	Removed: 'removed',
 	Trained: 'trained',
+	NotDefined: 'not-defined',
 };
 
 export const ourTeammates = [
@@ -241,3 +244,6 @@ export const questionsData = [
 		key: 'transcription',
 	},
 ];
+
+// Token Expire Time
+export const JWT_EXPIRE_TIME = 3.5 * 60 * 60 * 1000;

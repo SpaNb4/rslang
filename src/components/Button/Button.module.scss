@@ -1,4 +1,13 @@
-.button {
+%hard {
+	background: $color-regent-gray;
+
+	&:hover {
+		background: lighten($color-regent-gray, 10)
+			radial-gradient(circle, transparent 1%, lighten($color-regent-gray, 10) 0) 50%/15000%;
+	}
+}
+
+.Button {
 	position: relative;
 	cursor: pointer;
 	display: flex;
@@ -16,6 +25,54 @@
 	outline: none;
 	transition: background 0.8s;
 
+	&[data-color='ocean-green'] {
+		@include buttonColor($color-ocean-green);
+
+		&[difficulty='hard'] {
+			@extend %hard;
+		}
+	}
+
+	&[data-color='scarlet'] {
+		@include buttonColor($color-scarlet);
+
+		&[difficulty='hard'] {
+			@extend %hard;
+		}
+	}
+
+	&[data-color='secondary'] {
+		@include buttonColor($color-secondary);
+
+		&[difficulty='hard'] {
+			@extend %hard;
+		}
+	}
+
+	&[data-color='cinnamon'] {
+		@include buttonColor($color-cinnamon);
+
+		&[difficulty='hard'] {
+			@extend %hard;
+		}
+	}
+
+	&[data-color='sea-buckthorn'] {
+		@include buttonColor($color-sea-buckthorn);
+
+		&[difficulty='hard'] {
+			@extend %hard;
+		}
+	}
+
+	&[data-color='cardinal'] {
+		@include buttonColor($color-cardinal);
+
+		&[difficulty='hard'] {
+			@extend %hard;
+		}
+	}
+
 	&:hover,
 	&:active {
 		background: lighten($color-primary, 10) radial-gradient(circle, transparent 1%, lighten($color-primary, 10) 0)
@@ -24,14 +81,6 @@
 
 	&:disabled {
 		background: $color-regent-gray;
-	}
-}
-
-.button[difficulty='hard'] {
-	background: $color-regent-gray;
-
-	&:hover {
-		background: lighten($color-regent-gray, 10)
-			radial-gradient(circle, transparent 1%, lighten($color-regent-gray, 10) 0) 50%/15000%;
+		cursor: not-allowed;
 	}
 }
