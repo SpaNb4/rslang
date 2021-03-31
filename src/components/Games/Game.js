@@ -37,7 +37,9 @@ const Game = () => {
 
 	return (
 		<main className={classes.root}>
-			{allWords.length ? (
+			{gameOver ? (
+				<GameStats corrAnswersWords={answers.correct} wrongAnswersWords={answers.wrong} />
+			) : allWords.length ? (
 				<>
 					<GameIntro name={linkName} settings={pathname.includes('true')} rules={rules} />
 					<GameOverLay> {renderGame(allWords)} </GameOverLay>
@@ -45,7 +47,6 @@ const Game = () => {
 			) : (
 				<Loader />
 			)}
-			{gameOver && <GameStats corrAnswersWords={answers.correct} wrongAnswersWords={answers.wrong} />}
 		</main>
 	);
 };

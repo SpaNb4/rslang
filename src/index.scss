@@ -119,3 +119,9 @@ button {
 	white-space: nowrap;
 	width: 1px;
 }
+
+*:fullscreen,
+*:-webkit-full-screen,
+*:-moz-full-screen {
+	background: $color-white;
+}

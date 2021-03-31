@@ -15,8 +15,9 @@ import Game from './components/Games/Game';
 import { getUserId, getToken, getAuthorized } from './store/app/slices';
 import { saveUserAuthData } from './store/app/actions';
 import { fetchUserWords } from './store/dictionary/actions';
-import { fetchWords } from './store/book/actions';
+import { fetchWords, updateRemovedPages } from './store/book/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
+import { getRemovedPagesFromLocalStorage } from './common/service';
 
 function App() {
 	const dispatch = useDispatch();
@@ -27,12 +28,22 @@ function App() {
 	useEffect(() => {
 		if (!authorized) {
 			const userAuth = localStorage.getItem(LocalStorageKeys.User) || null;
-			if (userAuth) {
-				dispatch(saveUserAuthData(JSON.parse(userAuth)));
+			const tokenExpireTime = localStorage.getItem(LocalStorageKeys.TokenExpireTime) || null;
+
+			if (userAuth && tokenExpireTime) {
+				const userAuthData = JSON.parse(userAuth);
+				const isTokenExpired = Date.now() > JSON.parse(tokenExpireTime);
+				if (!isTokenExpired) {
+					dispatch(saveUserAuthData(userAuthData));
+				}
 			}
 		}
 		if (authorized) {
 			dispatch(fetchUserWords(userId, token));
+
+			const removedPages = getRemovedPagesFromLocalStorage(userId);
+
+			dispatch(updateRemovedPages(removedPages));
 		} else {
 			dispatch(fetchWords());
 		}
