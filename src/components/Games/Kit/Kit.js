@@ -11,8 +11,9 @@ import { setRandomWords, setCurrentWord, addAnswer } from '../../../store/kit/ac
 import { globalClasses as c } from '../../../common/constants';
 import { finishGame } from '../../../store/game/actions';
 import classes from './Kit.module.scss';
+import { getStreak } from '../../../common/helpers';
 
-const NUMBER_OF_WORDS = 3;
+const NUMBER_OF_WORDS = 5;
 
 const Kit = ({ wordData }) => {
 	const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const Kit = ({ wordData }) => {
 	const [currWordObj, setCurrWordObj] = useState(null);
 	const [normCurrWord, setNormCurrWord] = useState([]);
 	const [shuffCurrWord, setShuffCurrWord] = useState([]);
+	// const [streak, setStreak] = useState(0);
 
 	useEffect(() => {
 		if (wordData.length) {
@@ -60,8 +62,9 @@ const Kit = ({ wordData }) => {
 	useEffect(() => {
 		if (currWordIndex && currWordIndex === randomWords.length) {
 			const result = {
-				correct: randomWords.filter((_, index) => answers.includes(index)),
-				wrong: randomWords.filter((_, index) => !answers.includes(index)),
+				correct: randomWords.filter((_, index) => answers[index]),
+				wrong: randomWords.filter((_, index) => !answers[index]),
+				streak: getStreak(answers),
 			};
 
 			dispatch(finishGame(result));

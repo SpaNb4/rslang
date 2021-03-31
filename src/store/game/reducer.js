@@ -10,8 +10,9 @@ const initialState = {
 	answers: {
 		correct: [],
 		wrong: [],
+		streak: 0,
 	},
-	streak: 0,
+
 	level: DefaultValues.Group,
 };
 

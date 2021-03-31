@@ -11,11 +11,11 @@
 	justify-content: center;
 	padding: 20px 3.3%;
 	background: $color-white;
-	transition: $transition;
 	z-index: 1;
 
 	&[aria-hidden='true'] {
 		transform: translate(-50%, -50%) scale(0);
+		transition: $transition;
 	}
 }
 
@@ -54,11 +54,11 @@ input[type='radio'] {
 		background-color: $color-silver;
 		border-radius: 100%;
 		cursor: pointer;
+		transition: $transition;
 
 		&:hover {
 			background-color: rgba($color-emperor, 0.3);
 			box-shadow: $box-shadow-3;
-			transition: $transition;
 		}
 	}
 

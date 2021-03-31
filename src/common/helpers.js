@@ -24,3 +24,19 @@ export function handleVolume(wordData, setIsCurrentlyPlaying) {
 export function updateAttempts() {
 	localStorage.setItem(LocalStorageKeys.QuizAttempts, DefaultValues.attemptsNumber);
 }
+
+export function getStreak(array) {
+	const result = [];
+	let counter = 0;
+
+	array.forEach((elem) => {
+		if (elem !== null) {
+			counter++;
+		} else {
+			result.push(counter);
+			counter = 0;
+		}
+	});
+
+	return _.max(result);
+}
