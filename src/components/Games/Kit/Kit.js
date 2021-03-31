@@ -14,7 +14,7 @@ import classes from './Kit.module.scss';
 
 const NUMBER_OF_WORDS = 3;
 
-const Kit = ({ data }) => {
+const Kit = ({ wordData }) => {
 	const dispatch = useDispatch();
 
 	const randomWords = useSelector(getRandomWords);
@@ -26,13 +26,11 @@ const Kit = ({ data }) => {
 	const [normCurrWord, setNormCurrWord] = useState([]);
 	const [shuffCurrWord, setShuffCurrWord] = useState([]);
 
-	console.log(currWordObj);
-
 	useEffect(() => {
-		if (data.length) {
-			dispatch(setRandomWords(sampleSize(data, NUMBER_OF_WORDS).map((elem) => elem)));
+		if (wordData.length) {
+			dispatch(setRandomWords(sampleSize(wordData, NUMBER_OF_WORDS).map((elem) => elem)));
 		}
-	}, [data]);
+	}, [wordData]);
 
 	useEffect(() => {
 		if (randomWords.length && currWordIndex < randomWords.length) {
@@ -108,7 +106,7 @@ const Kit = ({ data }) => {
 };
 
 Kit.propTypes = {
-	data: PropTypes.array,
+	wordData: PropTypes.array,
 };
 
 export default Kit;

@@ -11,6 +11,7 @@ import GameOverLay from './GameOverlay/GameOverlay';
 import AudioGame from './AudioGame/AudioGame';
 import Kit from './Kit/Kit';
 import Savanna from './Savanna/Savanna';
+import GameSprint from './GameSprint/GameSprint';
 import { menu } from '../../common/constants';
 import classes from './Game.module.scss';
 
@@ -24,11 +25,13 @@ const Game = () => {
 	const renderGame = useCallback((data) => {
 		switch (linkName) {
 			case 'Аудиовызов':
-				return <AudioGame data={data} />;
+				return <AudioGame wordData={data} />;
 			case 'Конструктор':
-				return <Kit data={data} />;
+				return <Kit wordData={data} />;
 			case 'Саванна':
-				return <Savanna data={data} />;
+				return <Savanna wordData={data} />;
+			case 'Спринт':
+				return <GameSprint wordData={data} />;
 		}
 	}, []);
 
