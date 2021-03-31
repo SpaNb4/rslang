@@ -15,9 +15,9 @@ import Game from './components/Games/Game';
 import { getUserId, getToken, getAuthorized } from './store/app/slices';
 import { saveUserAuthData } from './store/app/actions';
 import { fetchUserWords } from './store/dictionary/actions';
-import { fetchWords, updateRemovedPages } from './store/book/actions';
+import { fetchWords, updateRemovedPages, updateRemovedWordsCount } from './store/book/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
-import { getRemovedPagesFromLocalStorage } from './common/service';
+import { getUserDataFromLocalStorage } from './common/service';
 
 function App() {
 	const dispatch = useDispatch();
@@ -29,7 +29,6 @@ function App() {
 		if (!authorized) {
 			const userAuth = localStorage.getItem(LocalStorageKeys.User) || null;
 			const tokenExpireTime = localStorage.getItem(LocalStorageKeys.TokenExpireTime) || null;
-
 			if (userAuth && tokenExpireTime) {
 				const userAuthData = JSON.parse(userAuth);
 				const isTokenExpired = Date.now() > JSON.parse(tokenExpireTime);
@@ -40,10 +39,10 @@ function App() {
 		}
 		if (authorized) {
 			dispatch(fetchUserWords(userId, token));
-
-			const removedPages = getRemovedPagesFromLocalStorage(userId);
-
+			const removedPages = getUserDataFromLocalStorage(LocalStorageKeys.RemovedPages, userId);
 			dispatch(updateRemovedPages(removedPages));
+			const removedWordsCount = getUserDataFromLocalStorage(LocalStorageKeys.RemovedWordsCount, userId);
+			dispatch(updateRemovedWordsCount(removedWordsCount));
 		} else {
 			dispatch(fetchWords());
 		}

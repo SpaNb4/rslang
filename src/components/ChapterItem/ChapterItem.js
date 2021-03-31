@@ -18,7 +18,7 @@ function ChapterItem({ wordData, children, id, setIsCurrentlyPlaying, isPlayDisa
 					<div>{wordData.word}</div>
 					<div>{wordData.transcription}</div>
 					<div>{wordData.wordTranslate}</div>
-					<Button handler={() => handleVolume(wordData, setIsCurrentlyPlaying)} disabled={isPlayDisabled}>
+					<Button handler={() => handleVolume(wordData, setIsCurrentlyPlaying)} disabled={isPlayDisabled} color={color}>
 						<FaVolumeUp />
 					</Button>
 				</div>

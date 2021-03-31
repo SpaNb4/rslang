@@ -35,6 +35,7 @@ export const LocalStorageKeys = {
 	QuizAttempts: 'quizAttempts',
 	QuizDate: 'quizDate',
 	RemovedPages: 'removed-pages',
+	RemovedWordsCount: 'removed-words-count',
 };
 
 // Default Values
