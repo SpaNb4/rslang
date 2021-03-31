@@ -7,9 +7,9 @@ import Button from '../Button/Button';
 import classes from './ChapterItem.module.scss';
 import { PropTypes } from 'prop-types';
 
-function ChapterItem({ wordData, children, id }) {
+function ChapterItem({ wordData, children, id, color }) {
 	return (
-		<div className={classes.chapterItem} id={id}>
+		<div className={classes.chapterItem} id={id} data-color={color}>
 			<div className={classes.itemImage}>
 				<img src={buildUrl(ExternalUrls.Root, wordData.image)} alt={wordData.word} />
 			</div>
@@ -18,7 +18,7 @@ function ChapterItem({ wordData, children, id }) {
 					<div>{wordData.word}</div>
 					<div>{wordData.transcription}</div>
 					<div>{wordData.wordTranslate}</div>
-					<Button handler={() => handleVolumeUp(wordData)}>
+					<Button handler={() => handleVolumeUp(wordData)} color={color}>
 						<FaVolumeUp />
 					</Button>
 				</div>
@@ -80,6 +80,7 @@ ChapterItem.propTypes = {
 	}).isRequired,
 	children: PropTypes.node.isRequired,
 	id: PropTypes.string,
+	color: PropTypes.string,
 };
 
 export default ChapterItem;

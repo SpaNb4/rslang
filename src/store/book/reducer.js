@@ -13,6 +13,7 @@ const initialState = {
 	isTranslationOn: true,
 	isEditDictionaryButtons: true,
 	removedPages: {},
+	removedWordsCount: {},
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -54,8 +55,31 @@ const reducer = createReducer(initialState, (builder) => {
 				state.removedPages = { ...state.removedPages, [group]: [page] };
 			}
 		})
+		.addCase(actions.updateRemovedWordsCountForPage, (state, { payload: { group, page } }) => {
+			if (state.removedWordsCount[group]) {
+				if (state.removedWordsCount[group][page]) {
+					state.removedWordsCount = {
+						...state.removedWordsCount,
+						[group]: {
+							...state.removedWordsCount[group],
+							[page]: state.removedWordsCount[group][page] + 1,
+						},
+					};
+				} else {
+					state.removedWordsCount = {
+						...state.removedWordsCount,
+						[group]: { ...state.removedWordsCount[group], [page]: 1 },
+					};
+				}
+			} else {
+				state.removedWordsCount = { ...state.removedWordsCount, [group]: { [page]: 1 } };
+			}
+		})
 		.addCase(actions.updateRemovedPages, (state, action) => {
 			state.removedPages = action.payload;
+		})
+		.addCase(actions.updateRemovedWordsCount, (state, action) => {
+			state.removedWordsCount = action.payload;
 		})
 		.addDefaultCase((state) => state);
 });

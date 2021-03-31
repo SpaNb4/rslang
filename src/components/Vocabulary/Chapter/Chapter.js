@@ -44,6 +44,7 @@ function Chapter() {
 					key={index}
 					wordData={word.optional}
 					id={group === DictionarySections.Hard ? null : word.difficulty}
+					color={menu.sections[+word.group].color}
 				>
 					<Button handler={() => restoreWordToBook(word)}>Восстановить</Button>
 				</ChapterItem>

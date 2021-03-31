@@ -9,3 +9,4 @@ export const getAggregatedWordsWords = (store) => getSlice(store).aggregatedWord
 export const getIsTranslationOn = (store) => getSlice(store).isTranslationOn;
 export const getIsEditDictionaryButtons = (store) => getSlice(store).isEditDictionaryButtons;
 export const getRemovedPagesForGroup = (store) => getSlice(store).removedPages[getCurrentGroup(store)];
+export const getRemovedWordsCountForGroup = (store) => getSlice(store).removedWordsCount[getCurrentGroup(store)];

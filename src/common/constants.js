@@ -33,6 +33,7 @@ export const LocalStorageKeys = {
 	BookPage: 'bookPage',
 	VocabularyPage: 'vocabularyPage',
 	RemovedPages: 'removed-pages',
+	RemovedWordsCount: 'removed-words-count',
 };
 
 // Default Values
