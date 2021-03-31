@@ -6,10 +6,12 @@ import { PropTypes } from 'prop-types';
 function Pagination({ handlePageClick, pageCount, startPage, removedPages, forcePage }) {
 	const ariaLabelBuilder = useCallback(
 		(pageIndex) => {
-			if (removedPages && removedPages.includes(pageIndex)) {
-				return 'disabled';
+			if (removedPages) {
+				if (removedPages && removedPages.includes(pageIndex)) {
+					return 'disabled';
+				}
+				return 'active';
 			}
-			return 'active';
 		},
 		[removedPages]
 	);

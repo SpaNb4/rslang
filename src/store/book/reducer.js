@@ -11,7 +11,7 @@ const initialState = {
 	loading: false,
 	errorMessage: '',
 	isTranslationOn: true,
-	isEditDictionaryButtons: true,
+	isEditDictionaryButtons: false,
 	removedPages: {},
 	removedWordsCount: {},
 };

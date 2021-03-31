@@ -15,7 +15,12 @@ import Game from './components/Games/Game';
 import { getUserId, getToken, getAuthorized } from './store/app/slices';
 import { saveUserAuthData } from './store/app/actions';
 import { fetchUserWords } from './store/dictionary/actions';
-import { fetchWords, updateRemovedPages, updateRemovedWordsCount } from './store/book/actions';
+import {
+	fetchWords,
+	updateRemovedPages,
+	updateRemovedWordsCount,
+	updateIsEditDictionaryButtons,
+} from './store/book/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
 import { getUserDataFromLocalStorage } from './common/service';
 
@@ -43,6 +48,7 @@ function App() {
 			dispatch(updateRemovedPages(removedPages));
 			const removedWordsCount = getUserDataFromLocalStorage(LocalStorageKeys.RemovedWordsCount, userId);
 			dispatch(updateRemovedWordsCount(removedWordsCount));
+			dispatch(updateIsEditDictionaryButtons(true));
 		} else {
 			dispatch(fetchWords());
 		}
