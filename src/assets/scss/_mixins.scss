@@ -29,3 +29,18 @@
 		}
 	}
 }
+
+@mixin color($color) {
+	svg {
+		fill: $color;
+	}
+
+	&:hover {
+		color: $color-white;
+		background-color: $color;
+
+		svg {
+			fill: $color-white;
+		}
+	}
+}

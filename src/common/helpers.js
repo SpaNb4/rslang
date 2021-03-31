@@ -1,4 +1,4 @@
-import { ExternalUrls } from './constants';
+import { ExternalUrls, LocalStorageKeys, DefaultValues } from './constants';
 import * as _ from 'lodash';
 
 export function buildUrl(...args) {
@@ -15,4 +15,8 @@ export function handleVolumeUp(wordData) {
 		};
 	}
 	_.first(audioList).play();
+}
+
+export function updateAttempts() {
+	localStorage.setItem(LocalStorageKeys.QuizAttempts, DefaultValues.attemptsNumber);
 }

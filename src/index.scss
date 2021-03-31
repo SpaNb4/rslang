@@ -4,13 +4,19 @@ body {
 	font-family: $font-primary;
 	font-size: 16px;
 	line-height: 1.3;
-	color: $color-regent-gray;
+	color: $color-text;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 
 	@include resolution(tablet) {
 		font-size: 14px;
 	}
+}
+
+#root {
+	position: relative;
+	min-height: 100vh;
+	padding-bottom: 80px;
 }
 
 *,
@@ -23,7 +29,7 @@ body {
 
 a {
 	text-decoration: none;
-	transition: 0.4s ease;
+	transition: $transition;
 	outline: none;
 }
 
@@ -37,8 +43,9 @@ ul {
 }
 
 button {
+	font-family: inherit;
 	cursor: pointer;
-	transition: 0.4s ease;
+	transition: $transition;
 	outline: none;
 }
 
@@ -83,6 +90,21 @@ button {
 
 	&:nth-child(even) h2::after {
 		background-color: rgba($color-primary, 0.5);
+	}
+}
+
+.button {
+	padding: 10px 27px;
+	color: $color-chestnut;
+	font-size: 1rem;
+	border: 1px solid;
+	box-shadow: $box-shadow-3;
+	border-radius: 8px;
+	background-color: $color-white;
+
+	&:hover {
+		color: $color-white;
+		background-color: $color-chestnut;
 	}
 }
 
