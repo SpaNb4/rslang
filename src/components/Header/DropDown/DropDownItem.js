@@ -10,7 +10,7 @@ const DropDownItem = ({ listName, linkName, linkId, icon, color }) => {
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
 	const [current, setCurrent] = useState(false);
-	const link = `/${listName}/${linkId}=true`;
+	const link = `/${listName}/${linkId}`;
 
 	useEffect(() => setCurrent(pathname.includes(link)), [pathname]);
 
@@ -23,7 +23,7 @@ const DropDownItem = ({ listName, linkName, linkId, icon, color }) => {
 		<li className={classes.menuItem}>
 			<Link
 				className={[classes.menuLink, classes.innerLink].join(' ')}
-				to={link}
+				to={listName === 'game' ? `${link}=true` : link}
 				onClick={handleClick}
 				aria-current={current}
 				data-color={color}

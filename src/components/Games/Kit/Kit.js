@@ -3,101 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import sampleSize from 'lodash/sampleSize';
 import shuffle from 'lodash/shuffle';
-import {
-	getCurrCharIndex,
-	getCurrWordIndex,
-	getCurrentWord,
-	getRandomWords,
-	getAnswers,
-} from '../../../store/kit/slices';
-import { setRandomWords, increaseCharIndex, setCurrentWord, addAnswer } from '../../../store/kit/actions';
-import classes from './Kit.module.scss';
-import { FaStar } from 'react-icons/fa';
+import HiddenChar from './HiddenChar';
+import ShuffledChar from './ShuffledChar';
+import IconStar from './IconStar';
+import { getCurrCharIndex, getCurrWordIndex, getRandomWords, getAnswers } from '../../../store/kit/slices';
+import { setRandomWords, setCurrentWord, addAnswer } from '../../../store/kit/actions';
 import { globalClasses as c } from '../../../common/constants';
 import { finishGame } from '../../../store/game/actions';
+import classes from './Kit.module.scss';
 
 const NUMBER_OF_WORDS = 3;
-
-const colors = {
-	error: '#f00',
-	correct: `#fd0`,
-};
-
-const HiddenChar = ({ char, index }) => {
-	const [hidden, setHidden] = useState(true);
-	const currCharIndex = useSelector(getCurrCharIndex);
-	const currentWord = useSelector(getCurrentWord);
-
-	useEffect(() => {
-		if (index === currCharIndex - 1) {
-			setHidden(false);
-		}
-	}, [currCharIndex]);
-
-	useEffect(() => {
-		setHidden(true);
-	}, [currentWord]);
-
-	return (
-		<span className={classes.hiddenCharWrapper}>
-			<span className={classes.hiddenChar} aria-hidden={hidden}>
-				{char}
-			</span>
-		</span>
-	);
-};
-
-const ShuffledChar = ({ char }) => {
-	const dispatch = useDispatch();
-	const currentWord = useSelector(getCurrentWord);
-	const currCharIndex = useSelector(getCurrCharIndex);
-	const [selected, setSelected] = useState(false);
-
-	const handleClick = (evt) => {
-		const char = evt.target.value;
-
-		if (!selected && char === currentWord[currCharIndex]) {
-			setSelected(true);
-			dispatch(increaseCharIndex());
-		}
-	};
-
-	useEffect(() => {
-		setSelected(false);
-	}, [currentWord]);
-
-	return (
-		<button
-			className={classes.shuffledChar}
-			type="button"
-			aria-label="choose letter"
-			aria-selected={selected}
-			value={char}
-			onClick={handleClick}
-		>
-			{char}
-		</button>
-	);
-};
-
-const IconStar = ({ index }) => {
-	const answers = useSelector(getAnswers);
-	const [iconColor, setIconColor] = useState('');
-
-	useEffect(() => {
-		if (answers.includes(index)) {
-			setIconColor(colors.correct);
-		} else if (answers[index] === null) {
-			setIconColor(colors.error);
-		}
-	}, [answers]);
-
-	return (
-		<li data-index={index}>
-			<FaStar color={iconColor} />
-		</li>
-	);
-};
 
 const Kit = ({ data }) => {
 	const dispatch = useDispatch();
@@ -111,9 +26,11 @@ const Kit = ({ data }) => {
 	const [normCurrWord, setNormCurrWord] = useState([]);
 	const [shuffCurrWord, setShuffCurrWord] = useState([]);
 
+	console.log(currWordObj);
+
 	useEffect(() => {
 		if (data.length) {
-			dispatch(setRandomWords(sampleSize(data, NUMBER_OF_WORDS).map((elem) => elem.optional)));
+			dispatch(setRandomWords(sampleSize(data, NUMBER_OF_WORDS).map((elem) => elem)));
 		}
 	}, [data]);
 
@@ -142,7 +59,6 @@ const Kit = ({ data }) => {
 		dispatch(addAnswer(null));
 	}, []);
 
-	//Game over temporary log
 	useEffect(() => {
 		if (currWordIndex && currWordIndex === randomWords.length) {
 			const result = {
@@ -189,19 +105,6 @@ const Kit = ({ data }) => {
 			)}
 		</>
 	);
-};
-
-HiddenChar.propTypes = {
-	index: PropTypes.number,
-	char: PropTypes.string,
-};
-
-ShuffledChar.propTypes = {
-	char: PropTypes.string,
-};
-
-IconStar.propTypes = {
-	index: PropTypes.number,
 };
 
 Kit.propTypes = {
