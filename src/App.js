@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 
@@ -16,12 +16,23 @@ import { saveUserAuthData } from './store/app/actions';
 import { fetchUserWords } from './store/dictionary/actions';
 import { fetchWords } from './store/book/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
+import GameSprint from './components/Games/GameSprint/GameSprint';
+import { getAllWords } from './store/book/slices';
 
 function App() {
 	const dispatch = useDispatch();
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
+
 	const authorized = useSelector(getAuthorized);
+	const [words, setWords] = useState(null);
+	const allWords = useSelector(getAllWords);
+
+	useEffect(() => {
+		if (allWords.length) {
+			setWords(allWords);
+		}
+	}, [allWords]);
 
 	useEffect(() => {
 		if (!authorized) {
@@ -50,6 +61,7 @@ function App() {
 					<Route path="/book/:group" component={Book} />
 					<Route path="/vocabulary/:group" component={Vocabulary} />
 					<Route path="/quiz" component={Quiz} />
+					<Route path="/game/sprint">{words && <GameSprint wordData={words} />}</Route>
 				</Switch>
 			</main>
 			<Footer />
