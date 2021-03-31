@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import ReactPaginate from 'react-paginate';
 import classes from './Pagination.module.scss';
 import { PropTypes } from 'prop-types';
 
 function Pagination({ handlePageClick, pageCount, startPage, removedPages, forcePage }) {
-	function ariaLabelBuilder(pageIndex) {
-		if (removedPages && removedPages.includes(pageIndex)) {
-			return 'disabled';
-		}
-		return 'active';
-	}
+	const ariaLabelBuilder = useCallback(
+		(pageIndex) => {
+			if (removedPages && removedPages.includes(pageIndex)) {
+				return 'disabled';
+			}
+			return 'active';
+		},
+		[removedPages]
+	);
 
 	return (
 		<ReactPaginate
