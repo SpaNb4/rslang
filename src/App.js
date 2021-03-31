@@ -10,6 +10,7 @@ import Footer from './components/Footer/Footer';
 import Book from './components/Book/Book';
 import Vocabulary from './components/Vocabulary/Vocabulary';
 import Quiz from './components/Quiz/Quiz';
+import Game from './components/Games/Game';
 
 import { getUserId, getToken, getAuthorized } from './store/app/slices';
 import { saveUserAuthData } from './store/app/actions';
@@ -17,7 +18,6 @@ import { fetchUserWords } from './store/dictionary/actions';
 import { fetchWords, updateRemovedPages } from './store/book/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
 import { getRemovedPagesFromLocalStorage } from './common/service';
-import GameRoutes from './components/Games/GameRoutes';
 
 function App() {
 	const dispatch = useDispatch();
@@ -52,19 +52,21 @@ function App() {
 	return (
 		<React.Fragment>
 			<Header />
-			<main className={c.container}>
-				<Switch>
-					<Route exact path="/">
+			<Switch>
+				<Route exact path="/">
+					<main className={c.container}>
 						<Features />
 						<Video />
 						<Team />
-					</Route>
-					<Route path="/book/:group" component={Book} />
-					<Route path="/vocabulary/:group" component={Vocabulary} />
-					<Route path="/quiz" component={Quiz} />
-					<Route path="/game/:specific_game" component={GameRoutes} />
-				</Switch>
-			</main>
+					</main>
+				</Route>
+				<Route path="/book/:group" component={Book} />
+				<Route path="/vocabulary/:group" component={Vocabulary} />
+				<Route path="/quiz" component={Quiz} />
+			</Switch>
+
+			<Route path="/game/:name" component={Game} />
+
 			<Footer />
 		</React.Fragment>
 	);

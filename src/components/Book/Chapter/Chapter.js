@@ -145,10 +145,6 @@ function Chapter() {
 							className={[menuClasses.menuLink, menuClasses.innerLink, classes.listItemLink].join(' ')}
 							to={{
 								pathname: `/${listName}/${linkId}`,
-								state: {
-									words: aggregatedWords,
-									page,
-								},
 							}}
 							data-color={color}
 						>

@@ -16,7 +16,9 @@ body {
 #root {
 	position: relative;
 	min-height: 100vh;
-	padding-bottom: 80px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 *,

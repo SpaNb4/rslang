@@ -1,7 +1,13 @@
 .fullScreenWrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	// header + footer + main_container_padding = 206
+	min-height: calc(100vh - 146px);
+
 	.fullScreenBtn {
 		position: absolute;
-		top: 90px;
+		top: 25px;
 		left: 20px;
 		font-size: 30px;
 		color: $color-black;
