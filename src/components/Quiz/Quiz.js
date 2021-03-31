@@ -99,84 +99,86 @@ const Quiz = () => {
 	};
 
 	return (
-		<div className={classes.root}>
-			<h5 className={classes.title}>Викторина</h5>
+		<main className={c.container}>
+			<div className={classes.root}>
+				<h5 className={classes.title}>Викторина</h5>
 
-			{loading ? (
-				<Loader />
-			) : (
-				<>
-					{userWords.length ? (
-						<>
-							<span className={classes.date}>{date}</span>
-							{words.length && variants.length ? (
-								<>
-									<p className={classes.attempts}>
-										{attempts > 0 ? (
-											<>
-												Осталось {attempts} попытк{attempts > 1 ? 'и' : 'а'}
-											</>
-										) : (
-											<>Попытки закончились. Возвращайтесь завтра</>
-										)}
-									</p>
-									{showForm && (
-										<form
-											className={classes.form}
-											onSubmit={handleSubmit}
-											aria-disabled={submitted}
-										>
-											{words.map(({ optional }, index) => {
-												return (
-													<DailyQuizItem
-														key={`quiz-${index}`}
-														variants={variants[index]}
-														word={optional.word}
-														question={questionsData[index].question}
-														keyIndex={index}
-													/>
-												);
-											})}
-
-											<button type="submit" className={c.button}>
-												Проверить ответы
-											</button>
-										</form>
-									)}
-								</>
-							) : (
-								<Loader />
-							)}
-						</>
-					) : (
-						<p className={classes.errors}>нет изученных слов</p>
-					)}
-				</>
-			)}
-
-			{submitted && (
-				<>
-					<p className={classes.errors}>
-						{errors ? (
+				{loading ? (
+					<Loader />
+				) : (
+					<>
+						{userWords.length ? (
 							<>
-								У вас {errors} ошибк{errors > 1 ? 'и' : 'а'}
+								<span className={classes.date}>{date}</span>
+								{words.length && variants.length ? (
+									<>
+										<p className={classes.attempts}>
+											{attempts > 0 ? (
+												<>
+													Осталось {attempts} попытк{attempts > 1 ? 'и' : 'а'}
+												</>
+											) : (
+												<>Попытки закончились. Возвращайтесь завтра</>
+											)}
+										</p>
+										{showForm && (
+											<form
+												className={classes.form}
+												onSubmit={handleSubmit}
+												aria-disabled={submitted}
+											>
+												{words.map(({ optional }, index) => {
+													return (
+														<DailyQuizItem
+															key={`quiz-${index}`}
+															variants={variants[index]}
+															word={optional.word}
+															question={questionsData[index].question}
+															keyIndex={index}
+														/>
+													);
+												})}
+
+												<button type="submit" className={c.button}>
+													Проверить ответы
+												</button>
+											</form>
+										)}
+									</>
+								) : (
+									<Loader />
+								)}
 							</>
 						) : (
-							<>Поздравляем! У вас нет ошибок</>
+							<p className={classes.errors}>нет изученных слов</p>
 						)}
-					</p>
-					<button
-						type="button"
-						onClick={handleClick}
-						className={classes.restartButton}
-						aria-disabled={attempts < 1}
-					>
-						<FaUndoAlt />
-						<span>Сыграть еще раз</span>
-					</button>
-				</>
-			)}
-		</div>
+					</>
+				)}
+
+				{submitted && (
+					<>
+						<p className={classes.errors}>
+							{errors ? (
+								<>
+									У вас {errors} ошибк{errors > 1 ? 'и' : 'а'}
+								</>
+							) : (
+								<>Поздравляем! У вас нет ошибок</>
+							)}
+						</p>
+						<button
+							type="button"
+							onClick={handleClick}
+							className={classes.restartButton}
+							aria-disabled={attempts < 1}
+						>
+							<FaUndoAlt />
+							<span>Сыграть еще раз</span>
+						</button>
+					</>
+				)}
+			</div>
+		</main>
 	);
 };
 

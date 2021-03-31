@@ -3,14 +3,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import sampleSize from 'lodash/sampleSize';
 import shuffle from 'lodash/shuffle';
-import { getAllWords } from '../../store/book/slices';
-import { getCurrCharIndex, getCurrWordIndex, getCurrentWord, getRandomWords, getAnswers } from '../../store/kit/slices';
-import { setRandomWords, increaseCharIndex, setCurrentWord, addAnswer } from './../../store/kit/actions';
+import {
+	getCurrCharIndex,
+	getCurrWordIndex,
+	getCurrentWord,
+	getRandomWords,
+	getAnswers,
+} from '../../../store/kit/slices';
+import { setRandomWords, increaseCharIndex, setCurrentWord, addAnswer } from '../../../store/kit/actions';
 import classes from './Kit.module.scss';
 import { FaStar } from 'react-icons/fa';
+import { globalClasses as c } from '../../../common/constants';
+import { finishGame } from '../../../store/game/actions';
 
 const NUMBER_OF_WORDS = 3;
-const DELAY = 1000;
 
 const colors = {
 	error: '#f00',
@@ -93,9 +99,9 @@ const IconStar = ({ index }) => {
 	);
 };
 
-const Kit = () => {
+const Kit = ({ data }) => {
 	const dispatch = useDispatch();
-	const allWords = useSelector(getAllWords);
+
 	const randomWords = useSelector(getRandomWords);
 	const currWordIndex = useSelector(getCurrWordIndex);
 	const currCharIndex = useSelector(getCurrCharIndex);
@@ -104,16 +110,15 @@ const Kit = () => {
 	const [currWordObj, setCurrWordObj] = useState(null);
 	const [normCurrWord, setNormCurrWord] = useState([]);
 	const [shuffCurrWord, setShuffCurrWord] = useState([]);
-	const [message, setMessage] = useState('loading...'); // loader mock
 
 	useEffect(() => {
-		if (allWords.length) {
-			dispatch(setRandomWords(sampleSize(allWords, NUMBER_OF_WORDS)));
+		if (data.length) {
+			dispatch(setRandomWords(sampleSize(data, NUMBER_OF_WORDS).map((elem) => elem.optional)));
 		}
-	}, [allWords]);
+	}, [data]);
 
 	useEffect(() => {
-		if (randomWords.length) {
+		if (randomWords.length && currWordIndex < randomWords.length) {
 			setCurrWordObj(randomWords[currWordIndex]);
 		}
 	}, [randomWords, currWordIndex]);
@@ -128,16 +133,9 @@ const Kit = () => {
 	}, [currWordObj]);
 
 	useEffect(() => {
-		let timeout;
-
 		if (currCharIndex && currCharIndex === normCurrWord.length) {
-			timeout = setTimeout(() => {
-				dispatch(addAnswer(currWordIndex));
-			}, DELAY);
+			dispatch(addAnswer(currWordIndex));
 		}
-		return () => {
-			clearTimeout(timeout);
-		};
 	}, [currCharIndex]);
 
 	const handleSkipWord = useCallback(() => {
@@ -147,47 +145,49 @@ const Kit = () => {
 	//Game over temporary log
 	useEffect(() => {
 		if (currWordIndex && currWordIndex === randomWords.length) {
-			const corrects = answers.filter((answer) => answer).length;
-			setMessage(`Угадано: ${corrects}
-			Пропущено: ${answers.length - corrects}`);
+			const result = {
+				correct: randomWords.filter((_, index) => answers.includes(index)),
+				wrong: randomWords.filter((_, index) => !answers.includes(index)),
+			};
+
+			dispatch(finishGame(result));
 		}
 	}, [currWordIndex]);
 
 	return (
-		<div className={classes.root}>
-			<div className={classes.gameField}>
-				<ul className={classes.starList}>
-					{randomWords &&
-						randomWords.map((_, index) => {
-							return <IconStar key={`star-${index}`} index={index} />;
-						})}
-				</ul>
-				{currWordObj ? (
-					<React.Fragment>
-						<p className={classes.translatedWord}>{currWordObj.wordTranslate}</p>
-						<div className={classes.word}>
-							{normCurrWord &&
-								normCurrWord.map((char, index) => {
-									return <HiddenChar index={index} key={`char${index}`} char={char} />;
-								})}
-						</div>
+		<>
+			{currWordObj && (
+				<div className={classes.gameField}>
+					<ul className={classes.starList}>
+						{randomWords.length &&
+							randomWords.map((_, index) => {
+								return <IconStar key={`star-${index}`} index={index} />;
+							})}
+					</ul>
+					{currWordObj && (
+						<>
+							<p className={classes.translatedWord}>{currWordObj.wordTranslate}</p>
+							<div className={classes.word}>
+								{normCurrWord &&
+									normCurrWord.map((char, index) => {
+										return <HiddenChar index={index} key={`char${index}`} char={char} />;
+									})}
+							</div>
 
-						<div className={classes.word}>
-							{shuffCurrWord &&
-								shuffCurrWord.map((char, index) => {
-									return <ShuffledChar key={`char${index}`} char={char} />;
-								})}
-						</div>
-					</React.Fragment>
-				) : (
-					<div>{message}</div>
-				)}
-
-				<button className={classes.skipButton} aria-label="skip word" onClick={handleSkipWord} type="button">
-					Пропустить слово
-				</button>
-			</div>
-		</div>
+							<div className={classes.word}>
+								{shuffCurrWord &&
+									shuffCurrWord.map((char, index) => {
+										return <ShuffledChar key={`char${index}`} char={char} />;
+									})}
+							</div>
+						</>
+					)}
+					<button className={c.button} aria-label="skip word" onClick={handleSkipWord} type="button">
+						Пропустить слово
+					</button>
+				</div>
+			)}
+		</>
 	);
 };
 
@@ -202,6 +202,10 @@ ShuffledChar.propTypes = {
 
 IconStar.propTypes = {
 	index: PropTypes.number,
+};
+
+Kit.propTypes = {
+	data: PropTypes.array,
 };
 
 export default Kit;
