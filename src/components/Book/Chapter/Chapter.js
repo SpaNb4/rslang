@@ -75,7 +75,7 @@ function Chapter() {
 	useEffect(() => {
 		if (authorized && removedWordsCountForGroup && removedWordsCountForGroup[page] === DefaultValues.WordsPerPage) {
 			const currentPage = +page;
-			if (removedPages && !removedPages.includes(currentPage)) {
+			if (typeof removedPages !== 'undefined' && !removedPages.includes(currentPage)) {
 				dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: currentPage }));
 				saveRemovedPagesToLocalStorage(userId, +group - 1, currentPage);
 			} else {
