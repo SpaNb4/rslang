@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import { FaStar } from 'react-icons/fa';
+import { FaStar, FaRegStar } from 'react-icons/fa';
 import { getAnswers } from '../../../store/kit/slices';
-
-const colors = {
-	error: '#f00',
-	correct: `#fd0`,
-};
+import { colors } from '../../../common/constants';
 
 const IconStar = ({ index }) => {
 	const answers = useSelector(getAnswers);
@@ -21,11 +17,7 @@ const IconStar = ({ index }) => {
 		}
 	}, [answers]);
 
-	return (
-		<li data-index={index}>
-			<FaStar color={iconColor} />
-		</li>
-	);
+	return <li data-index={index}>{iconColor ? <FaStar color={iconColor} /> : <FaRegStar color={iconColor} />}</li>;
 };
 
 IconStar.propTypes = {

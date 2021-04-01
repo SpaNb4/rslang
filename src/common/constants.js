@@ -258,3 +258,16 @@ export const questionsData = [
 export const JWT_EXPIRE_TIME = 3.5 * 60 * 60 * 1000;
 
 export const MIN_WORD_COUNT = 5;
+
+// keyboard map
+export const evtKeys = {
+	enter: 'Enter',
+	left: 'ArrowLeft',
+	right: 'ArrowRight',
+	space: ' ',
+};
+
+export const colors = {
+	error: '#f00',
+	correct: `#fd0`,
+};

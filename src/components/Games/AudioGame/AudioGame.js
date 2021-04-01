@@ -6,10 +6,7 @@ import { AiFillSound } from 'react-icons/ai';
 import { ExternalUrls } from '../../../common/constants';
 import { useDispatch } from 'react-redux';
 import classes from './AudioGame.module.scss';
-
-import correctSound from '../../../assets/audio/correctAnswer.wav';
-import wrongSound from '../../../assets/audio/wrongAnswer.wav';
-import { playSound } from './../../../common/utils';
+import { playWrong, playCorrect } from '../../../common/helpers';
 import { PropTypes } from 'prop-types';
 import { finishGame } from './../../../store/game/actions';
 
@@ -68,7 +65,7 @@ function AudioGame({ wordData }) {
 		setWrongAnswersWords([...wrongAnswersWords, currWord]);
 		setIsWordClicked(true);
 
-		playSound(wrongSound);
+		playWrong();
 	}
 
 	function handleCorrectWordClick() {
@@ -78,7 +75,7 @@ function AudioGame({ wordData }) {
 		setCorrAnswersWords([...corrAnswersWords, currWord]);
 		setIsWordClicked(true);
 
-		playSound(correctSound);
+		playCorrect();
 	}
 
 	function checkEndWords() {
