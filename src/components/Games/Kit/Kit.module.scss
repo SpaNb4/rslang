@@ -72,6 +72,10 @@
 		opacity: 0.8;
 	}
 
+	&:focus {
+		background-color: red;
+	}
+
 	&[aria-selected='true'] {
 		color: $color-apple;
 		background-color: $color-white;

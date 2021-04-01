@@ -6,6 +6,7 @@ const initialState = {
 	currentWord: '',
 	currentWordIndex: 0,
 	currentCharIndex: 0,
+	focusedIndex: 0,
 	answers: [],
 };
 
@@ -16,6 +17,17 @@ const reducer = createReducer(initialState, (builder) => {
 		})
 		.addCase(actions.setCurrentWord, (state, action) => {
 			state.currentWord = action.payload;
+			state.focusedIndex = 0;
+		})
+		.addCase(actions.increaseFocusedIndex, (state) => {
+			if (state.focusedIndex < state.currentWord.length) {
+				state.focusedIndex = state.focusedIndex + 1;
+			}
+		})
+		.addCase(actions.reduceFocusedIndex, (state) => {
+			if (state.focusedIndex >= 1) {
+				state.focusedIndex = state.focusedIndex - 1;
+			}
 		})
 		.addCase(actions.increaseCharIndex, (state) => {
 			state.currentCharIndex = state.currentCharIndex + 1;
