@@ -6,10 +6,7 @@ import { useSpring, animated } from 'react-spring';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
 import classes from './Savanna.module.scss';
-
-import correctSound from '../../../assets/audio/correctAnswer.wav';
-import wrongSound from '../../../assets/audio/wrongAnswer.wav';
-import { playSound } from './../../../common/utils';
+import { playWrong, playCorrect } from '../../../common/helpers';
 import { PropTypes } from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { finishGame } from './../../../store/game/actions';
@@ -88,7 +85,7 @@ function Savanna({ wordData }) {
 		setLivesCount(livesCount - 1);
 		setIsWordClicked(true);
 
-		playSound(wrongSound);
+		playWrong();
 	}
 
 	function handleCorrectWordClick() {
@@ -101,7 +98,7 @@ function Savanna({ wordData }) {
 		setCorrAnswersWords([...corrAnswersWords, currWord]);
 		setIsWordClicked(true);
 
-		playSound(correctSound);
+		playCorrect();
 	}
 
 	function checkEndWords() {

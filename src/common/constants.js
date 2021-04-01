@@ -265,3 +265,8 @@ export const evtKeys = {
 	right: 'ArrowRight',
 	space: ' ',
 };
+
+export const colors = {
+	error: '#f00',
+	correct: `#fd0`,
+};

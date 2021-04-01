@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import { getCurrCharIndex, getCurrentWord } from '../../../store/kit/slices';
+import { playChar } from '../../../common/helpers';
 import classes from './Kit.module.scss';
 
 const HiddenChar = ({ char, index }) => {
@@ -12,6 +13,7 @@ const HiddenChar = ({ char, index }) => {
 	useEffect(() => {
 		if (index === currCharIndex - 1) {
 			setHidden(false);
+			playChar();
 		}
 	}, [currCharIndex]);
 

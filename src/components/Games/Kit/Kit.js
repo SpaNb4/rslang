@@ -16,8 +16,8 @@ import {
 } from '../../../store/kit/actions';
 import { evtKeys, globalClasses as c } from '../../../common/constants';
 import { finishGame } from '../../../store/game/actions';
+import { getStreak, playWrong, playCorrect } from '../../../common/helpers';
 import classes from './Kit.module.scss';
-import { getStreak } from '../../../common/helpers';
 
 const NUMBER_OF_WORDS = 5;
 
@@ -55,11 +55,13 @@ const Kit = ({ wordData }) => {
 
 	useEffect(() => {
 		if (currCharIndex && currCharIndex === normCurrWord.length) {
+			playCorrect();
 			dispatch(addAnswer(currWordIndex));
 		}
 	}, [currCharIndex]);
 
 	const handleSkipWord = useCallback(() => {
+		playWrong();
 		dispatch(addAnswer(null));
 	}, []);
 
