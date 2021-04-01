@@ -1,0 +1,82 @@
+.sprint {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	color: $color-black;
+	background-image: linear-gradient(315deg, $color-secondary 0%, $color-secondary 74%);
+}
+
+.buttoncontainer {
+	display: flex;
+	flex-direction: row;
+}
+
+.buttonArrow {
+	display: flex;
+	flex-direction: row;
+}
+
+.arrow {
+	margin-top: 10px;
+	width: 150px;
+	align-items: center;
+	justify-content: center;
+}
+
+.button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 150px;
+	height: 40px;
+	font-size: 16px;
+	font-weight: 700;
+	color: $color-white;
+	cursor: pointer;
+	background-color: $color-primary;
+	border: none;
+	border-radius: 5px;
+	outline: none;
+	margin-top: 20px;
+	margin-left: 5px;
+	margin-right: 5px;
+
+	&:hover,
+	&:active {
+		background: lighten($color-primary, 10) radial-gradient(circle, transparent 1%, lighten($color-primary, 10) 0)
+			50%/15000%;
+	}
+}
+
+.border {
+	border: 1px solid $color-black;
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	margin-top: 10px;
+	margin-bottom: 50px;
+	border-radius: 5px;
+}
+
+.color {
+	background-color: $color-secondary;
+	color: $color-black;
+}
+
+.buttonaudio {
+	border: none;
+	font-size: 24px;
+	line-height: 1;
+	background-color: transparent;
+	color: $color-primary;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	&:hover,
+	&:active {
+		color: lighten($color-primary, 30);
+	}
+}

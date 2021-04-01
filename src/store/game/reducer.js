@@ -10,14 +10,18 @@ const initialState = {
 	answers: {
 		correct: [],
 		wrong: [],
+		streak: 0,
 	},
-	streak: 0,
+
 	level: DefaultValues.Group,
 };
 
 const reducer = createReducer(initialState, (builder) => {
 	builder
-		.addCase(actions.loadGame, () => initialState)
+		.addCase(actions.resetGame, () => initialState)
+		.addCase(actions.fetchName, (state, action) => {
+			state.name = action.payload;
+		})
 		.addCase(actions.startGame, (state, action) => {
 			state.start = true;
 			state.level = action.payload;

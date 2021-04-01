@@ -11,10 +11,11 @@ import { setRandomWords, setCurrentWord, addAnswer } from '../../../store/kit/ac
 import { globalClasses as c } from '../../../common/constants';
 import { finishGame } from '../../../store/game/actions';
 import classes from './Kit.module.scss';
+import { getStreak } from '../../../common/helpers';
 
-const NUMBER_OF_WORDS = 3;
+const NUMBER_OF_WORDS = 5;
 
-const Kit = ({ data }) => {
+const Kit = ({ wordData }) => {
 	const dispatch = useDispatch();
 
 	const randomWords = useSelector(getRandomWords);
@@ -25,14 +26,13 @@ const Kit = ({ data }) => {
 	const [currWordObj, setCurrWordObj] = useState(null);
 	const [normCurrWord, setNormCurrWord] = useState([]);
 	const [shuffCurrWord, setShuffCurrWord] = useState([]);
-
-	console.log(currWordObj);
+	// const [streak, setStreak] = useState(0);
 
 	useEffect(() => {
-		if (data.length) {
-			dispatch(setRandomWords(sampleSize(data, NUMBER_OF_WORDS).map((elem) => elem)));
+		if (wordData.length) {
+			dispatch(setRandomWords(sampleSize(wordData, NUMBER_OF_WORDS).map((elem) => elem)));
 		}
-	}, [data]);
+	}, [wordData]);
 
 	useEffect(() => {
 		if (randomWords.length && currWordIndex < randomWords.length) {
@@ -62,8 +62,9 @@ const Kit = ({ data }) => {
 	useEffect(() => {
 		if (currWordIndex && currWordIndex === randomWords.length) {
 			const result = {
-				correct: randomWords.filter((_, index) => answers.includes(index)),
-				wrong: randomWords.filter((_, index) => !answers.includes(index)),
+				correct: randomWords.filter((_, index) => answers[index]),
+				wrong: randomWords.filter((_, index) => !answers[index]),
+				streak: getStreak(answers),
 			};
 
 			dispatch(finishGame(result));
@@ -108,7 +109,7 @@ const Kit = ({ data }) => {
 };
 
 Kit.propTypes = {
-	data: PropTypes.array,
+	wordData: PropTypes.array,
 };
 
 export default Kit;
