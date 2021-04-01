@@ -19,10 +19,15 @@ export function saveRemovedPagesToLocalStorage(userId, group, page) {
 		removedPages = JSON.parse(data);
 		if (removedPages[userId]) {
 			if (removedPages[userId][group]) {
-				removedPages = {
-					...removedPages,
-					[userId]: { ...removedPages[userId], [group]: _.sortBy([...removedPages[userId][group], page]) },
-				};
+				if (!removedPages[userId][group].includes(page)) {
+					removedPages = {
+						...removedPages,
+						[userId]: {
+							...removedPages[userId],
+							[group]: _.sortBy([...removedPages[userId][group], page]),
+						},
+					};
+				}
 			} else {
 				removedPages = { ...removedPages, [userId]: { ...removedPages[userId], [group]: [page] } };
 			}
