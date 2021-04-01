@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAnswers, getGameOver } from '../../store/game/slices';
-import Loader from '../Loader/Loader';
 import GameIntro from './GameIntro/GameIntro';
 import GameStats from './GameStats/GameStats';
 import GameOverLay from './GameOverlay/GameOverlay';
@@ -18,14 +17,13 @@ import { getToken, getUserId } from './../../store/app/slices';
 import { fetchAggregatedWords } from '../../store/book/actions';
 import { getAggregatedWordsWords } from './../../store/book/slices';
 import { updateGame } from '../../store/game/actions';
-import { getGameStart } from './../../store/game/slices';
+import { getGameStart, getCurrentLevel } from './../../store/game/slices';
+import random from 'lodash/random';
 
 const Game = (props) => {
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
 	const prevPageWords = useSelector(getAggregatedWordsWords);
-	const currWords = props.location.state.words;
-	const page = props.location.state.page;
 	const [words, setWords] = useState([]);
 	const [isEnoughWords, setIsEnoughWords] = useState(true);
 	const gameOver = useSelector(getGameOver);
@@ -33,23 +31,41 @@ const Game = (props) => {
 	const answers = useSelector(getAnswers);
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
+	const level = useSelector(getCurrentLevel);
+	const levelWords = useSelector(getAggregatedWordsWords);
+	const propsState = props.location.state;
 	const { linkName, linkId, rules } = menu.games.find((elem) => pathname.includes(elem.linkId));
 
 	useEffect(() => {
-		if (isGameStart && currWords.length <= MIN_WORD_COUNT) {
-			setWords([...prevPageWords, ...currWords]);
-		} else if (isGameStart) {
-			setWords(currWords);
+		// from book or vocabulary and words <= 5
+		if (propsState && isGameStart && propsState.words.length <= MIN_WORD_COUNT) {
+			setWords([...prevPageWords, ...propsState.words]);
+		}
+		// just from book or vocabulary
+		else if (propsState && isGameStart) {
+			setWords(propsState.words);
+		}
+		// from menu
+		else {
+			dispatch(fetchAggregatedWords(level, random(0, 29), userId, token));
 		}
 	}, [isGameStart]);
 
 	useEffect(() => {
-		if (props.location.state && page !== 0 && currWords.length <= MIN_WORD_COUNT) {
-			dispatch(fetchAggregatedWords(null, page - 1, userId, token));
-		} else if (page === 0 && currWords.length <= MIN_WORD_COUNT) {
+		// not 0 page and words<=5, get words from prev page
+		if (propsState && propsState.page !== 0 && propsState.words.length <= MIN_WORD_COUNT) {
+			dispatch(fetchAggregatedWords(null, propsState.page - 1, userId, token));
+		}
+		// 0 page, can't get words from pre page, show message
+		else if (propsState && propsState.page === 0 && propsState.words.length <= MIN_WORD_COUNT) {
 			setIsEnoughWords(false);
 		}
 	}, []);
+
+	useEffect(() => {
+		// set words when we click from menu
+		setWords(levelWords);
+	}, [levelWords]);
 
 	useEffect(() => dispatch(updateGame(linkId)), [linkId]);
 
@@ -74,7 +90,7 @@ const Game = (props) => {
 			{isEnoughWords ? (
 				gameOver ? (
 					<GameStats corrAnswersWords={answers.correct} wrongAnswersWords={answers.wrong} />
-				) : prevPageWords.length || currWords.length ? (
+				) : (
 					<>
 						{isGameStart ? (
 							<GameOverLay> {renderGame(words)} </GameOverLay>
@@ -82,8 +98,6 @@ const Game = (props) => {
 							<GameIntro name={linkName} settings={pathname.includes('true')} rules={rules} />
 						)}
 					</>
-				) : (
-					<Loader />
 				)
 			) : (
 				<h2>Недостаточно слов для игры :(</h2>
