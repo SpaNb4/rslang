@@ -1,10 +1,11 @@
 import * as types from './action-types';
 import { createAction } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { ExternalUrls } from '../../common/constants';
+import { ExternalUrls, DictionarySections } from '../../common/constants';
 import { buildUrl } from '../../common/helpers';
-import { checkIsTokenExpired } from '../../common/service';
+import { checkIsTokenExpired, saveRemovedWordsCountToLocalStorage } from '../../common/service';
 import { logout } from '../app/actions';
+import { updateRemovedWordsCountForPage } from '../book/actions';
 
 export const fetchUserWordsSuccess = createAction(types.FETCH_USER_WORDS_SUCCESS);
 export const createUserWordSuccess = createAction(types.CREATE_USER_WORD_SUCCESS);
@@ -40,6 +41,8 @@ export const fetchUserWords = (userId, token) => async (dispatch) => {
 	}
 };
 
+import { fetchAggregatedWords } from '../book/actions';
+
 export const setUserWord = (userId, token, wordData, section) => async (dispatch) => {
 	const isTokenExpired = checkIsTokenExpired();
 	if (!isTokenExpired) {
@@ -48,19 +51,30 @@ export const setUserWord = (userId, token, wordData, section) => async (dispatch
 			const { data } = await axios({
 				method: 'post',
 				url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', wordId),
-				params: {
-					id: userId,
-					wordId: wordId,
-				},
+				withCredentials: true,
 				data: {
 					difficulty: section,
 					optional: wordData,
 				},
 				headers: {
 					Authorization: `Bearer ${token}`,
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
 				},
 			});
 			dispatch(createUserWordSuccess(data));
+			if (section === DictionarySections.Removed) {
+				const filterRules = JSON.stringify({
+					$or: [
+						{ 'userWord.difficulty': DictionarySections.Hard },
+						{ 'userWord.difficulty': DictionarySections.Trained },
+						{ userWord: null },
+					],
+				});
+				dispatch(fetchAggregatedWords(wordData.group, wordData.page, userId, token, filterRules));
+				dispatch(updateRemovedWordsCountForPage({ group: +wordData.group, page: +wordData.page }));
+				saveRemovedWordsCountToLocalStorage(userId, +wordData.group, +wordData.page);
+			}
 		} catch (error) {
 			dispatch(createUserWordFailure(error));
 		}
@@ -90,6 +104,19 @@ export const updateUserWord = (userId, token, wordData, section) => async (dispa
 				},
 			});
 			dispatch(createUserWordSuccess(data));
+			if (section === DictionarySections.Removed) {
+				console.log('fetch');
+				const filterRules = JSON.stringify({
+					$or: [
+						{ 'userWord.difficulty': DictionarySections.Hard },
+						{ 'userWord.difficulty': DictionarySections.Trained },
+						{ userWord: null },
+					],
+				});
+				dispatch(fetchAggregatedWords(wordData.group, wordData.page, userId, token, filterRules));
+				dispatch(updateRemovedWordsCountForPage({ group: +wordData.group, page: +wordData.page }));
+				saveRemovedWordsCountToLocalStorage(userId, +wordData.group, +wordData.page);
+			}
 		} catch (error) {
 			dispatch(createUserWordFailure(error));
 		}

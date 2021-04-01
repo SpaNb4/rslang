@@ -13,7 +13,7 @@ import { ExternalUrls, DictionarySections } from '../../../../common/constants';
 import { setUserWord, updateUserWord } from '../../../../store/dictionary/actions';
 import { getUserId, getAuthorized, getToken } from '../../../../store/app/slices';
 import { getIsTranslationOn, getIsEditDictionaryButtons, getWordsLoading } from '../../../../store/book/slices';
-function ChapterItem({ wordData, saveToRemoved, handleVolume, isPlayDisabled, color }) {
+function ChapterItem({ wordData, handleVolume, isPlayDisabled, color }) {
 	const dispatch = useDispatch();
 	const loading = useSelector(getWordsLoading);
 	const authorized = useSelector(getAuthorized);
@@ -43,7 +43,6 @@ function ChapterItem({ wordData, saveToRemoved, handleVolume, isPlayDisabled, co
 		} else {
 			dispatch(updateUserWord(userId, token, wordData, DictionarySections.Removed));
 		}
-		saveToRemoved(wordData);
 		setWordDifficulty(DictionarySections.Removed);
 	}, [userId, token, wordData, wordDifficulty]);
 
@@ -60,7 +59,13 @@ function ChapterItem({ wordData, saveToRemoved, handleVolume, isPlayDisabled, co
 	}, [wordData, authorized]);
 
 	return (
-		<div className={classes.chapterItem} id={wordDifficulty} data-color={color}>
+		<div
+			className={classes.chapterItem}
+			id={wordDifficulty}
+			data-color={color}
+			data-group={wordData.group}
+			data-page={wordData.page}
+		>
 			<div className={classes.itemImage}>
 				<img src={buildUrl(ExternalUrls.Root, wordData.image)} alt={wordData.word} />
 			</div>
@@ -105,7 +110,12 @@ function ChapterItem({ wordData, saveToRemoved, handleVolume, isPlayDisabled, co
 					isEditDictionaryButtons ? classes.itemSettings : [classes.itemSettings, classes.Hide].join(' ')
 				}
 			>
-				<Button handler={saveToDictionaryHard} disabled={!authorized} difficulty={wordDifficulty} color={color}>
+				<Button
+					handler={saveToDictionaryHard}
+					disabled={!authorized || loading}
+					difficulty={wordDifficulty}
+					color={color}
+				>
 					Сложное слово
 				</Button>
 				<Button handler={saveToDictionaryRemoved} disabled={!authorized || loading} color={color}>
@@ -154,7 +164,6 @@ ChapterItem.propTypes = {
 		group: PropTypes.number,
 		page: PropTypes.number,
 	}).isRequired,
-	saveToRemoved: PropTypes.func,
 	handleVolume: PropTypes.func,
 	isPlayDisabled: PropTypes.bool,
 	color: PropTypes.string,

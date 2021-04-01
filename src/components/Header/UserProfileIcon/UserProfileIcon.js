@@ -25,7 +25,7 @@ function UserProfileIcon() {
 			}}
 		/>
 	) : (
-		<FaUserGraduate />
+		<FaUserGraduate size={24} />
 	);
 
 	return <React.Fragment>{icon}</React.Fragment>;
