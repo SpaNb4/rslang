@@ -5,10 +5,14 @@ export function buildUrl(...args) {
 	return args.join('');
 }
 
-export function handleVolumeUp(wordData) {
+export function handleVolume(wordData, setIsCurrentlyPlaying) {
 	const { audio, audioMeaning, audioExample } = wordData;
 	const urlList = [audio, audioMeaning, audioExample];
 	const audioList = urlList.map((url) => new Audio(buildUrl(ExternalUrls.Root, url)));
+	setIsCurrentlyPlaying(true);
+	audioList[audioList.length - 1].onended = () => {
+		setIsCurrentlyPlaying(false);
+	};
 	for (let i = 0; i < audioList.length - 1; i += 1) {
 		audioList[i].onended = () => {
 			audioList[i + 1].play();
@@ -19,4 +23,20 @@ export function handleVolumeUp(wordData) {
 
 export function updateAttempts() {
 	localStorage.setItem(LocalStorageKeys.QuizAttempts, DefaultValues.attemptsNumber);
+}
+
+export function getStreak(array) {
+	const result = [];
+	let counter = 0;
+
+	array.forEach((elem) => {
+		if (elem !== null) {
+			counter++;
+		} else {
+			result.push(counter);
+			counter = 0;
+		}
+	});
+
+	return _.max(result);
 }

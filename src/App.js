@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 
@@ -10,39 +10,40 @@ import Footer from './components/Footer/Footer';
 import Book from './components/Book/Book';
 import Vocabulary from './components/Vocabulary/Vocabulary';
 import Quiz from './components/Quiz/Quiz';
+import Game from './components/Games/Game';
 
 import { getUserId, getToken, getAuthorized } from './store/app/slices';
 import { saveUserAuthData } from './store/app/actions';
 import { fetchUserWords } from './store/dictionary/actions';
-import { fetchWords } from './store/book/actions';
+import { fetchWords, updateRemovedPages } from './store/book/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
-import GameSprint from './components/Games/GameSprint/GameSprint';
-import { getAllWords } from './store/book/slices';
+import { getRemovedPagesFromLocalStorage } from './common/service';
 
 function App() {
 	const dispatch = useDispatch();
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
-
 	const authorized = useSelector(getAuthorized);
-	const [words, setWords] = useState(null);
-	const allWords = useSelector(getAllWords);
-
-	useEffect(() => {
-		if (allWords.length) {
-			setWords(allWords);
-		}
-	}, [allWords]);
 
 	useEffect(() => {
 		if (!authorized) {
 			const userAuth = localStorage.getItem(LocalStorageKeys.User) || null;
-			if (userAuth) {
-				dispatch(saveUserAuthData(JSON.parse(userAuth)));
+			const tokenExpireTime = localStorage.getItem(LocalStorageKeys.TokenExpireTime) || null;
+
+			if (userAuth && tokenExpireTime) {
+				const userAuthData = JSON.parse(userAuth);
+				const isTokenExpired = Date.now() > JSON.parse(tokenExpireTime);
+				if (!isTokenExpired) {
+					dispatch(saveUserAuthData(userAuthData));
+				}
 			}
 		}
 		if (authorized) {
 			dispatch(fetchUserWords(userId, token));
+
+			const removedPages = getRemovedPagesFromLocalStorage(userId);
+
+			dispatch(updateRemovedPages(removedPages));
 		} else {
 			dispatch(fetchWords());
 		}
@@ -51,19 +52,21 @@ function App() {
 	return (
 		<React.Fragment>
 			<Header />
-			<main className={c.container}>
-				<Switch>
-					<Route exact path="/">
+			<Switch>
+				<Route exact path="/">
+					<main className={c.container}>
 						<Features />
 						<Video />
 						<Team />
-					</Route>
-					<Route path="/book/:group" component={Book} />
-					<Route path="/vocabulary/:group" component={Vocabulary} />
-					<Route path="/quiz" component={Quiz} />
-					<Route path="/game/sprint">{words && <GameSprint wordData={words} />}</Route>
-				</Switch>
-			</main>
+					</main>
+				</Route>
+				<Route path="/book/:group" component={Book} />
+				<Route path="/vocabulary/:group" component={Vocabulary} />
+				<Route path="/quiz" component={Quiz} />
+			</Switch>
+
+			<Route path="/game/:name" component={Game} />
+
 			<Footer />
 		</React.Fragment>
 	);

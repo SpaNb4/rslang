@@ -3,7 +3,6 @@ import { PropTypes } from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import { menuToggle } from '../../../store/app/actions';
-
 import classes from '../Header.module.scss';
 
 const DropDownItem = ({ listName, linkName, linkId, icon, color }) => {
@@ -22,7 +21,7 @@ const DropDownItem = ({ listName, linkName, linkId, icon, color }) => {
 		<li className={classes.menuItem}>
 			<Link
 				className={[classes.menuLink, classes.innerLink].join(' ')}
-				to={link}
+				to={listName === 'game' ? `${link}=true` : link}
 				onClick={handleClick}
 				aria-current={current}
 				data-color={color}

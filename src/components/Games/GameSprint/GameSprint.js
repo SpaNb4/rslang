@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
-import { BsArrowLeft } from 'react-icons/bs';
-import { BsArrowRight } from 'react-icons/bs';
+import { PropTypes } from 'prop-types';
+
+import { useDispatch } from 'react-redux';
 import { useHotkeys } from 'react-hotkeys-hook';
-import GameStats from '../GameStats/GameStats';
+import Timer from './Timer';
+
+import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
+import { FaVolumeUp } from 'react-icons/fa';
+
 import { buildUrl } from '../../../common/helpers';
 import { ExternalUrls } from '../../../common/constants';
-import { PropTypes } from 'prop-types';
-import Timer from './Timer';
-import { FaVolumeUp } from 'react-icons/fa';
+import { finishGame } from '../../../store/game/actions';
+
 import classes from './GameSprint.module.scss';
 
-function GameSprintMain({ wordData, onResult }) {
+function GameSprint({ wordData }) {
+	const dispatch = useDispatch();
 	const [result, setResult] = useState(null);
 	const [objectWordData, setObjectWordData] = useState(null);
 	const [corrAnswersWords, setCorrAnswersWords] = useState([]);
@@ -64,7 +69,12 @@ function GameSprintMain({ wordData, onResult }) {
 	}
 
 	function handleTimeout() {
-		onResult([corrAnswersWords, wrongAnswersWords]);
+		dispatch(
+			finishGame({
+				correct: corrAnswersWords,
+				wrong: wrongAnswersWords,
+			})
+		);
 	}
 
 	function handlePlaySound() {
@@ -120,28 +130,8 @@ function GameSprintMain({ wordData, onResult }) {
 	);
 }
 
-export default function GameSprint({ wordData }) {
-	const [result, setResult] = useState(null);
-
-	function handleResult(res) {
-		setResult(res);
-	}
-
-	if (result === null) {
-		return <GameSprintMain wordData={wordData} onResult={handleResult} />;
-	} else {
-		return (
-			<div className={classes.sprint}>
-				<GameStats corrAnswersWords={result[0]} wrongAnswersWords={result[1]} />
-			</div>
-		);
-	}
-}
-
 GameSprint.propTypes = {
 	wordData: PropTypes.array,
 };
-GameSprintMain.propTypes = {
-	wordData: PropTypes.array,
-	onResult: PropTypes.func,
-};
+
+export default GameSprint;

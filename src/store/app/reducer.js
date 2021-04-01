@@ -12,7 +12,6 @@ const reducer = createReducer(initialState, (builder) => {
 	builder
 		.addCase(actions.registerSuccess, (state, action) => {
 			state.user = action.payload;
-			state.auth = true;
 		})
 		.addCase(actions.registerFailure, (state, action) => {
 			state.errorMessage = action.payload;

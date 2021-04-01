@@ -11,7 +11,6 @@ import {
 	FaBookDead,
 	FaTableTennis,
 	FaPercentage,
-	FaUserGraduate,
 	FaUserSecret,
 	FaSignInAlt,
 	FaSignOutAlt,
@@ -25,6 +24,8 @@ import { updateAttempts } from '../../common/helpers';
 
 const quizLink = 'quiz';
 const statsLink = 'stats';
+
+import UserProfileIcon from './UserProfileIcon/UserProfileIcon';
 
 const Header = () => {
 	const dispatch = useDispatch();
@@ -184,7 +185,15 @@ const Header = () => {
 							)}
 						</ul>
 					</div>
-					{auth ? <FaUserGraduate size={24} /> : <FaUserSecret size={24} />}
+					{auth ? (
+						<div>
+							<UserProfileIcon />
+						</div>
+					) : (
+						<Link className={classes.navLink} to="/">
+							<FaUserSecret size={24} />
+						</Link>
+					)}
 				</nav>
 			</header>
 			<AuthModal
