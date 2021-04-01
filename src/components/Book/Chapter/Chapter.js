@@ -75,8 +75,13 @@ function Chapter() {
 	useEffect(() => {
 		if (authorized && removedWordsCountForGroup && removedWordsCountForGroup[page] === DefaultValues.WordsPerPage) {
 			const currentPage = +page;
-			dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: currentPage }));
-			saveRemovedPagesToLocalStorage(userId, +group - 1, currentPage);
+			if (removedPages && !removedPages.includes(currentPage)) {
+				dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: currentPage }));
+				saveRemovedPagesToLocalStorage(userId, +group - 1, currentPage);
+			} else {
+				dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: currentPage }));
+				saveRemovedPagesToLocalStorage(userId, +group - 1, currentPage);
+			}
 
 			let nextPage;
 			if (!removedPages) {
