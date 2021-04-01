@@ -19,7 +19,7 @@ import {
 import {
 	getWordsLoading,
 	getAllWords,
-	getAggregatedWordsWords,
+	getAggregatedWords,
 	getRemovedPagesForGroup,
 	getRemovedWordsCountForGroup,
 } from '../../../store/book/slices';
@@ -47,7 +47,7 @@ function Chapter() {
 	const dispatch = useDispatch();
 	const loading = useSelector(getWordsLoading);
 	const words = useSelector(getAllWords);
-	const aggregatedWords = useSelector(getAggregatedWordsWords);
+	const aggregatedWords = useSelector(getAggregatedWords);
 	const { group } = useParams();
 	const [page, setPage] = useState(localStorage.getItem(LocalStorageKeys.BookPage) || '1');
 	const userId = useSelector(getUserId);

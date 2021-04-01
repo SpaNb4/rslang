@@ -6,6 +6,7 @@ import { buildUrl } from '../../common/helpers';
 import { checkIsTokenExpired, saveRemovedWordsCountToLocalStorage } from '../../common/service';
 import { logout } from '../app/actions';
 import { updateRemovedWordsCountForPage } from '../book/actions';
+import { fetchAggregatedWords } from '../book/actions';
 
 export const fetchUserWordsSuccess = createAction(types.FETCH_USER_WORDS_SUCCESS);
 export const createUserWordSuccess = createAction(types.CREATE_USER_WORD_SUCCESS);
@@ -40,8 +41,6 @@ export const fetchUserWords = (userId, token) => async (dispatch) => {
 		dispatch(logout());
 	}
 };
-
-import { fetchAggregatedWords } from '../book/actions';
 
 export const setUserWord = (userId, token, wordData, section) => async (dispatch) => {
 	const isTokenExpired = checkIsTokenExpired();
