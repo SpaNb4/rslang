@@ -1,9 +1,7 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAnswers, getGameOver } from '../../store/game/slices';
-
 import Loader from '../Loader/Loader';
 import GameIntro from './GameIntro/GameIntro';
 import GameStats from './GameStats/GameStats';
@@ -21,7 +19,6 @@ import { fetchAggregatedWords } from '../../store/book/actions';
 import { getAggregatedWordsWords } from './../../store/book/slices';
 import { updateGame } from '../../store/game/actions';
 import { getGameStart } from './../../store/game/slices';
-import { startGame } from './../../store/game/actions';
 
 const Game = (props) => {
 	const dispatch = useDispatch();
@@ -53,8 +50,6 @@ const Game = (props) => {
 			setIsEnoughWords(false);
 		}
 	}, []);
-
-	console.log(words);
 
 	useEffect(() => dispatch(updateGame(linkId)), [linkId]);
 
