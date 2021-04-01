@@ -7,9 +7,10 @@ function Button(props) {
 		<button
 			type="button"
 			onClick={props.handler}
-			className={classes.button}
+			className={classes.Button}
 			disabled={props.disabled}
 			difficulty={props.difficulty}
+			data-color={props.color}
 		>
 			{props.children}
 		</button>
@@ -20,6 +21,7 @@ Button.propTypes = {
 	children: PropTypes.node.isRequired,
 	handler: PropTypes.func.isRequired,
 	difficulty: PropTypes.string,
+	color: PropTypes.string,
 	disabled: PropTypes.bool,
 };
 

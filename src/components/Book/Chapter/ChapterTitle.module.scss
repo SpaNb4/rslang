@@ -1,0 +1,29 @@
+.chapterTitle {
+	flex-basis: 90%;
+	flex-grow: 2;
+	text-align: center;
+
+	&[data-color='ocean-green'] {
+		@include chapterTitleColor($color-ocean-green);
+	}
+
+	&[data-color='scarlet'] {
+		@include chapterTitleColor($color-scarlet);
+	}
+
+	&[data-color='secondary'] {
+		@include chapterTitleColor($color-secondary);
+	}
+
+	&[data-color='cinnamon'] {
+		@include chapterTitleColor($color-cinnamon);
+	}
+
+	&[data-color='sea-buckthorn'] {
+		@include chapterTitleColor($color-sea-buckthorn);
+	}
+
+	&[data-color='cardinal'] {
+		@include chapterTitleColor($color-cardinal);
+	}
+}

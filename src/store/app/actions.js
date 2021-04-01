@@ -1,7 +1,7 @@
 import * as types from './action-types';
 import axios from 'axios';
 import { createAction } from '@reduxjs/toolkit';
-import { ExternalUrls, LocalStorageKeys } from '../../common/constants';
+import { ExternalUrls, LocalStorageKeys, JWT_EXPIRE_TIME } from '../../common/constants';
 
 export const registerSuccess = createAction(types.REGISTER_SUCCESS);
 export const registerFailure = createAction(types.REGISTER_FAILURE);
@@ -24,8 +24,8 @@ export const register = (email, password, username, image) => async (dispatch) =
 			url: ExternalUrls.Users,
 			data: formData,
 		});
-		localStorage.setItem(LocalStorageKeys.User, JSON.stringify(data));
-		dispatch(registerSuccess(data));
+		localStorage.setItem(LocalStorageKeys.Avatar, JSON.stringify(data.image));
+		dispatch(login(email, password));
 	} catch (error) {
 		dispatch(registerFailure(error));
 	}
@@ -42,6 +42,9 @@ export const login = (email, password) => async (dispatch) => {
 			},
 		});
 		localStorage.setItem(LocalStorageKeys.User, JSON.stringify(data));
+		const tokenExpireTime = JWT_EXPIRE_TIME + Date.now();
+		localStorage.setItem(LocalStorageKeys.TokenExpireTime, JSON.stringify(tokenExpireTime));
+
 		dispatch(loginSuccess(data));
 	} catch (error) {
 		dispatch(loginFailure(error));

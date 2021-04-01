@@ -1,7 +1,15 @@
-import classes from './Stats.module.scss';
-import React from 'react';
+import React, { useMemo } from 'react';
+import Loader from '../Loader/Loader';
 import { globalClasses as c } from '../../common/constants';
-import { XYPlot, VerticalBarSeries, XAxis, YAxis, VerticalGridLines, HorizontalGridLines } from 'react-vis';
+import {
+	FlexibleWidthXYPlot,
+	VerticalBarSeries,
+	XAxis,
+	YAxis,
+	VerticalGridLines,
+	HorizontalGridLines,
+} from 'react-vis';
+import classes from './Stats.module.scss';
 import 'react-vis/dist/style.css';
 
 // mock data
@@ -33,29 +41,25 @@ const data = [
 ];
 const rows = ['Количество изученных слов', 'Процент правильных ответов', 'Самая длинная серия правильных ответов'];
 
-const chartData = [
-	{ x: 0, y: 50 },
-	{ x: 1, y: 10 },
-	{ x: 2, y: 56 },
-	{ x: 3, y: 50 },
-	{ x: 4, y: 48 },
-	{ x: 5, y: 35 },
-	{ x: 6, y: 45 },
-	{ x: 7, y: 28 },
-	{ x: 8, y: 56 },
-	{ x: 9, y: 26 },
-];
-//
+const wordsByDay = [50, 10, 56, 40, 48, 35, 45, 28, 56];
 
 const Chart = () => {
+	const data = useMemo(() => wordsByDay.map((num, index) => ({ x: index, y: num })));
+
 	return (
-		<XYPlot height={300} width={600} color="#49c0b8">
-			<VerticalGridLines />
-			<HorizontalGridLines />
-			<XAxis />
-			<YAxis />
-			<VerticalBarSeries data={chartData} />
-		</XYPlot>
+		<>
+			{data ? (
+				<FlexibleWidthXYPlot height={300} width={600} color="#49c0b8">
+					<VerticalGridLines />
+					<HorizontalGridLines />
+					<XAxis />
+					<YAxis />
+					<VerticalBarSeries data={data} />
+				</FlexibleWidthXYPlot>
+			) : (
+				<Loader />
+			)}
+		</>
 	);
 };
 

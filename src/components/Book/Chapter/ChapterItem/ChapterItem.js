@@ -8,22 +8,29 @@ import { FaVolumeUp } from 'react-icons/fa';
 
 import Button from '../../../Button/Button';
 
-import { buildUrl, handleVolumeUp } from '../../../../common/helpers';
+import { buildUrl } from '../../../../common/helpers';
 import { ExternalUrls, DictionarySections } from '../../../../common/constants';
 import { setUserWord, updateUserWord } from '../../../../store/dictionary/actions';
 import { getUserId, getAuthorized, getToken } from '../../../../store/app/slices';
-function ChapterItem({ wordData }) {
+import { getIsTranslationOn, getIsEditDictionaryButtons, getWordsLoading } from '../../../../store/book/slices';
+function ChapterItem({ wordData, saveToRemoved, handleVolume, isPlayDisabled, color }) {
 	const dispatch = useDispatch();
+	const loading = useSelector(getWordsLoading);
 	const authorized = useSelector(getAuthorized);
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
 	const [wordDifficulty, setWordDifficulty] = useState('');
-	const [isWordRemoved, setIsWordRemoved] = useState(false);
+	const isTranslationOn = useSelector(getIsTranslationOn);
+	const isEditDictionaryButtons = useSelector(getIsEditDictionaryButtons);
 
 	const saveToDictionaryHard = useCallback(() => {
 		if (wordDifficulty !== DictionarySections.Hard) {
 			setWordDifficulty(DictionarySections.Hard);
-			dispatch(updateUserWord(userId, token, wordData, DictionarySections.Hard));
+			if (wordDifficulty === DictionarySections.NotDefined) {
+				dispatch(setUserWord(userId, token, wordData, DictionarySections.Hard));
+			} else {
+				dispatch(updateUserWord(userId, token, wordData, DictionarySections.Hard));
+			}
 		} else {
 			setWordDifficulty(DictionarySections.Trained);
 			dispatch(updateUserWord(userId, token, wordData, DictionarySections.Trained));
@@ -31,16 +38,20 @@ function ChapterItem({ wordData }) {
 	}, [wordDifficulty, userId, token, wordData]);
 
 	const saveToDictionaryRemoved = useCallback(() => {
-		dispatch(updateUserWord(userId, token, wordData, DictionarySections.Removed));
-		setIsWordRemoved(true);
-	}, [userId, token, wordData]);
+		if (wordDifficulty === DictionarySections.NotDefined) {
+			dispatch(setUserWord(userId, token, wordData, DictionarySections.Removed));
+		} else {
+			dispatch(updateUserWord(userId, token, wordData, DictionarySections.Removed));
+		}
+		saveToRemoved(wordData);
+		setWordDifficulty(DictionarySections.Removed);
+	}, [userId, token, wordData, wordDifficulty]);
 
 	useEffect(() => {
 		if (authorized) {
 			const difficulty = wordData.userWord && wordData.userWord.difficulty;
 			if (!difficulty) {
-				dispatch(setUserWord(userId, token, wordData, DictionarySections.Trained));
-				setWordDifficulty(DictionarySections.Trained);
+				setWordDifficulty(DictionarySections.NotDefined);
 			}
 			if (difficulty && difficulty === DictionarySections.Hard) {
 				setWordDifficulty(DictionarySections.Hard);
@@ -49,7 +60,7 @@ function ChapterItem({ wordData }) {
 	}, [wordData, authorized]);
 
 	return (
-		<div className={classes.chapterItem} id={wordDifficulty}>
+		<div className={classes.chapterItem} id={wordDifficulty} data-color={color}>
 			<div className={classes.itemImage}>
 				<img src={buildUrl(ExternalUrls.Root, wordData.image)} alt={wordData.word} />
 			</div>
@@ -58,7 +69,7 @@ function ChapterItem({ wordData }) {
 					<div>{wordData.word}</div>
 					<div>{wordData.transcription}</div>
 					<div>{wordData.wordTranslate}</div>
-					<Button handler={handleVolumeUp}>
+					<Button handler={() => handleVolume(wordData)} disabled={isPlayDisabled} color={color}>
 						<FaVolumeUp />
 					</Button>
 				</div>
@@ -68,7 +79,11 @@ function ChapterItem({ wordData }) {
 					</div>
 					<div>{parse(wordData.textMeaning)}</div>
 				</div>
-				<div className={classes.itemParagraph}>
+				<div
+					className={
+						isTranslationOn ? classes.itemParagraph : [classes.itemParagraph, classes.Hide].join(' ')
+					}
+				>
 					<div>{parse(wordData.textMeaningTranslate)}</div>
 				</div>
 				<div className={classes.itemParagraph}>
@@ -77,15 +92,23 @@ function ChapterItem({ wordData }) {
 					</div>
 					<div>{parse(wordData.textExample)}</div>
 				</div>
-				<div className={classes.itemParagraph}>
+				<div
+					className={
+						isTranslationOn ? classes.itemParagraph : [classes.itemParagraph, classes.Hide].join(' ')
+					}
+				>
 					<div>{parse(wordData.textExampleTranslate)}</div>
 				</div>
 			</div>
-			<div className={classes.itemSettings}>
-				<Button handler={saveToDictionaryHard} disabled={!authorized} difficulty={wordDifficulty}>
+			<div
+				className={
+					isEditDictionaryButtons ? classes.itemSettings : [classes.itemSettings, classes.Hide].join(' ')
+				}
+			>
+				<Button handler={saveToDictionaryHard} disabled={!authorized} difficulty={wordDifficulty} color={color}>
 					Сложное слово
 				</Button>
-				<Button handler={saveToDictionaryRemoved} disabled={!authorized || isWordRemoved}>
+				<Button handler={saveToDictionaryRemoved} disabled={!authorized || loading} color={color}>
 					Удалить
 				</Button>
 			</div>
@@ -131,6 +154,10 @@ ChapterItem.propTypes = {
 		group: PropTypes.number,
 		page: PropTypes.number,
 	}).isRequired,
+	saveToRemoved: PropTypes.func,
+	handleVolume: PropTypes.func,
+	isPlayDisabled: PropTypes.bool,
+	color: PropTypes.string,
 };
 
 export default ChapterItem;
