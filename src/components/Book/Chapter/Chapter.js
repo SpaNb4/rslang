@@ -75,7 +75,7 @@ function Chapter() {
 	useEffect(() => {
 		if (authorized && removedWordsCountForGroup && removedWordsCountForGroup[page] === DefaultValues.WordsPerPage) {
 			const currentPage = +page;
-			if (typeof removedPages !== 'undefined' && !removedPages.includes(currentPage)) {
+			if (typeof removedPages !== 'undefined') {
 				dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: currentPage }));
 				saveRemovedPagesToLocalStorage(userId, +group - 1, currentPage);
 			} else {
@@ -85,11 +85,14 @@ function Chapter() {
 
 			let nextPage;
 			if (!removedPages) {
-				nextPage = currentPage + 1;
+				if (currentPage + 1 < pageCount) {
+					nextPage = currentPage + 1;
+				} else {
+					nextPage = 0;
+				}
 			} else {
 				nextPage = getNextPage(currentPage, removedPages, pageCount);
 			}
-
 			setPage(nextPage);
 			localStorage.setItem(LocalStorageKeys.BookPage, nextPage);
 		}

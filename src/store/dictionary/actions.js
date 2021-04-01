@@ -104,7 +104,6 @@ export const updateUserWord = (userId, token, wordData, section) => async (dispa
 			});
 			dispatch(createUserWordSuccess(data));
 			if (section === DictionarySections.Removed) {
-				console.log('fetch');
 				const filterRules = JSON.stringify({
 					$or: [
 						{ 'userWord.difficulty': DictionarySections.Hard },

@@ -79,7 +79,8 @@
 			50%/15000%;
 	}
 
-	&:disabled {
+	&:disabled,
+	&:disabled:hover {
 		background: $color-regent-gray;
 		cursor: not-allowed;
 	}
