@@ -31,9 +31,6 @@ function ChapterItem({ wordData, handleVolume, isPlayDisabled, color }) {
 			} else {
 				dispatch(updateUserWord(userId, token, wordData, DictionarySections.Hard));
 			}
-		} else {
-			setWordDifficulty(DictionarySections.Trained);
-			dispatch(updateUserWord(userId, token, wordData, DictionarySections.Trained));
 		}
 	}, [wordDifficulty, userId, token, wordData]);
 
@@ -110,7 +107,12 @@ function ChapterItem({ wordData, handleVolume, isPlayDisabled, color }) {
 					isEditDictionaryButtons ? classes.itemSettings : [classes.itemSettings, classes.Hide].join(' ')
 				}
 			>
-				<Button handler={saveToDictionaryHard} disabled={!authorized || loading} difficulty={wordDifficulty} color={color}>
+				<Button
+					handler={saveToDictionaryHard}
+					disabled={!authorized || loading}
+					difficulty={wordDifficulty}
+					color={color}
+				>
 					Сложное слово
 				</Button>
 				<Button handler={saveToDictionaryRemoved} disabled={!authorized || loading} color={color}>
