@@ -25,4 +25,14 @@
 		border-bottom: 2px solid $color-primary;
 		padding-bottom: 5px;
 	}
+
+	.progress {
+		text-align: center;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+
+	.progressValue {
+		margin-top: 10px;
+	}
 }
