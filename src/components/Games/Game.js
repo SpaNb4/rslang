@@ -15,7 +15,7 @@ import { PropTypes } from 'prop-types';
 import { MIN_WORD_COUNT } from './../../common/constants';
 import { getToken, getUserId } from './../../store/app/slices';
 import { fetchAggregatedWords } from '../../store/book/actions';
-import { getAggregatedWordsWords } from './../../store/book/slices';
+import { getAggregatedWords } from './../../store/book/slices';
 import { updateGame } from '../../store/game/actions';
 import { getGameStart, getCurrentLevel } from './../../store/game/slices';
 import random from 'lodash/random';
@@ -23,7 +23,7 @@ import random from 'lodash/random';
 const Game = (props) => {
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
-	const prevPageWords = useSelector(getAggregatedWordsWords);
+	const prevPageWords = useSelector(getAggregatedWords);
 	const [words, setWords] = useState([]);
 	const [isEnoughWords, setIsEnoughWords] = useState(true);
 	const gameOver = useSelector(getGameOver);
@@ -32,7 +32,7 @@ const Game = (props) => {
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
 	const level = useSelector(getCurrentLevel);
-	const levelWords = useSelector(getAggregatedWordsWords);
+	const levelWords = useSelector(getAggregatedWords);
 	const propsState = props.location.state;
 	const { linkName, linkId, rules } = menu.games.find((elem) => pathname.includes(elem.linkId));
 

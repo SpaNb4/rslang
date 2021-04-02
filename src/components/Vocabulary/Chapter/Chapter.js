@@ -17,7 +17,7 @@ function Chapter() {
 	const { group } = useParams();
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
-	const [page, setPage] = useState(localStorage.getItem(LocalStorageKeys.VocabularyPage) || '1');
+	const [page, setPage] = useState(localStorage.getItem(LocalStorageKeys.VocabularyPage) || '0');
 	const offset = page * DefaultValues.WordsPerPage;
 	const filter = {
 		hard: useSelector(getHardWords),
@@ -26,7 +26,7 @@ function Chapter() {
 	};
 	const [pageCount, setPageCount] = useState(0);
 	const [currentSection, setCurrentSection] = useState(0);
-	const filteredWords = filter[group].filter((word) => currentSection === word.optional.group);
+	const filteredWords = filter[group] && filter[group].filter((word) => currentSection === word.optional.group);
 	const [isCurrentlyPlaying, setIsCurrentlyPlaying] = useState(false);
 	const WORDS_IN_SECTION_COUNT = 600;
 

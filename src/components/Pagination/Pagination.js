@@ -7,10 +7,10 @@ function Pagination({ handlePageClick, pageCount, startPage, removedPages, force
 	const ariaLabelBuilder = useCallback(
 		(pageIndex) => {
 			if (removedPages) {
-				if (removedPages && removedPages.includes(pageIndex)) {
-					return 'disabled';
+				if (removedPages && removedPages.includes(pageIndex - 1)) {
+					return `disabled-${pageIndex}`;
 				}
-				return 'active';
+				return `active-${pageIndex}`;
 			}
 		},
 		[removedPages]

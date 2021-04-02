@@ -18,14 +18,14 @@ import {
 import {
 	getWordsLoading,
 	getAllWords,
-	getAggregatedWordsWords,
+	getAggregatedWords,
 	getRemovedPagesForGroup,
 	getRemovedWordsCountForGroup,
 } from '../../../store/book/slices';
 import { getUserId, getToken, getAuthorized } from '../../../store/app/slices';
+import { DictionarySections, LocalStorageKeys, DefaultValues, menu } from '../../../common/constants';
 import Pagination from '../../Pagination/Pagination';
 import { handleVolume } from '../../../common/helpers';
-import { DictionarySections, LocalStorageKeys, menu, DefaultValues } from '../../../common/constants';
 import { saveRemovedPagesToLocalStorage } from '../../../common/service';
 import GamesList from './../../GamesList/GamesList';
 
@@ -47,7 +47,7 @@ function Chapter() {
 	const dispatch = useDispatch();
 	const loading = useSelector(getWordsLoading);
 	const words = useSelector(getAllWords);
-	const aggregatedWords = useSelector(getAggregatedWordsWords);
+	const aggregatedWords = useSelector(getAggregatedWords);
 	const { group } = useParams();
 	const [page, setPage] = useState(localStorage.getItem(LocalStorageKeys.BookPage) || '1');
 	const userId = useSelector(getUserId);
@@ -75,16 +75,24 @@ function Chapter() {
 	useEffect(() => {
 		if (authorized && removedWordsCountForGroup && removedWordsCountForGroup[page] === DefaultValues.WordsPerPage) {
 			const currentPage = +page;
-			dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: currentPage }));
-			saveRemovedPagesToLocalStorage(userId, +group - 1, currentPage);
+			if (typeof removedPages !== 'undefined') {
+				dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: currentPage }));
+				saveRemovedPagesToLocalStorage(userId, +group - 1, currentPage);
+			} else {
+				dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: currentPage }));
+				saveRemovedPagesToLocalStorage(userId, +group - 1, currentPage);
+			}
 
 			let nextPage;
 			if (!removedPages) {
-				nextPage = currentPage + 1;
+				if (currentPage + 1 < pageCount) {
+					nextPage = currentPage + 1;
+				} else {
+					nextPage = 0;
+				}
 			} else {
 				nextPage = getNextPage(currentPage, removedPages, pageCount);
 			}
-
 			setPage(nextPage);
 			localStorage.setItem(LocalStorageKeys.BookPage, nextPage);
 		}
@@ -117,8 +125,8 @@ function Chapter() {
 			aggregatedWords.map((word) => (
 				<ChapterItem
 					wordData={word}
-					key={word.word}
 					handleVolume={() => handleVolume(word, setIsCurrentlyPlaying)}
+					key={word.word}
 					isPlayDisabled={isCurrentlyPlaying ? true : false}
 					color={menu.sections[+word.group].color}
 				/>
@@ -129,8 +137,8 @@ function Chapter() {
 		words.map((word) => (
 			<ChapterItem
 				wordData={word}
-				key={word.word}
 				handleVolume={() => handleVolume(word, setIsCurrentlyPlaying)}
+				key={word.word}
 				isPlayDisabled={isCurrentlyPlaying ? true : false}
 				color={menu.sections[+word.group].color}
 			/>
