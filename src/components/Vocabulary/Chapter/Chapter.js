@@ -9,6 +9,7 @@ import Pagination from '../../Pagination/Pagination';
 import ChapterItem from '../../ChapterItem/ChapterItem';
 import classes from './Chapter.module.scss';
 import Button from '../../Button/Button';
+import GamesList from './../../GamesList/GamesList';
 
 function Chapter() {
 	const dispatch = useDispatch();
@@ -88,9 +89,11 @@ function Chapter() {
 
 	return (
 		<div className={classes.chapter}>
-			<div className={classes.chapterTitle}>
+			<div className={classes.chapterTitleContainer}>
 				<h2>{sectionName}</h2>
 			</div>
+
+			<GamesList words={currentPageData} page={Number(page)} />
 
 			<div className={classes.sectionListTitle}>
 				<h3>Раздел учебника</h3>
