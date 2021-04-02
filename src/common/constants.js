@@ -269,5 +269,7 @@ export const evtKeys = {
 
 export const colors = {
 	error: '#f00',
-	correct: `#fd0`,
+	correct: '#fd0',
+	ocean: '#3aa76d',
+	cardinal: '#ce2029',
 };
