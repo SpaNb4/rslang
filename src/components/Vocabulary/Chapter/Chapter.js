@@ -38,21 +38,7 @@ function Chapter() {
 	});
 
 	const currentPageData =
-		filteredWords &&
-		filteredWords.slice(offset, offset + DefaultValues.WordsPerPage).map((word, index) => {
-			return (
-				<ChapterItem
-					key={index}
-					wordData={word.optional}
-					id={group === DictionarySections.Hard ? null : word.difficulty}
-					isPlayDisabled={isCurrentlyPlaying ? true : false}
-					setIsCurrentlyPlaying={setIsCurrentlyPlaying}
-					color={menu.sections[+word.optional.group].color}
-				>
-					<Button handler={() => restoreWordToBook(word)}>Восстановить</Button>
-				</ChapterItem>
-			);
-		});
+		filteredWords && filteredWords.slice(offset, offset + DefaultValues.WordsPerPage).map((el) => el.optional);
 
 	useEffect(() => {
 		setPageCount(Math.ceil(filteredWords.length / DefaultValues.WordsPerPage));
@@ -115,7 +101,20 @@ function Chapter() {
 			{loading && <React.Fragment>Loading...</React.Fragment>}
 			{currentPageData.length ? (
 				<>
-					{currentPageData}
+					{currentPageData.map((word, index) => {
+						return (
+							<ChapterItem
+								key={index}
+								wordData={word}
+								id={group === DictionarySections.Hard ? null : word.difficulty}
+								isPlayDisabled={isCurrentlyPlaying ? true : false}
+								setIsCurrentlyPlaying={setIsCurrentlyPlaying}
+								color={menu.sections[+word.group].color}
+							>
+								<Button handler={() => restoreWordToBook(word)}>Восстановить</Button>
+							</ChapterItem>
+						);
+					})}
 					{filteredWords.length <= DefaultValues.WordsPerPage ? null : (
 						<Pagination handlePageClick={handlePageClick} pageCount={pageCount} startPage={Number(page)} />
 					)}
