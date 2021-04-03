@@ -18,6 +18,9 @@ export const updateIsTranslationOn = createAction(types.UPDATE_IS_TRANSLATION_ON
 export const updateIsEditDictionaryButtons = createAction(types.UPDATE_IS_EDIT_DICTIONARY_BUTTONS);
 export const updateRemovedPagesForGroup = createAction(types.UPDATE_REMOVED_PAGES_FOR_GROUP);
 export const updateRemovedPages = createAction(types.UPDATE_REMOVED_PAGES);
+export const updateRemovedWordsCountForPage = createAction(types.UPDATE_REMOVED_WORDS_COUNT_FOR_PAGE);
+export const updateRemovedWordsCount = createAction(types.UPDATE_REMOVED_WORDS_COUNT);
+export const clearAggregatedWords = createAction(types.CLEAR_AGGREGATED_WORDS);
 
 export const fetchWords = (currentGroup = DefaultValues.Group, currentPage = DefaultValues.Page) => async (
 	dispatch

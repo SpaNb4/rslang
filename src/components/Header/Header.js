@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import AuthModal from './AuthModal/AuthModal';
 import DropDown from './DropDown/DropDown';
-import { login, logout, menuToggle, register } from '../../store/app/actions';
-import { getMenu, getAuthorized } from '../../store/app/slices';
+import { login, logout, menuToggle, register, clearErrorMessage } from '../../store/app/actions';
+import { getMenu, getAuthorized, getErrorMessage, getAvatar } from '../../store/app/slices';
 import {
 	FaHamburger,
 	FaBrain,
@@ -32,6 +32,8 @@ const Header = () => {
 
 	const menuHidden = useSelector(getMenu);
 	const auth = useSelector(getAuthorized);
+	const errorMessage = useSelector(getErrorMessage);
+	const imageSrc = useSelector(getAvatar);
 
 	const [loginHidden, setLoginHidden] = useState(true);
 	const [registerHidden, setRegisterHidden] = useState(true);
@@ -55,6 +57,7 @@ const Header = () => {
 	const handleModalClose = useCallback(() => {
 		setRegisterHidden(true);
 		setLoginHidden(true);
+		dispatch(clearErrorMessage());
 	}, []);
 
 	const handleLoginOpen = useCallback(() => {
@@ -187,7 +190,7 @@ const Header = () => {
 					</div>
 					{auth ? (
 						<div>
-							<UserProfileIcon />
+							<UserProfileIcon authorized={auth} userImageSrc={imageSrc} />
 						</div>
 					) : (
 						<Link className={classes.navLink} to="/">
@@ -202,6 +205,7 @@ const Header = () => {
 				title="Вход"
 				callback={login}
 				handleClose={handleModalClose}
+				errorMessage={errorMessage}
 			/>
 			<AuthModal
 				hidden={registerHidden}
@@ -210,6 +214,7 @@ const Header = () => {
 				reg
 				callback={register}
 				handleClose={handleModalClose}
+				errorMessage={errorMessage}
 			/>
 		</>
 	);

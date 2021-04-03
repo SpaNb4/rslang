@@ -118,7 +118,7 @@
 	}
 }
 
-.chapterItem[id='hard'] {
+.chapterItem[data-difficulty='hard'] {
 	&[data-color='ocean-green'] {
 		@include cardColor($color-ocean-green);
 	}
@@ -142,8 +142,4 @@
 	&[data-color='cardinal'] {
 		@include cardColor($color-cardinal);
 	}
-}
-
-.chapterItem[id='removed'] {
-	display: none;
 }

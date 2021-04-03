@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { PropTypes } from 'prop-types';
 import classes from './UserProfileIcon.module.scss';
 import { FaUserGraduate } from 'react-icons/fa';
 
-import { LocalStorageKeys } from '../../../common/constants';
-import { getAuthorized } from '../../../store/app/slices';
-
-function UserProfileIcon() {
-	const authorized = useSelector(getAuthorized);
+function UserProfileIcon({ authorized, userImageSrc }) {
 	const [imageSrc, setImageSrc] = useState('');
 
 	useEffect(() => {
-		const imageSrc = localStorage.getItem(LocalStorageKeys.Avatar) || '';
-		if (authorized && imageSrc) {
-			setImageSrc(JSON.parse(imageSrc));
+		if (authorized && userImageSrc) {
+			setImageSrc(userImageSrc);
+		} else {
+			setImageSrc('');
 		}
-	}, [authorized]);
+	}, [authorized, userImageSrc]);
 
 	const icon = imageSrc ? (
 		<div
@@ -25,10 +22,15 @@ function UserProfileIcon() {
 			}}
 		/>
 	) : (
-		<FaUserGraduate />
+		<FaUserGraduate size={24} />
 	);
 
 	return <React.Fragment>{icon}</React.Fragment>;
 }
+
+UserProfileIcon.propTypes = {
+	authorized: PropTypes.bool.isRequired,
+	userImageSrc: PropTypes.string,
+};
 
 export default React.memo(UserProfileIcon);

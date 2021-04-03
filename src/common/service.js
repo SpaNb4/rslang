@@ -19,10 +19,15 @@ export function saveRemovedPagesToLocalStorage(userId, group, page) {
 		removedPages = JSON.parse(data);
 		if (removedPages[userId]) {
 			if (removedPages[userId][group]) {
-				removedPages = {
-					...removedPages,
-					[userId]: { ...removedPages[userId], [group]: _.sortBy([...removedPages[userId][group], page]) },
-				};
+				if (!removedPages[userId][group].includes(page)) {
+					removedPages = {
+						...removedPages,
+						[userId]: {
+							...removedPages[userId],
+							[group]: _.sortBy([...removedPages[userId][group], page]),
+						},
+					};
+				}
 			} else {
 				removedPages = { ...removedPages, [userId]: { ...removedPages[userId], [group]: [page] } };
 			}
@@ -35,18 +40,56 @@ export function saveRemovedPagesToLocalStorage(userId, group, page) {
 	localStorage.setItem(LocalStorageKeys.RemovedPages, JSON.stringify(removedPages));
 }
 
-export function getRemovedPagesFromLocalStorage(userId) {
-	let data = localStorage.getItem(LocalStorageKeys.RemovedPages) || null;
-	let removedPages;
+export function saveRemovedWordsCountToLocalStorage(userId, group, page) {
+	let data = JSON.parse(localStorage.getItem(LocalStorageKeys.RemovedWordsCount) || null);
+	let removedWordsCount;
 	if (data) {
-		removedPages = JSON.parse(data);
-		if (removedPages[userId]) {
-			removedPages = removedPages[userId];
+		removedWordsCount = data;
+		if (removedWordsCount[userId]) {
+			if (removedWordsCount[userId][group]) {
+				if (removedWordsCount[userId][group][page]) {
+					removedWordsCount = {
+						...removedWordsCount,
+						[userId]: {
+							...removedWordsCount[userId],
+							[group]: {
+								...removedWordsCount[userId][group],
+								[page]: removedWordsCount[userId][group][page] + 1,
+							},
+						},
+					};
+				} else {
+					removedWordsCount = {
+						...removedWordsCount,
+						[userId]: {
+							...removedWordsCount[userId],
+							[group]: { ...removedWordsCount[userId][group], [page]: 1 },
+						},
+					};
+				}
+			} else {
+				removedWordsCount = {
+					...removedWordsCount,
+					[userId]: { ...removedWordsCount[userId], [group]: { [page]: 1 } },
+				};
+			}
 		} else {
-			removedPages = {};
+			removedWordsCount = {
+				...removedWordsCount,
+				[userId]: { [group]: { [page]: 1 } },
+			};
 		}
 	} else {
-		removedPages = {};
+		removedWordsCount = { [userId]: { [group]: { [page]: 1 } } };
 	}
-	return removedPages;
+	localStorage.setItem(LocalStorageKeys.RemovedWordsCount, JSON.stringify(removedWordsCount));
+}
+
+export function getUserDataFromLocalStorage(key, userId) {
+	let data = JSON.parse(localStorage.getItem(key) || null);
+	let userData = {};
+	if (data && data[userId]) {
+		userData = data[userId];
+	}
+	return userData;
 }
