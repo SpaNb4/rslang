@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-	//FaMobileAlt,
 	FaDiceOne,
 	FaDiceTwo,
 	FaDiceThree,
@@ -21,6 +20,11 @@ import bender from '../assets/images/bender.png';
 import fry from '../assets/images/fry.png';
 import leela from '../assets/images/leela.png';
 import ship from '../assets/images/ship.png';
+import hypnotoad from '../assets/images/hypnotoad.png';
+import nibbler from '../assets/images/nibbler.png';
+import zoidberg from '../assets/images/zoidberg.png';
+import kif from '../assets/images/kif.png';
+import zapp from '../assets/images/zapp.png';
 
 // URLs
 export const ExternalUrls = {
@@ -200,37 +204,37 @@ export const ourFeatures = [
 		title: 'Игры',
 		text:
 			'"Саванна", "Спринт", "Аудиовызов" и "Конструктор" помогают запониманию слов, тренеруют память и делают изучения английского языка нескучным.',
-		icon: <img src={ship} />,
+		icon: <img src={zapp} alt="zapp" />,
 	},
 	{
 		title: 'Учебник',
 		text:
 			'Вы можете найти не только перевод слова в учебнике, но и прослушать его произношение. А также ознакомится с объяснением значения изучаемого слова, что позволит вам лучше усвоить информацию.',
-		icon: <img src={ship} />,
+		icon: <img src={kif} alt="kif" />,
 	},
 	{
 		title: 'Словарь',
 		text:
 			'Вы можете создать свой словарь — с удалёнными, изучаемыми и сложными словами! Это позволит вам лучше контролировать процесс изучения слов.',
-		icon: <img src={ship} />,
+		icon: <img src={zoidberg} alt="zoidberg" />,
 	},
 	{
 		title: 'Статистика',
 		text:
 			'Краткосрочная статистика помогает увидеть ваш результат за каждый день, а если вы зарегистрируетесь, то получите возможность отслеживать  долгосрочную статистику за весь период изучения.',
-		icon: <img src={ship} />,
+		icon: <img src={nibbler} alt="nibbler" />,
 	},
 	{
 		title: 'Викторина',
 		text:
 			'Забыли изученные слова? Не переживайте, заходите на страницу "Викторины" и освежайте свои знания. А что бы было интереснее, каждый день у вас будут новые слова!',
-		icon: <img src={ship} />,
+		icon: <img src={hypnotoad} alt="hypnotoad" />,
 	},
 	{
 		title: 'Бонус',
 		text:
 			'Наше приложение  бесплатное и удобное в использовании.  Мы доступны онлайн, поддерживаем вёрстку для ПК и планшета.',
-		icon: <img src={ship} />,
+		icon: <img src={ship} alt="ship" />,
 	},
 ];
 
