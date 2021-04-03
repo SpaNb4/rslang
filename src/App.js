@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useLocation } from 'react-router-dom';
 
 import Header from './components/Header/Header';
 import Features from './components/Features/Features';
@@ -29,6 +29,7 @@ function App() {
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
 	const authorized = useSelector(getAuthorized);
+	const { pathname } = useLocation();
 
 	useEffect(() => {
 		if (!authorized) {
@@ -72,7 +73,7 @@ function App() {
 
 			<Route path="/game/:name" component={Game} />
 
-			<Footer />
+			{pathname.includes('game') ? null : <Footer />}
 		</React.Fragment>
 	);
 }
