@@ -11,7 +11,6 @@ import {
 	FaBookDead,
 	FaTableTennis,
 	FaPercentage,
-	FaUserSecret,
 	FaSignInAlt,
 	FaSignOutAlt,
 	FaUserPlus,
@@ -20,7 +19,6 @@ import {
 import classes from './Header.module.scss';
 import { menu, LocalStorageKeys } from './../../common/constants';
 import { updateAttempts } from '../../common/helpers';
-// import { reset } from '../../store/quiz/actions';
 
 const quizLink = 'quiz';
 const statsLink = 'stats';
@@ -79,10 +77,6 @@ const Header = () => {
 		dispatch(logout());
 		dispatch(menuToggle(true));
 	}, []);
-
-	// const handleQuizReset = useCallback(() => {
-	// 	dispatch(reset());
-	// });
 
 	useEffect(() => {
 		if (auth) {
@@ -188,15 +182,7 @@ const Header = () => {
 							)}
 						</ul>
 					</div>
-					{auth ? (
-						<div>
-							<UserProfileIcon authorized={auth} userImageSrc={imageSrc} />
-						</div>
-					) : (
-						<Link className={classes.navLink} to="/">
-							<FaUserSecret size={24} />
-						</Link>
-					)}
+					<UserProfileIcon authorized={auth} userImageSrc={imageSrc} />
 				</nav>
 			</header>
 			<AuthModal

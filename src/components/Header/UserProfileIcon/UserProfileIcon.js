@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import classes from './UserProfileIcon.module.scss';
-import { FaUserGraduate } from 'react-icons/fa';
+import { FaUserGraduate, FaUserSecret } from 'react-icons/fa';
 
 function UserProfileIcon({ authorized, userImageSrc }) {
 	const [imageSrc, setImageSrc] = useState('');
@@ -14,18 +14,13 @@ function UserProfileIcon({ authorized, userImageSrc }) {
 		}
 	}, [authorized, userImageSrc]);
 
-	const icon = imageSrc ? (
-		<div
-			className={classes.iconContainer}
-			style={{
-				background: `no-repeat center/cover url(${imageSrc})`,
-			}}
-		/>
+	const icon = authorized ? (
+		<>{imageSrc ? <img src={imageSrc} /> : <FaUserGraduate size={24} />}</>
 	) : (
-		<FaUserGraduate size={24} />
+		<FaUserSecret size={24} />
 	);
 
-	return <React.Fragment>{icon}</React.Fragment>;
+	return <div className={classes.iconContainer}>{icon}</div>;
 }
 
 UserProfileIcon.propTypes = {
