@@ -6,3 +6,4 @@ export const getCurrentWord = (store) => getSlice(store).currentWord;
 export const getCurrWordIndex = (store) => getSlice(store).currentWordIndex;
 export const getCurrCharIndex = (store) => getSlice(store).currentCharIndex;
 export const getAnswers = (store) => getSlice(store).answers;
+export const getFocusedIndex = (store) => getSlice(store).focusedIndex;

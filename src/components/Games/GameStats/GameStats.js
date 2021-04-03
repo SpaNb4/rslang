@@ -2,10 +2,14 @@ import React from 'react';
 import { ExternalUrls } from '../../../common/constants';
 import { AiFillSound } from 'react-icons/ai';
 import classes from './GameStats.module.scss';
-import { playSound } from './../../../common/helpers';
 import { PropTypes } from 'prop-types';
 
 function GameStats({ corrAnswersWords, wrongAnswersWords }) {
+	function playSound(src) {
+		const sound = new Audio(src);
+		sound.play();
+	}
+
 	return (
 		<div className={classes.gameStats}>
 			<h1 className={classes.heading}>Статистика игры</h1>
@@ -34,7 +38,7 @@ function GameStats({ corrAnswersWords, wrongAnswersWords }) {
 						{wrongAnswersWords.map((word, index) => {
 							return (
 								<li key={index}>
-									<AiFillSound onClick={() => playSound(`${ExternalUrls.Main}${word.audio}`)} />
+									<AiFillSound onClick={() => playSound(`${ExternalUrls.Root}${word.audio}`)} />
 									{word.word} - {word.wordTranslate}
 								</li>
 							);

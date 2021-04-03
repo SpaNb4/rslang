@@ -15,6 +15,7 @@ import Game from './components/Games/Game';
 import { getUserId, getToken, getAuthorized } from './store/app/slices';
 import { saveUserAuthData } from './store/app/actions';
 import { fetchUserWords } from './store/dictionary/actions';
+import { fetchUserStatistics } from './store/statistics/actions';
 import {
 	fetchWords,
 	updateRemovedPages,
@@ -45,6 +46,7 @@ function App() {
 		}
 		if (authorized) {
 			dispatch(fetchUserWords(userId, token));
+			dispatch(fetchUserStatistics(userId, token));
 			const removedPages = getUserDataFromLocalStorage(LocalStorageKeys.RemovedPages, userId);
 			dispatch(updateRemovedPages(removedPages));
 			const removedWordsCount = getUserDataFromLocalStorage(LocalStorageKeys.RemovedWordsCount, userId);

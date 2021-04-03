@@ -58,7 +58,7 @@ function ChapterItem({ wordData, handleVolume, isPlayDisabled, color }) {
 	return (
 		<div
 			className={classes.chapterItem}
-			id={wordDifficulty}
+			data-difficulty={wordDifficulty}
 			data-color={color}
 			data-group={wordData.group}
 			data-page={wordData.page}

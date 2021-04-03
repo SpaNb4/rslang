@@ -6,7 +6,7 @@ import classes from './AuthModal.module.scss';
 import { globalClasses as c } from '../../../common/constants';
 import { updateAttempts } from '../../../common/helpers';
 
-const AuthModal = ({ hidden, buttonName, callback, reg, title, handleClose }) => {
+const AuthModal = ({ hidden, buttonName, callback, reg, title, handleClose, errorMessage }) => {
 	const dispatch = useDispatch();
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
@@ -65,6 +65,10 @@ const AuthModal = ({ hidden, buttonName, callback, reg, title, handleClose }) =>
 		uploadRef.current.click();
 	};
 
+	const errorAlertClasses = errorMessage
+		? [classes.errorAlert, classes.errorAlertExists].join(' ')
+		: classes.errorAlert;
+
 	return (
 		<div className={classes.overlay} aria-hidden={hidden}>
 			<div className={classes.modal} role="dialog">
@@ -72,6 +76,7 @@ const AuthModal = ({ hidden, buttonName, callback, reg, title, handleClose }) =>
 					<FaTimes />
 				</button>
 				<h2 className={classes.title}>{title}</h2>
+				<div className={errorAlertClasses}>{errorMessage && errorMessage}</div>
 				<form autoComplete="false" name="form" onSubmit={handleSubmit}>
 					{reg && (
 						<fieldset className={classes.fieldset}>
@@ -99,7 +104,7 @@ const AuthModal = ({ hidden, buttonName, callback, reg, title, handleClose }) =>
 						<input
 							value={email}
 							placeholder="Почта"
-							type="text"
+							type="email"
 							className={classes.input}
 							name="email"
 							onChange={handleEmailChange}
@@ -165,6 +170,7 @@ AuthModal.propTypes = {
 	handleClose: PropTypes.func,
 	buttonName: PropTypes.string,
 	title: PropTypes.string,
+	errorMessage: PropTypes.string,
 };
 
 export default AuthModal;

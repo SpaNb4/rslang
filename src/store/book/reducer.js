@@ -86,6 +86,9 @@ const reducer = createReducer(initialState, (builder) => {
 		.addCase(actions.updateRemovedWordsCount, (state, action) => {
 			state.removedWordsCount = action.payload;
 		})
+		.addCase(actions.clearAggregatedWords, (state) => {
+			state.aggregatedWords = [];
+		})
 		.addDefaultCase((state) => state);
 });
 

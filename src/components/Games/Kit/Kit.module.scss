@@ -55,6 +55,7 @@
 }
 
 .shuffledChar {
+	position: relative;
 	display: flex;
 	width: 40px;
 	height: 40px;
@@ -70,6 +71,19 @@
 
 	&:hover {
 		opacity: 0.8;
+	}
+
+	&:focus {
+		outline: none;
+
+		&::after {
+			content: '';
+			position: absolute;
+			width: 45px;
+			height: 45px;
+			border: 1px solid $color-apple;
+			border-radius: 8px;
+		}
 	}
 
 	&[aria-selected='true'] {

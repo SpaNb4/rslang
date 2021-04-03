@@ -118,7 +118,7 @@
 	}
 }
 
-.chapterItem[id='hard'] {
+.chapterItem[data-difficulty='hard'] {
 	&[data-color='ocean-green'] {
 		@include cardColor($color-ocean-green);
 	}
