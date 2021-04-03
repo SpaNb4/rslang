@@ -16,6 +16,11 @@ import {
 	FaSkullCrossbones,
 } from 'react-icons/fa';
 
+import professor from '../assets/images/professor.png';
+import bender from '../assets/images/bender.png';
+import fry from '../assets/images/fry.png';
+import leela from '../assets/images/leela.png';
+
 // URLs
 export const ExternalUrls = {
 	Video: 'https://www.youtube.com/embed/DHQngnnHE_0',
@@ -166,28 +171,26 @@ export const DictionarySections = {
 export const ourTeammates = [
 	{
 		name: 'Алеся',
-		src: 'https://images.unsplash.com/photo-1534432586043-ead5b99229fb',
+		src: fry,
 		quote:
-			'Are own design entire former get should. Advantages boisterous day excellence. Out between our two waiting wishing',
+			'Из-за невероятной лени сначала продумывает функционал, потом только пишет код. Создатель “Спринт” игры, макетов приложения. Обладает генетической аномалией позволяющей организовывать командную работу.',
 	},
 	{
 		name: 'Дима',
-		src: 'https://images.unsplash.com/photo-1543852786-1cf6624b9987',
+		src: leela,
 		quote:
-			'Are own design entire former get should. Advantages boisterous day excellence. Out between our two waiting wishing',
+			'Отлично пилотирует техническую составляющую приложения. Разработчик "Саванна" и "Аудиовызов" игр, словаря. Питает слабость к работе с бекендом.',
 	},
 	{
 		name: 'Ира',
-		src: 'https://images.unsplash.com/photo-1575862202417-c725ea3f899c',
-		quote:
-			'Are own design entire former get should. Advantages boisterous day excellence. Out between our two waiting wishing',
+		src: professor,
+		quote: 'Владелец бекенда, основатель учебника, специалист по react, повелитель redux.',
 	},
 	{
 		name: 'Надя',
-		src: 'https://images.unsplash.com/photo-1513245543132-31f507417b26',
+		src: bender,
 
-		quote:
-			'Are own design entire former get should. Advantages boisterous day excellence. Out between our two waiting wishing',
+		quote: 'Злобный гений дизайна, заядлый разработчик "Конструктор" игры. Злоупотребляет меню и статистикой.',
 	},
 ];
 
