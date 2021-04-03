@@ -162,3 +162,13 @@
 		right: 30px;
 	}
 }
+
+.errorAlert {
+	display: none;
+	margin-bottom: 10px;
+	font-size: 16px;
+
+	&.errorAlertExists {
+		display: block;
+	}
+}

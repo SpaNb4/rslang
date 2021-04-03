@@ -19,8 +19,9 @@ import {
 import {
 	getWordsLoading,
 	getAllWords,
-	getAggregatedWordsWords,
+	getAggregatedWords,
 	getRemovedPagesForGroup,
+	getRemovedWordsCountForGroup,
 } from '../../../store/book/slices';
 import { getUserId, getToken, getAuthorized } from '../../../store/app/slices';
 import { DictionarySections, LocalStorageKeys, DefaultValues, menu } from '../../../common/constants';
@@ -28,11 +29,25 @@ import Pagination from '../../Pagination/Pagination';
 import { handleVolume } from '../../../common/helpers';
 import { saveRemovedPagesToLocalStorage } from '../../../common/service';
 
+function getNextPage(currentPage, removedPages, pageCount) {
+	const pageList = _.range(pageCount);
+	const activePages = _.difference(pageList, [...removedPages, currentPage]);
+	let nextPage = _.find(activePages, function (page) {
+		return page > currentPage;
+	});
+	if (!nextPage) {
+		nextPage = _.find(activePages, function (page) {
+			return page < currentPage;
+		});
+	}
+	return nextPage;
+}
+
 function Chapter() {
 	const dispatch = useDispatch();
 	const loading = useSelector(getWordsLoading);
 	const words = useSelector(getAllWords);
-	const aggregatedWords = useSelector(getAggregatedWordsWords);
+	const aggregatedWords = useSelector(getAggregatedWords);
 	const { group } = useParams();
 	const [page, setPage] = useState(localStorage.getItem(LocalStorageKeys.BookPage) || '1');
 	const userId = useSelector(getUserId);
@@ -47,8 +62,8 @@ function Chapter() {
 			{ userWord: null },
 		],
 	});
-	const [removedWords, setRemovedWords] = useState([]);
 	const removedPages = useSelector(getRemovedPagesForGroup);
+	const removedWordsCountForGroup = useSelector(getRemovedWordsCountForGroup);
 	const [isNoMoreWords, setIsNoMoreWords] = useState(false);
 	const [isCurrentlyPlaying, setIsCurrentlyPlaying] = useState(false);
 
@@ -58,33 +73,36 @@ function Chapter() {
 	}
 
 	useEffect(() => {
-		const currentPage = +page;
-		if (removedWords && removedWords.length === DefaultValues.WordsPerPage && currentPage < pageCount) {
-			console.log(currentPage);
-			dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: currentPage }));
-			saveRemovedPagesToLocalStorage(userId, +group - 1, currentPage);
-			setRemovedWords([]);
+		if (authorized && removedWordsCountForGroup && removedWordsCountForGroup[page] === DefaultValues.WordsPerPage) {
+			const currentPage = +page;
+			if (typeof removedPages !== 'undefined') {
+				dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: currentPage }));
+				saveRemovedPagesToLocalStorage(userId, +group - 1, currentPage);
+			} else {
+				dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: currentPage }));
+				saveRemovedPagesToLocalStorage(userId, +group - 1, currentPage);
+			}
 
-			if (removedPages) {
-				let page;
-				for (let nextPage = currentPage + 1; nextPage < pageCount - 1 && !page; nextPage += 1) {
-					if (!removedPages.includes(nextPage)) {
-						page = nextPage;
-						handlePageClick({ selected: page });
-					}
+			let nextPage;
+			if (!removedPages) {
+				if (currentPage + 1 < pageCount) {
+					nextPage = currentPage + 1;
+				} else {
+					nextPage = 0;
 				}
 			} else {
-				let nextPage = currentPage + 1;
-				handlePageClick(nextPage);
+				nextPage = getNextPage(currentPage, removedPages, pageCount);
 			}
+			setPage(nextPage);
+			localStorage.setItem(LocalStorageKeys.BookPage, nextPage);
 		}
-	}, [removedWords, page, group, removedPages]);
+	}, [authorized, aggregatedWords, page, group, removedPages, removedWordsCountForGroup]);
 
 	useEffect(() => {
 		if (removedPages && removedPages.length === pageCount) {
 			setIsNoMoreWords(true);
 		}
-	}, [removedPages, page]);
+	}, [removedPages]);
 
 	useEffect(() => {
 		if (authorized) {
@@ -93,31 +111,22 @@ function Chapter() {
 			dispatch(fetchWords(+group - 1, page));
 		}
 		dispatch(updateCurrentGroup(+group - 1));
-		setRemovedWords([]);
 	}, [authorized, group, page, userId, token]);
 
 	const openOptions = useCallback(() => {
 		setIsOptionsOpen(!isOptionsOpen);
 	}, [isOptionsOpen]);
 
-	const saveToRemoved = useCallback(
-		(wordData) => {
-			setRemovedWords([...removedWords, wordData]);
-		},
-		[removedWords]
-	);
-
 	const chapterItems = authorized ? (
 		isNoMoreWords ? (
 			<div>Все слова удалены из раздела</div>
 		) : (
 			aggregatedWords &&
-			_.differenceBy(aggregatedWords, removedWords, 'word').map((word, index) => (
+			aggregatedWords.map((word) => (
 				<ChapterItem
 					wordData={word}
-					key={index}
-					saveToRemoved={saveToRemoved}
 					handleVolume={() => handleVolume(word, setIsCurrentlyPlaying)}
+					key={word.word}
 					isPlayDisabled={isCurrentlyPlaying ? true : false}
 					color={menu.sections[+word.group].color}
 				/>
@@ -125,11 +134,11 @@ function Chapter() {
 		)
 	) : (
 		words &&
-		words.map((word, index) => (
+		words.map((word) => (
 			<ChapterItem
 				wordData={word}
-				key={index}
 				handleVolume={() => handleVolume(word, setIsCurrentlyPlaying)}
+				key={word.word}
 				isPlayDisabled={isCurrentlyPlaying ? true : false}
 				color={menu.sections[+word.group].color}
 			/>
@@ -175,7 +184,8 @@ function Chapter() {
 				handlePageClick={handlePageClick}
 				pageCount={pageCount}
 				startPage={Number(page)}
-				removedPages={removedPages}
+				removedPages={(authorized && removedPages) || []}
+				forcePage={Number(page)}
 			/>
 		</div>
 	);

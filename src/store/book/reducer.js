@@ -11,8 +11,9 @@ const initialState = {
 	loading: false,
 	errorMessage: '',
 	isTranslationOn: true,
-	isEditDictionaryButtons: true,
+	isEditDictionaryButtons: false,
 	removedPages: {},
+	removedWordsCount: {},
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -49,13 +50,44 @@ const reducer = createReducer(initialState, (builder) => {
 		})
 		.addCase(actions.updateRemovedPagesForGroup, (state, { payload: { group, page } }) => {
 			if (state.removedPages[group]) {
-				state.removedPages = { ...state.removedPages, [group]: _.sortBy([...state.removedPages[group], page]) };
+				if (!state.removedPages[group].includes(page)) {
+					state.removedPages = {
+						...state.removedPages,
+						[group]: _.sortBy([...state.removedPages[group], page]),
+					};
+				}
 			} else {
 				state.removedPages = { ...state.removedPages, [group]: [page] };
 			}
 		})
+		.addCase(actions.updateRemovedWordsCountForPage, (state, { payload: { group, page } }) => {
+			if (state.removedWordsCount[group]) {
+				if (state.removedWordsCount[group][page]) {
+					state.removedWordsCount = {
+						...state.removedWordsCount,
+						[group]: {
+							...state.removedWordsCount[group],
+							[page]: state.removedWordsCount[group][page] + 1,
+						},
+					};
+				} else {
+					state.removedWordsCount = {
+						...state.removedWordsCount,
+						[group]: { ...state.removedWordsCount[group], [page]: 1 },
+					};
+				}
+			} else {
+				state.removedWordsCount = { ...state.removedWordsCount, [group]: { [page]: 1 } };
+			}
+		})
 		.addCase(actions.updateRemovedPages, (state, action) => {
 			state.removedPages = action.payload;
+		})
+		.addCase(actions.updateRemovedWordsCount, (state, action) => {
+			state.removedWordsCount = action.payload;
+		})
+		.addCase(actions.clearAggregatedWords, (state) => {
+			state.aggregatedWords = [];
 		})
 		.addDefaultCase((state) => state);
 });

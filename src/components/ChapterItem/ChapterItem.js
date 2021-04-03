@@ -7,9 +7,9 @@ import Button from '../Button/Button';
 import classes from './ChapterItem.module.scss';
 import { PropTypes } from 'prop-types';
 
-function ChapterItem({ wordData, children, id, setIsCurrentlyPlaying, isPlayDisabled, color }) {
+function ChapterItem({ wordData, children, difficulty, setIsCurrentlyPlaying, isPlayDisabled, color }) {
 	return (
-		<div className={classes.chapterItem} id={id} data-color={color}>
+		<div className={classes.chapterItem} data-color={color} data-difficulty={difficulty}>
 			<div className={classes.itemImage}>
 				<img src={buildUrl(ExternalUrls.Root, wordData.image)} alt={wordData.word} />
 			</div>
@@ -18,7 +18,11 @@ function ChapterItem({ wordData, children, id, setIsCurrentlyPlaying, isPlayDisa
 					<div>{wordData.word}</div>
 					<div>{wordData.transcription}</div>
 					<div>{wordData.wordTranslate}</div>
-					<Button handler={() => handleVolume(wordData, setIsCurrentlyPlaying)} disabled={isPlayDisabled}>
+					<Button
+						handler={() => handleVolume(wordData, setIsCurrentlyPlaying)}
+						disabled={isPlayDisabled}
+						color={color}
+					>
 						<FaVolumeUp />
 					</Button>
 				</div>
@@ -83,6 +87,7 @@ ChapterItem.propTypes = {
 	setIsCurrentlyPlaying: PropTypes.func.isRequired,
 	isPlayDisabled: PropTypes.bool.isRequired,
 	color: PropTypes.string.isRequired,
+	difficulty: PropTypes.string,
 };
 
 export default ChapterItem;

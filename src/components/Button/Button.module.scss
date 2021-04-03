@@ -1,10 +1,5 @@
 %hard {
-	background: $color-regent-gray;
-
-	&:hover {
-		background: lighten($color-regent-gray, 10)
-			radial-gradient(circle, transparent 1%, lighten($color-regent-gray, 10) 0) 50%/15000%;
-	}
+	display: none;
 }
 
 .Button {
@@ -79,7 +74,8 @@
 			50%/15000%;
 	}
 
-	&:disabled {
+	&:disabled,
+	&:disabled:hover {
 		background: $color-regent-gray;
 		cursor: not-allowed;
 	}

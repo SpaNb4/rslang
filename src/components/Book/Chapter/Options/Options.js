@@ -7,8 +7,10 @@ import OptionsInput from './OptionsInput/OptionsInput';
 
 import { getIsTranslationOn, getIsEditDictionaryButtons } from '../../../../store/book/slices';
 import { updateIsTranslationOn, updateIsEditDictionaryButtons } from '../../../../store/book/actions';
+import { getAuthorized } from '../../../../store/app/slices';
 
 const Options = (props) => {
+	const authorized = useSelector(getAuthorized);
 	const dispatch = useDispatch();
 	const computedClasses = [classes.OptionsPopup];
 	if (props.isOpen) {
@@ -32,7 +34,7 @@ const Options = (props) => {
 					<div className={classes.ItemLabel}>Перевод</div>
 					<OptionsInput id="translation-switch" toggle={toggleTranslation} checked={isTranslationOn} />
 				</div>
-				<div className={classes.SectionItem}>
+				<div className={classes.SectionItem} data-display={authorized ? 'show' : 'hide'}>
 					<div className={classes.ItemLabel}>Добавление в словарь</div>
 					<OptionsInput
 						id="edit-dictionary-switch"
