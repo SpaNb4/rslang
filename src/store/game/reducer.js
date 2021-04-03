@@ -14,11 +14,23 @@ const initialState = {
 	},
 
 	level: DefaultValues.Group,
+	volume: true,
 };
 
 const reducer = createReducer(initialState, (builder) => {
 	builder
-		.addCase(actions.resetGame, () => initialState)
+		.addCase(actions.resetGame, (state) => {
+			state.name = '';
+			state.settings = false;
+			state.start = false;
+			state.over = false;
+			state.answers = {
+				correct: [],
+				wrong: [],
+				streak: 0,
+			};
+			state.level = DefaultValues.Group;
+		})
 		.addCase(actions.fetchName, (state, action) => {
 			state.name = action.payload;
 		})
@@ -30,6 +42,9 @@ const reducer = createReducer(initialState, (builder) => {
 			state.answers = action.payload;
 			state.start = false;
 			state.over = true;
+		})
+		.addCase(actions.changeVolume, (state, action) => {
+			state.volume = action.payload;
 		})
 		.addDefaultCase((state) => state);
 });
