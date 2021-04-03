@@ -41,6 +41,8 @@ export const register = (email, password, username, image) => async (dispatch) =
 	} catch (error) {
 		if (error.response && error.response.status === 417) {
 			dispatch(updateUserErrorMessage('Пользователь с таким email уже существует.'));
+		} else if (error.response && error.response.status === 422) {
+			dispatch(updateUserErrorMessage('Пароль должен быть не менее 8 символов.'));
 		} else {
 			dispatch(updateErrorMessage(error.message));
 		}
