@@ -43,7 +43,9 @@ export const fetchUserWords = (userId, token) => async (dispatch) => {
 	}
 };
 
-export const setUserWord = (userId, token, wordData, section) => async (dispatch) => {
+export const setUserWord = (userId, token, wordData, section, rightAnswersCount = 0, wrongAnswerCount = 0) => async (
+	dispatch
+) => {
 	const isTokenExpired = checkIsTokenExpired();
 	if (!isTokenExpired) {
 		const wordId = wordData.id || wordData._id;
@@ -58,6 +60,8 @@ export const setUserWord = (userId, token, wordData, section) => async (dispatch
 					optional: {
 						...wordData,
 						created_at: date,
+						rightAnswersCount: rightAnswersCount,
+						wrongAnswerCount: wrongAnswerCount,
 					},
 				},
 				headers: {
@@ -87,10 +91,12 @@ export const setUserWord = (userId, token, wordData, section) => async (dispatch
 	}
 };
 
-export const updateUserWord = (userId, token, wordData, section) => async (dispatch) => {
+export const updateUserWord = (userId, token, wordData, section, rightAnswers, wrongAnswers) => async (dispatch) => {
 	const isTokenExpired = checkIsTokenExpired();
 	if (!isTokenExpired) {
 		const wordId = wordData.id || wordData._id;
+		const rightAnswersCount = rightAnswers ? wordData.rightAnswersCount + rightAnswers : wordData.rightAnswersCount;
+		const wrongAnswerCount = wrongAnswers ? wordData.wrongAnswerCount + wrongAnswers : wordData.wrongAnswerCount;
 		const date = new Date().toISOString().slice(0, 10);
 		try {
 			const { data } = await axios({
@@ -105,7 +111,8 @@ export const updateUserWord = (userId, token, wordData, section) => async (dispa
 					difficulty: section,
 					optional: {
 						...wordData,
-						created_at: date,
+						rightAnswersCount: rightAnswersCount,
+						wrongAnswerCount: wrongAnswerCount,
 					},
 				},
 				headers: {
