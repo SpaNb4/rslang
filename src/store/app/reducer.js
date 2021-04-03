@@ -25,7 +25,7 @@ const reducer = createReducer(initialState, (builder) => {
 			state.auth = true;
 		})
 		.addCase(actions.clearErrorMessage, (state) => {
-			state.errorMessage = '';
+			state.userErrorMessage = '';
 		})
 		.addCase(actions.saveUserAuthData, (state, action) => {
 			state.user = action.payload;
