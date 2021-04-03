@@ -20,6 +20,7 @@ export const updateRemovedPagesForGroup = createAction(types.UPDATE_REMOVED_PAGE
 export const updateRemovedPages = createAction(types.UPDATE_REMOVED_PAGES);
 export const updateRemovedWordsCountForPage = createAction(types.UPDATE_REMOVED_WORDS_COUNT_FOR_PAGE);
 export const updateRemovedWordsCount = createAction(types.UPDATE_REMOVED_WORDS_COUNT);
+export const clearAggregatedWords = createAction(types.CLEAR_AGGREGATED_WORDS);
 
 export const fetchWords = (currentGroup = DefaultValues.Group, currentPage = DefaultValues.Page) => async (
 	dispatch

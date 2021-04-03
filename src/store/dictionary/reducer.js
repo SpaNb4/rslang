@@ -33,6 +33,9 @@ const reducer = createReducer(initialState, (builder) => {
 		.addCase(actions.hideLoader, (state) => {
 			state.loading = false;
 		})
+		.addCase(actions.clearUserWords, (state) => {
+			state.userWords = [];
+		})
 		.addDefaultCase((state) => state);
 });
 
