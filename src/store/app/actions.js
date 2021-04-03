@@ -16,21 +16,33 @@ export const updateUserErrorMessage = createAction(types.UPDATE_USER_ERROR_MESSA
 
 export const register = (email, password, username, image) => async (dispatch) => {
 	try {
-		const formData = new FormData();
-		formData.append('username', username);
-		formData.append('email', email);
-		formData.append('password', password);
-		formData.append('image', image);
+		const imgFormData = new FormData();
+		imgFormData.append('file', image);
+		imgFormData.append('upload_preset', 'gfyjsw4r');
+		const response = await axios({
+			method: 'post',
+			url: 'https://api.cloudinary.com/v1_1/imisha/image/upload',
+			data: imgFormData,
+		});
+		const imgURL = response.data.url;
 
 		const { data } = await axios({
 			method: 'post',
 			url: ExternalUrls.Users,
-			data: formData,
+			data: {
+				username: username,
+				email: email,
+				password: password,
+				image: imgURL,
+			},
 		});
-		dispatch(login(data.email, data.password));
+		dispatch(clearErrorMessage());
+		dispatch(login(data.email, password));
 	} catch (error) {
 		if (error.response && error.response.status === 417) {
 			dispatch(updateUserErrorMessage('Пользователь с таким email уже существует.'));
+		} else if (error.response && error.response.status === 422) {
+			dispatch(updateUserErrorMessage('Пароль должен быть не менее 8 символов.'));
 		} else {
 			dispatch(updateErrorMessage(error.message));
 		}
@@ -52,6 +64,7 @@ export const login = (email, password) => async (dispatch) => {
 		localStorage.setItem(LocalStorageKeys.TokenExpireTime, JSON.stringify(tokenExpireTime));
 
 		dispatch(loginSuccess(data));
+		dispatch(clearErrorMessage());
 	} catch (error) {
 		if (error.response && error.response.status === 404) {
 			dispatch(updateUserErrorMessage('Введен неверный email или пользователь не зарегистрирован.'));
