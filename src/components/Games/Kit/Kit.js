@@ -68,9 +68,10 @@ const Kit = ({ wordData }) => {
 	useEffect(() => {
 		if (currWordIndex && currWordIndex === randomWords.length) {
 			const result = {
-				correct: randomWords.filter((_, index) => answers[index]),
-				wrong: randomWords.filter((_, index) => !answers[index]),
+				correct: randomWords.filter((_, index) => answers[index] || answers[index] === 0),
+				wrong: randomWords.filter((_, index) => !answers[index] && answers[index] !== 0),
 				streak: getStreak(answers),
+				words: randomWords.map((wordData) => wordData.word),
 			};
 
 			dispatch(finishGame(result));

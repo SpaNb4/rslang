@@ -13,7 +13,7 @@ import AudioGame from './AudioGame/AudioGame';
 import Kit from './Kit/Kit';
 import Savanna from './Savanna/Savanna';
 import GameSprint from './GameSprint/GameSprint';
-import { menu } from '../../common/constants';
+import { LocalStorageKeys, menu } from '../../common/constants';
 import _ from 'lodash';
 
 import classes from './Game.module.scss';
@@ -51,28 +51,26 @@ const Game = () => {
 			correct: answers.correct.length,
 			wrong: answers.wrong.length,
 			streak: answers.streak,
+			words: answers.words,
 		};
 
 		const updateData = (prev, curr) => {
 			const index = _.findIndex(prev, { name: curr.name });
 
-			console.log(curr.streak);
-
 			if (index >= 0) {
 				prev[index].correct += curr.correct;
 				prev[index].wrong += curr.wrong;
 				prev[index].streak = _.max([prev[index].streak, curr.streak]);
+				prev[index].words = _.uniq([...prev[index].words, ...curr.words]);
 			} else {
 				prev.push(curr);
 			}
-
-			console.log(prev);
 
 			return prev;
 		};
 
 		if (gameOver) {
-			const name = userId || 'userStats';
+			const name = userId || LocalStorageKeys.userStats;
 			const statsData = JSON.parse(localStorage.getItem(name)) || null;
 			console.log(statsData);
 			const totalStatsData = statsData ? updateData(statsData, newStatsData) : [newStatsData];
