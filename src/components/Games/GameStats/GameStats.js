@@ -3,7 +3,7 @@ import { ExternalUrls } from '../../../common/constants';
 import { AiFillSound } from 'react-icons/ai';
 import classes from './GameStats.module.scss';
 import { PropTypes } from 'prop-types';
-import { playSound } from './../../../common/utils';
+import { playSound } from './../../../common/helpers';
 
 function GameStats({ corrAnswersWords, wrongAnswersWords }) {
 	return (

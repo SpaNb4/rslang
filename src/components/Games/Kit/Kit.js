@@ -7,17 +7,22 @@ import HiddenChar from './HiddenChar';
 import ShuffledChar from './ShuffledChar';
 import IconStar from './IconStar';
 import { getCurrCharIndex, getCurrWordIndex, getRandomWords, getAnswers } from '../../../store/kit/slices';
-import { setRandomWords, setCurrentWord, addAnswer } from '../../../store/kit/actions';
-import { globalClasses as c } from '../../../common/constants';
+import {
+	setRandomWords,
+	setCurrentWord,
+	addAnswer,
+	increaseFocusedIndex,
+	reduceFocusedIndex,
+} from '../../../store/kit/actions';
+import { evtKeys, globalClasses as c } from '../../../common/constants';
 import { finishGame } from '../../../store/game/actions';
+import { getStreak, playWrong, playCorrect } from '../../../common/helpers';
 import classes from './Kit.module.scss';
-import { getStreak } from '../../../common/helpers';
 
 const NUMBER_OF_WORDS = 5;
 
 const Kit = ({ wordData }) => {
 	const dispatch = useDispatch();
-
 	const randomWords = useSelector(getRandomWords);
 	const currWordIndex = useSelector(getCurrWordIndex);
 	const currCharIndex = useSelector(getCurrCharIndex);
@@ -26,7 +31,6 @@ const Kit = ({ wordData }) => {
 	const [currWordObj, setCurrWordObj] = useState(null);
 	const [normCurrWord, setNormCurrWord] = useState([]);
 	const [shuffCurrWord, setShuffCurrWord] = useState([]);
-	// const [streak, setStreak] = useState(0);
 
 	useEffect(() => {
 		if (wordData.length) {
@@ -51,11 +55,13 @@ const Kit = ({ wordData }) => {
 
 	useEffect(() => {
 		if (currCharIndex && currCharIndex === normCurrWord.length) {
+			playCorrect();
 			dispatch(addAnswer(currWordIndex));
 		}
 	}, [currCharIndex]);
 
 	const handleSkipWord = useCallback(() => {
+		playWrong();
 		dispatch(addAnswer(null));
 	}, []);
 
@@ -70,6 +76,27 @@ const Kit = ({ wordData }) => {
 			dispatch(finishGame(result));
 		}
 	}, [currWordIndex]);
+
+	const handleKeyDown = (evt) => {
+		switch (evt.key) {
+			case evtKeys.left:
+				dispatch(reduceFocusedIndex());
+				break;
+			case evtKeys.right:
+				dispatch(increaseFocusedIndex());
+				break;
+			case evtKeys.space:
+				handleSkipWord();
+				break;
+		}
+	};
+
+	useEffect(() => {
+		document.addEventListener('keydown', handleKeyDown);
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+	}, []);
 
 	return (
 		<>
@@ -94,7 +121,7 @@ const Kit = ({ wordData }) => {
 							<div className={classes.word}>
 								{shuffCurrWord &&
 									shuffCurrWord.map((char, index) => {
-										return <ShuffledChar key={`char${index}`} char={char} />;
+										return <ShuffledChar index={index} key={`char${index}`} char={char} />;
 									})}
 							</div>
 						</>
