@@ -161,35 +161,23 @@ function AudioGame({ wordData }) {
 					{commonWords && (
 						<div className={classes.wordList}>
 							{commonWords.map((word, index) => {
-								if (word === currWord) {
-									return (
-										<div
-											className={
-												isWordClicked
+								return (
+									<div
+										className={
+											word === currWord
+												? isWordClicked
 													? [classes.wordListItem, classes.correctWord].join(' ')
 													: classes.wordListItem
-											}
-											key={index}
-											onClick={handleCorrectWordClick}
-										>
-											<span>{index + 1}</span> {word.wordTranslate}
-										</div>
-									);
-								} else {
-									return (
-										<div
-											className={
-												isWordClicked
-													? [classes.wordListItem, classes.wrongWord].join(' ')
-													: classes.wordListItem
-											}
-											key={index}
-											onClick={handleWrongWordClick}
-										>
-											<span>{index + 1}</span> {word.wordTranslate}
-										</div>
-									);
-								}
+												: isWordClicked
+												? [classes.wordListItem, classes.wrongWord].join(' ')
+												: classes.wordListItem
+										}
+										key={index}
+										onClick={word === currWord ? handleCorrectWordClick : handleWrongWordClick}
+									>
+										<span>{index + 1}</span> {word.wordTranslate}
+									</div>
+								);
 							})}
 						</div>
 					)}
