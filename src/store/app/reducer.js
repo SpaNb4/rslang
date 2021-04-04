@@ -38,6 +38,12 @@ const reducer = createReducer(initialState, (builder) => {
 		.addCase(actions.menuToggle, (state, action) => {
 			state.menuHidden = action.payload;
 		})
+		.addCase(actions.showLoader, (state) => {
+			state.loading = true;
+		})
+		.addCase(actions.hideLoader, (state) => {
+			state.loading = false;
+		})
 		.addDefaultCase((state) => state);
 });
 

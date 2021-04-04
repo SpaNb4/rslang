@@ -24,7 +24,7 @@ function Pagination({ handlePageClick, pageCount, startPage, removedPages, force
 			pageCount={pageCount}
 			initialPage={startPage}
 			marginPagesDisplayed={2}
-			pageRangeDisplayed={5}
+			pageRangeDisplayed={3}
 			onPageChange={handlePageClick}
 			breakClassName={classes.break}
 			containerClassName={classes.pagination}

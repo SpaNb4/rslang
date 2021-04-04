@@ -3,16 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import parse from 'html-react-parser';
 import classes from '../../../ChapterItem//ChapterItem.module.scss';
+import menuClasses from '../../../Header/Header.module.scss';
 
 import { FaVolumeUp } from 'react-icons/fa';
 
 import Button from '../../../Button/Button';
 
 import { buildUrl } from '../../../../common/helpers';
-import { ExternalUrls, DictionarySections } from '../../../../common/constants';
+import { ExternalUrls, DictionarySections, menu } from '../../../../common/constants';
 import { setUserWord, updateUserWord } from '../../../../store/dictionary/actions';
 import { getUserId, getAuthorized, getToken } from '../../../../store/app/slices';
 import { getIsTranslationOn, getIsEditDictionaryButtons, getWordsLoading } from '../../../../store/book/slices';
+
 function ChapterItem({ wordData, handleVolume, isPlayDisabled, color }) {
 	const dispatch = useDispatch();
 	const loading = useSelector(getWordsLoading);
@@ -54,6 +56,36 @@ function ChapterItem({ wordData, handleVolume, isPlayDisabled, color }) {
 			}
 		}
 	}, [wordData, authorized]);
+
+	const resultsList = authorized && (
+		<ul className={classes.gamesList}>
+			{menu.games.map(({ linkName, icon, color, linkId }, index) => {
+				const trained = wordData.userWord && wordData.userWord.optional[linkId];
+
+				return (
+					<li className={[menuClasses.menuItem, classes.gamesListItem].join(' ')} key={index}>
+						<div
+							className={[menuClasses.menuLink, menuClasses.innerLink, classes.listItemLink].join(' ')}
+							data-color={color}
+						>
+							<div className={classes.gameTitle}>
+								<div>{icon}</div>
+								<div>{linkName}</div>
+							</div>
+							{trained ? (
+								<div className={classes.gameAnswers}>
+									<div>Правильно: {wordData.userWord.optional[linkId].correct}</div>
+									<div>Неправильно: {wordData.userWord.optional[linkId].wrong}</div>
+								</div>
+							) : (
+								<div className={classes.gameAnswers}>Не изучено</div>
+							)}
+						</div>
+					</li>
+				);
+			})}
+		</ul>
+	);
 
 	return (
 		<div
@@ -104,7 +136,9 @@ function ChapterItem({ wordData, handleVolume, isPlayDisabled, color }) {
 			</div>
 			<div
 				className={
-					isEditDictionaryButtons ? classes.itemSettings : [classes.itemSettings, classes.Hide].join(' ')
+					isEditDictionaryButtons && authorized
+						? classes.itemSettings
+						: [classes.itemSettings, classes.Hide].join(' ')
 				}
 			>
 				<Button
@@ -119,23 +153,8 @@ function ChapterItem({ wordData, handleVolume, isPlayDisabled, color }) {
 					Удалить
 				</Button>
 			</div>
-			<div className={classes.itemResults}>
-				<div className={classes.resultItem}>
-					<div>Игра 1</div>
-					<div>Изучено</div>
-				</div>
-				<div className={classes.resultItem}>
-					<div>Игра 2</div>
-					<div>Изучено</div>
-				</div>
-				<div className={classes.resultItem}>
-					<div>Игра 3</div>
-					<div>Повторено</div>
-				</div>
-				<div className={classes.resultItem}>
-					<div>Игра 4</div>
-					<div>Повторено</div>
-				</div>
+			<div className={authorized ? classes.itemResults : [classes.itemResults, classes.Hide].join(' ')}>
+				{resultsList}
 			</div>
 		</div>
 	);
@@ -157,6 +176,9 @@ ChapterItem.propTypes = {
 		textExampleTranslate: PropTypes.string,
 		userWord: PropTypes.shape({
 			difficulty: PropTypes.string,
+			optional: PropTypes.shape({
+				word: PropTypes.string,
+			}),
 		}),
 		group: PropTypes.number,
 		page: PropTypes.number,

@@ -9,6 +9,7 @@ import menuClasses from '../../Header/Header.module.scss';
 import ChapterItem from './ChapterItem/ChapterItem';
 import OptionsControl from './OptionsControl/OptionsControl';
 import Options from './Options/Options';
+import Loader from '../../Loader/Loader';
 
 import {
 	fetchAggregatedWords,
@@ -178,7 +179,7 @@ function Chapter() {
 				</div>
 				<div className={classes.gamesListContainer}>{gamesList}</div>
 			</div>
-			{loading && <React.Fragment>Loading...</React.Fragment>}
+			{loading && <Loader />}
 			{chapterItems}
 			<Pagination
 				handlePageClick={handlePageClick}
