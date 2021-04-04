@@ -12,12 +12,28 @@ import Button from '../../Button/Button';
 import GamesList from './../../GamesList/GamesList';
 
 function Chapter() {
+	const pageArr = JSON.parse(localStorage.getItem(LocalStorageKeys.VocabularyPage)) || [
+		{ section: 0, page: 0 },
+		{ section: 1, page: 0 },
+		{ section: 2, page: 0 },
+		{ section: 3, page: 0 },
+		{ section: 4, page: 0 },
+		{ section: 5, page: 0 },
+	];
 	const dispatch = useDispatch();
 	const loading = useSelector(getUserWordsLoading);
 	const { group } = useParams();
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
-	const [page, setPage] = useState(localStorage.getItem(LocalStorageKeys.VocabularyPage) || '0');
+	const [currentSection, setCurrentSection] = useState(
+		JSON.parse(localStorage.getItem(LocalStorageKeys.VocabularySection)) || 0
+	);
+	const [page, setPage] = useState(
+		(JSON.parse(localStorage.getItem(LocalStorageKeys.VocabularyPage)) &&
+			JSON.parse(localStorage.getItem(LocalStorageKeys.VocabularyPage))[currentSection].page) ||
+			0
+	);
+
 	const offset = page * DefaultValues.WordsPerPage;
 	const filter = {
 		hard: useSelector(getHardWords),
@@ -25,7 +41,7 @@ function Chapter() {
 		trained: useSelector(getTrainedWords),
 	};
 	const [pageCount, setPageCount] = useState(0);
-	const [currentSection, setCurrentSection] = useState(0);
+
 	const filteredWords = filter[group] && filter[group].filter((word) => currentSection === word.optional.group);
 	const [isCurrentlyPlaying, setIsCurrentlyPlaying] = useState(false);
 	const WORDS_IN_SECTION_COUNT = 600;
@@ -49,13 +65,30 @@ function Chapter() {
 	}
 
 	function handlePageClick(data) {
-		setPage(data.selected);
-		localStorage.setItem(LocalStorageKeys.VocabularyPage, data.selected);
+		if (page !== data.selected) {
+			setPage(data.selected);
+
+			pageArr.forEach((el) => {
+				if (el.section === currentSection) {
+					el.page = data.selected;
+				}
+			});
+
+			localStorage.setItem(LocalStorageKeys.VocabularyPage, JSON.stringify(pageArr));
+		}
 	}
 
 	function sectionClickHandler(index) {
 		setCurrentSection(index);
+
+		localStorage.setItem(LocalStorageKeys.VocabularySection, index);
 	}
+
+	useEffect(() => {
+		if (localStorage.getItem(LocalStorageKeys.VocabularyPage)) {
+			setPage(JSON.parse(localStorage.getItem(LocalStorageKeys.VocabularyPage))[currentSection].page);
+		}
+	}, [currentSection]);
 
 	const sectionList = (
 		<ul className={classes.sectionList}>
@@ -116,7 +149,12 @@ function Chapter() {
 						);
 					})}
 					{filteredWords.length <= DefaultValues.WordsPerPage ? null : (
-						<Pagination handlePageClick={handlePageClick} pageCount={pageCount} startPage={Number(page)} />
+						<Pagination
+							handlePageClick={handlePageClick}
+							pageCount={pageCount}
+							startPage={page}
+							forcePage={page}
+						/>
 					)}
 				</>
 			) : (

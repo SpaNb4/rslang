@@ -42,6 +42,7 @@ export const LocalStorageKeys = {
 	TokenExpireTime: 't-expire',
 	BookPage: 'bookPage',
 	VocabularyPage: 'vocabularyPage',
+	VocabularySection: 'vocabularySection',
 	QuizAttempts: 'quizAttempts',
 	QuizDate: 'quizDate',
 	RemovedPages: 'removed-pages',
