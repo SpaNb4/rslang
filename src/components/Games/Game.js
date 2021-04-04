@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUserWord, updateUserWord } from '../../store/dictionary/actions';
 import { updateGame } from '../../store/game/actions';
 import { fetchAggregatedWords, fetchWords } from '../../store/book/actions';
+import { updateStatistics } from '../../store/statistics/actions';
 import { getAnswers, getGameOver } from '../../store/game/slices';
 import { getAggregatedWords } from '../../store/book/slices';
 import { getUserId, getToken, getAuthorized } from '../../store/app/slices';
@@ -91,7 +92,7 @@ const Game = () => {
 					dispatch(updateUserWord(userId, token, word, wordDifficulty, 1));
 				} else {
 					dispatch(setUserWord(userId, token, word, DictionarySections.Trained, 1));
-					// updateStats
+					dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
 				}
 			});
 
