@@ -1,5 +1,6 @@
 import * as types from './action-types';
 import axios from 'axios';
+import * as _ from 'lodash';
 import { createAction } from '@reduxjs/toolkit';
 import { ExternalUrls } from '../../common/constants';
 import { logout } from '../app/actions';
@@ -8,7 +9,7 @@ import { buildUrl } from '../../common/helpers';
 
 export const getStatisticsSuccess = createAction(types.UPDATE_STATISTICS_SUCCESS);
 export const getStatisticsFailure = createAction(types.UPDATE_STATISTICS_FAILURE);
-export const updateDailyStatisticsSuccess = createAction(types.UPDATE_DAILY_STATISTICS_SUCCESS);
+export const updateStatisticsSuccess = createAction(types.UPDATE_DAILY_STATISTICS_SUCCESS);
 
 export const fetchUserStatistics = (userId, token) => async (dispatch) => {
 	const isTokenExpired = checkIsTokenExpired();
@@ -25,6 +26,10 @@ export const fetchUserStatistics = (userId, token) => async (dispatch) => {
 				},
 			});
 			dispatch(getStatisticsSuccess(data));
+			const date = new Date().toISOString().slice(0, 10);
+			if (!data.statistics || !_.find(data.statistics, { date: date })) {
+				dispatch(updateStatistics(userId, token));
+			}
 		} catch (error) {
 			dispatch(getStatisticsFailure(error.message));
 		}
@@ -33,9 +38,11 @@ export const fetchUserStatistics = (userId, token) => async (dispatch) => {
 	}
 };
 
-export const updateDailyStatistics = (userId, token) => async (dispatch) => {
+export const updateStatistics = (userId, token, statistics = { learnedWords: 0 }) => async (dispatch) => {
 	const isTokenExpired = checkIsTokenExpired();
 	if (!isTokenExpired) {
+		const date = new Date().toISOString().slice(0, 10);
+		statistics = { ...statistics, day: date };
 		try {
 			const { data } = await axios({
 				method: 'put',
@@ -46,8 +53,11 @@ export const updateDailyStatistics = (userId, token) => async (dispatch) => {
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
 				},
+				data: {
+					optional: statistics,
+				},
 			});
-			dispatch(updateDailyStatisticsSuccess(data));
+			dispatch(updateStatisticsSuccess(data));
 		} catch (error) {
 			dispatch(getStatisticsFailure(error.message));
 		}
