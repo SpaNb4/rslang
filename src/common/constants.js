@@ -47,6 +47,7 @@ export const LocalStorageKeys = {
 	QuizDate: 'quizDate',
 	RemovedPages: 'removed-pages',
 	RemovedWordsCount: 'removed-words-count',
+	userStats: 'user-stats',
 };
 
 // Default Values
@@ -244,6 +245,7 @@ export const globalClasses = {
 	container: 'container',
 	section: 'section',
 	sectionTitle: 'section-title',
+	pageTitle: 'page-title',
 	button: 'button',
 	visuallyHidden: 'visually-hidden',
 };
@@ -278,7 +280,9 @@ export const evtKeys = {
 
 export const colors = {
 	error: '#f00',
-	correct: `#fd0`,
+	correct: '#fd0',
+	ocean: '#3aa76d',
+	cardinal: '#ce2029',
 };
 
 export const UPLOAD_PRESET = 'gfyjsw4r';

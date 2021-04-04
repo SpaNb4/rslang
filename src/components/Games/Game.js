@@ -1,8 +1,14 @@
 import React, { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllWords } from '../../store/book/slices';
+
+import { setUserWord, updateUserWord } from '../../store/dictionary/actions';
+import { updateGame } from '../../store/game/actions';
+import { fetchAggregatedWords, fetchWords } from '../../store/book/actions';
+import { updateStatistics } from '../../store/statistics/actions';
 import { getAnswers, getGameOver } from '../../store/game/slices';
+import { getAggregatedWords } from '../../store/book/slices';
+import { getUserId, getToken, getAuthorized } from '../../store/app/slices';
 
 import Loader from '../Loader/Loader';
 import GameIntro from './GameIntro/GameIntro';
@@ -12,19 +18,39 @@ import AudioGame from './AudioGame/AudioGame';
 import Kit from './Kit/Kit';
 import Savanna from './Savanna/Savanna';
 import GameSprint from './GameSprint/GameSprint';
-import { menu } from '../../common/constants';
+
+import { DictionarySections, LocalStorageKeys, menu } from '../../common/constants';
+import { updateData } from '../../common/helpers';
+
 import classes from './Game.module.scss';
-import { updateGame } from '../../store/game/actions';
 
 const Game = () => {
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
-	const allWords = useSelector(getAllWords);
+	const userId = useSelector(getUserId);
+	const authorized = useSelector(getAuthorized);
+	const token = useSelector(getToken);
+	const aggregatedWords = useSelector(getAggregatedWords);
 	const gameOver = useSelector(getGameOver);
 	const answers = useSelector(getAnswers);
+	const filterRules = JSON.stringify({
+		$or: [
+			{ 'userWord.difficulty': DictionarySections.Hard },
+			{ 'userWord.difficulty': DictionarySections.Trained },
+			{ userWord: null },
+		],
+	});
 	const { linkName, linkId, rules } = menu.games.find((elem) => pathname.includes(elem.linkId));
 
 	useEffect(() => dispatch(updateGame(linkId)), [linkId]);
+
+	useEffect(() => {
+		if (authorized) {
+			dispatch(fetchAggregatedWords(null, null, userId, token, filterRules));
+		} else {
+			dispatch(fetchWords(null, null));
+		}
+	}, [authorized, userId, token]);
 
 	const renderGame = useCallback(
 		(data) => {
@@ -42,14 +68,55 @@ const Game = () => {
 		[linkId]
 	);
 
+	useEffect(() => {
+		const newStatsData = {
+			name: linkId,
+			correct: answers.correct.length,
+			wrong: answers.wrong.length,
+			streak: answers.streak,
+			words: answers.words,
+		};
+
+		if (gameOver) {
+			const name = userId || LocalStorageKeys.userStats;
+			const statsData = JSON.parse(localStorage.getItem(name)) || null;
+			const totalStatsData = statsData ? updateData(statsData, newStatsData) : [newStatsData];
+
+			localStorage.setItem(name, JSON.stringify(totalStatsData));
+
+			// update word stats:
+			answers.correct.forEach((word) => {
+				const { wordDifficulty } = word;
+
+				if (wordDifficulty) {
+					dispatch(updateUserWord(userId, token, word, wordDifficulty, linkId, 1));
+				} else {
+					dispatch(setUserWord(userId, token, word, DictionarySections.Trained, linkId, 1));
+					dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
+				}
+			});
+
+			answers.wrong.forEach((word) => {
+				const { wordDifficulty } = word;
+
+				if (wordDifficulty) {
+					dispatch(updateUserWord(userId, token, word, wordDifficulty, linkId, 0, 1));
+				} else {
+					dispatch(setUserWord(userId, token, word, DictionarySections.Trained, linkId, 0, 1));
+					dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
+				}
+			});
+		}
+	}, [gameOver]);
+
 	return (
 		<main className={classes.root}>
 			{gameOver ? (
 				<GameStats corrAnswersWords={answers.correct} wrongAnswersWords={answers.wrong} />
-			) : allWords.length ? (
+			) : aggregatedWords.length ? (
 				<>
 					<GameIntro name={linkName} settings={pathname.includes('true')} rules={rules} />
-					<GameOverLay> {renderGame(allWords)} </GameOverLay>
+					<GameOverLay> {renderGame(aggregatedWords)} </GameOverLay>
 				</>
 			) : (
 				<Loader />
