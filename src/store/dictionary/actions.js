@@ -7,6 +7,7 @@ import { checkIsTokenExpired, saveRemovedWordsCountToLocalStorage } from '../../
 import { logout } from '../app/actions';
 import { updateRemovedWordsCountForPage } from '../book/actions';
 import { fetchAggregatedWords } from '../book/actions';
+import { updateStatistics } from '../statistics/actions';
 
 export const fetchUserWordsSuccess = createAction(types.FETCH_USER_WORDS_SUCCESS);
 export const createUserWordSuccess = createAction(types.CREATE_USER_WORD_SUCCESS);
@@ -96,6 +97,8 @@ export const setUserWord = (
 				dispatch(fetchAggregatedWords(wordData.group, wordData.page, userId, token, filterRules));
 				dispatch(updateRemovedWordsCountForPage({ group: +wordData.group, page: +wordData.page }));
 				saveRemovedWordsCountToLocalStorage(userId, +wordData.group, +wordData.page);
+			} else {
+				dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
 			}
 		} catch (error) {
 			dispatch(createUserWordFailure(error));

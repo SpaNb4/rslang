@@ -27,7 +27,7 @@ export const fetchUserStatistics = (userId, token) => async (dispatch) => {
 			});
 			dispatch(getStatisticsSuccess(data));
 			const date = new Date().toISOString().slice(0, 10);
-			if (!data.statistics || !_.find(data.statistics, { date: date })) {
+			if (!data.statistics || !_.find(data.statistics, { day: date })) {
 				dispatch(updateStatistics(userId, token));
 			}
 		} catch (error) {
