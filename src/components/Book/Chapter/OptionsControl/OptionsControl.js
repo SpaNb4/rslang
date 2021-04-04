@@ -15,4 +15,4 @@ OptionsControl.propTypes = {
 	openOptions: PropTypes.func.isRequired,
 };
 
-export default OptionsControl;
+export default React.memo(OptionsControl);

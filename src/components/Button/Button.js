@@ -25,4 +25,4 @@ Button.propTypes = {
 	disabled: PropTypes.bool,
 };
 
-export default Button;
+export default React.memo(Button);

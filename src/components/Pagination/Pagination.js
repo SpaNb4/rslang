@@ -44,4 +44,4 @@ Pagination.propTypes = {
 	removedPages: PropTypes.arrayOf(PropTypes.number),
 };
 
-export default Pagination;
+export default React.memo(Pagination);

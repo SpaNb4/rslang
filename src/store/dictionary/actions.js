@@ -43,13 +43,29 @@ export const fetchUserWords = (userId, token) => async (dispatch) => {
 	}
 };
 
-export const setUserWord = (userId, token, wordData, section, rightAnswersCount = 0, wrongAnswerCount = 0) => async (
-	dispatch
-) => {
+export const setUserWord = (
+	userId,
+	token,
+	wordData,
+	section,
+	game = null,
+	correctAnswers = 0,
+	wrongAnswers = 0
+) => async (dispatch) => {
 	const isTokenExpired = checkIsTokenExpired();
 	if (!isTokenExpired) {
 		const wordId = wordData.id || wordData._id;
 		const date = new Date().toISOString().slice(0, 10);
+		if (game) {
+			wordData = {
+				...wordData,
+				[game]: {
+					trained: true,
+					correct: correctAnswers,
+					wrong: wrongAnswers,
+				},
+			};
+		}
 		try {
 			const { data } = await axios({
 				method: 'post',
@@ -60,8 +76,6 @@ export const setUserWord = (userId, token, wordData, section, rightAnswersCount 
 					optional: {
 						...wordData,
 						created_at: date,
-						rightAnswersCount: rightAnswersCount,
-						wrongAnswerCount: wrongAnswerCount,
 					},
 				},
 				headers: {
@@ -91,28 +105,38 @@ export const setUserWord = (userId, token, wordData, section, rightAnswersCount 
 	}
 };
 
-export const updateUserWord = (userId, token, wordData, section, rightAnswers, wrongAnswers) => async (dispatch) => {
+export const updateUserWord = (
+	userId,
+	token,
+	wordData,
+	section,
+	game = null,
+	correctAnswers = 0,
+	wrongAnswers = 0
+) => async (dispatch) => {
 	const isTokenExpired = checkIsTokenExpired();
 	if (!isTokenExpired) {
 		const wordId = wordData.id || wordData._id;
-		const rightAnswersCount = rightAnswers ? wordData.rightAnswersCount + rightAnswers : wordData.rightAnswersCount;
-		const wrongAnswerCount = wrongAnswers ? wordData.wrongAnswerCount + wrongAnswers : wordData.wrongAnswerCount;
-		const date = new Date().toISOString().slice(0, 10);
+		if (game) {
+			correctAnswers = correctAnswers ? wordData[game].correct + correctAnswers : wordData[game].correct;
+			wrongAnswers = wrongAnswers ? wordData[game].wrong + wrongAnswers : wordData[game].wrong;
+			wordData = {
+				...wordData,
+				[game]: {
+					trained: true,
+					correct: correctAnswers,
+					wrong: wrongAnswers,
+				},
+			};
+		}
 		try {
 			const { data } = await axios({
 				method: 'put',
 				url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', wordId),
-				params: {
-					id: userId,
-					wordId: wordId,
-					created_at: date,
-				},
 				data: {
 					difficulty: section,
 					optional: {
 						...wordData,
-						rightAnswersCount: rightAnswersCount,
-						wrongAnswerCount: wrongAnswerCount,
 					},
 				},
 				headers: {
