@@ -89,9 +89,9 @@ const Game = () => {
 				const { wordDifficulty } = word;
 
 				if (wordDifficulty) {
-					dispatch(updateUserWord(userId, token, word, wordDifficulty, 1));
+					dispatch(updateUserWord(userId, token, word, wordDifficulty, linkId, 1));
 				} else {
-					dispatch(setUserWord(userId, token, word, DictionarySections.Trained, 1));
+					dispatch(setUserWord(userId, token, word, DictionarySections.Trained, linkId, 1));
 					dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
 				}
 			});
@@ -100,9 +100,10 @@ const Game = () => {
 				const { wordDifficulty } = word;
 
 				if (wordDifficulty) {
-					dispatch(updateUserWord(userId, token, word, wordDifficulty, 0, 1));
+					dispatch(updateUserWord(userId, token, word, wordDifficulty, linkId, 0, 1));
 				} else {
-					dispatch(setUserWord(userId, token, word, DictionarySections.Trained, 0, 1));
+					dispatch(setUserWord(userId, token, word, DictionarySections.Trained, linkId, 0, 1));
+					dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
 				}
 			});
 		}
