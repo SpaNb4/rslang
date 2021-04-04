@@ -11,6 +11,7 @@ import Book from './components/Book/Book';
 import Vocabulary from './components/Vocabulary/Vocabulary';
 import Quiz from './components/Quiz/Quiz';
 import Game from './components/Games/Game';
+import Stats from './components/Stats/Stats';
 
 import { getUserId, getToken, getAuthorized } from './store/app/slices';
 import { saveUserAuthData } from './store/app/actions';
@@ -74,6 +75,7 @@ function App() {
 			</Switch>
 
 			<Route path="/game/:name" component={Game} />
+			<Route path="/stats" component={Stats} />
 
 			{pathname.includes('game') ? null : <Footer />}
 		</React.Fragment>

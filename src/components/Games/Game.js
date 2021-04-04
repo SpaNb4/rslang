@@ -9,7 +9,9 @@ import AudioGame from './AudioGame/AudioGame';
 import Kit from './Kit/Kit';
 import Savanna from './Savanna/Savanna';
 import GameSprint from './GameSprint/GameSprint';
-import { menu } from '../../common/constants';
+import { LocalStorageKeys, menu } from '../../common/constants';
+import _ from 'lodash';
+
 import classes from './Game.module.scss';
 import { PropTypes } from 'prop-types';
 import { MIN_WORD_COUNT } from './../../common/constants';
@@ -18,7 +20,6 @@ import { fetchAggregatedWords } from '../../store/book/actions';
 import { getAggregatedWords } from './../../store/book/slices';
 import { updateGame } from '../../store/game/actions';
 import { getGameStart, getCurrentLevel } from './../../store/game/slices';
-import random from 'lodash/random';
 
 const Game = (props) => {
 	const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const Game = (props) => {
 		}
 		// from menu
 		else {
-			dispatch(fetchAggregatedWords(level, random(0, 29), userId, token));
+			dispatch(fetchAggregatedWords(level, _.random(0, 29), userId, token));
 		}
 	}, [isGameStart]);
 
@@ -84,6 +85,40 @@ const Game = (props) => {
 		},
 		[linkId]
 	);
+
+	useEffect(() => {
+		const newStatsData = {
+			name: linkId,
+			correct: answers.correct.length,
+			wrong: answers.wrong.length,
+			streak: answers.streak,
+			words: answers.words,
+		};
+
+		const updateData = (prev, curr) => {
+			const index = _.findIndex(prev, { name: curr.name });
+
+			if (index >= 0) {
+				prev[index].correct += curr.correct;
+				prev[index].wrong += curr.wrong;
+				prev[index].streak = _.max([prev[index].streak, curr.streak]);
+				prev[index].words = _.uniq([...prev[index].words, ...curr.words]);
+			} else {
+				prev.push(curr);
+			}
+
+			return prev;
+		};
+
+		if (gameOver) {
+			const name = userId || LocalStorageKeys.userStats;
+			const statsData = JSON.parse(localStorage.getItem(name)) || null;
+			console.log(statsData);
+			const totalStatsData = statsData ? updateData(statsData, newStatsData) : [newStatsData];
+
+			localStorage.setItem(name, JSON.stringify(totalStatsData));
+		}
+	}, [gameOver]);
 
 	return (
 		<main className={classes.root}>

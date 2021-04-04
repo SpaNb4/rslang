@@ -34,12 +34,8 @@ export function getStreak(array) {
 	let counter = 0;
 
 	array.forEach((elem) => {
-		if (elem !== null) {
-			counter++;
-		} else {
-			result.push(counter);
-			counter = 0;
-		}
+		elem !== null ? counter++ : (counter = 0);
+		result.push(counter);
 	});
 
 	return _.max(result);
@@ -71,4 +67,8 @@ export function playChar() {
 	const isMuted = !store.getState().game.volume;
 	sound.muted = isMuted;
 	sound.play();
+}
+
+export function createChartData(arr) {
+	return arr.map((num, index) => ({ x: index, y: num }));
 }
