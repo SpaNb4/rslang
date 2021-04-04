@@ -1,23 +1,37 @@
 import { createReducer } from '@reduxjs/toolkit';
 import * as actions from './actions';
+import * as _ from 'lodash';
 
 const initialState = {
 	learnedWords: 0,
-	dailyStatistics: {},
+	statistics: [],
 	error: '',
 };
 
 const reducer = createReducer(initialState, (builder) => {
 	builder
 		.addCase(actions.getStatisticsSuccess, (state, action) => {
-			state.learnedWords = action.payload.learnedWords;
-			state.dailyStatistics = action.payload.dailyStatistics;
+			state.statistics = action.payload.statistics;
+			state.learnedWords = _.reduce(
+				action.payload.statistics,
+				function (sum, item) {
+					return sum + item.learnedWords;
+				},
+				0
+			);
 		})
 		.addCase(actions.getStatisticsFailure, (state, action) => {
 			state.error = action.payload;
 		})
-		.addCase(actions.updateDailyStatisticsSuccess, (state, action) => {
-			state.dailyStatistics = action.payload;
+		.addCase(actions.updateStatisticsSuccess, (state, action) => {
+			state.statistics = action.payload.statistics;
+			state.learnedWords = _.reduce(
+				action.payload.statistics,
+				function (sum, item) {
+					return sum + item.learnedWords;
+				},
+				0
+			);
 		})
 		.addDefaultCase((state) => state);
 });

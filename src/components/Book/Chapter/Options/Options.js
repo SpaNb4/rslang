@@ -51,4 +51,4 @@ Options.propTypes = {
 	isOpen: PropTypes.bool.isRequired,
 };
 
-export default Options;
+export default React.memo(Options);

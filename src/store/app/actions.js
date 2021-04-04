@@ -1,7 +1,7 @@
 import * as types from './action-types';
 import axios from 'axios';
 import { createAction } from '@reduxjs/toolkit';
-import { ExternalUrls, LocalStorageKeys, JWT_EXPIRE_TIME } from '../../common/constants';
+import { ExternalUrls, LocalStorageKeys, JWT_EXPIRE_TIME, UPLOAD_PRESET } from '../../common/constants';
 import { clearUserWords } from '../dictionary/actions';
 import { clearAggregatedWords } from '../book/actions';
 
@@ -18,10 +18,10 @@ export const register = (email, password, username, image) => async (dispatch) =
 	try {
 		const imgFormData = new FormData();
 		imgFormData.append('file', image);
-		imgFormData.append('upload_preset', 'gfyjsw4r');
+		imgFormData.append('upload_preset', UPLOAD_PRESET);
 		const response = await axios({
 			method: 'post',
-			url: 'https://api.cloudinary.com/v1_1/imisha/image/upload',
+			url: ExternalUrls.Cloudinary,
 			data: imgFormData,
 		});
 		const imgURL = response.data.url;

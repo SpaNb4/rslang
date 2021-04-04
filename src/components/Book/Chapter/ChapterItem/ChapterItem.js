@@ -166,4 +166,4 @@ ChapterItem.propTypes = {
 	color: PropTypes.string,
 };
 
-export default ChapterItem;
+export default React.memo(ChapterItem);
