@@ -23,4 +23,4 @@ OptionsInput.propTypes = {
 	id: PropTypes.string.isRequired,
 };
 
-export default OptionsInput;
+export default React.memo(OptionsInput);
