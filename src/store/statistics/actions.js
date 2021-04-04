@@ -47,6 +47,7 @@ export const updateDailyStatistics = (userId, token) => async (dispatch) => {
 					'Content-Type': 'application/json',
 				},
 			});
+			console.log(data);
 			dispatch(updateDailyStatisticsSuccess(data));
 		} catch (error) {
 			dispatch(getStatisticsFailure(error.message));

@@ -1,10 +1,14 @@
 import React, { useCallback, useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllWords } from '../../store/book/slices';
-import { getAnswers, getGameOver } from '../../store/game/slices';
+
+import { setUserWord, updateUserWord } from '../../store/dictionary/actions';
 import { updateGame } from '../../store/game/actions';
-import { getUserId } from '../../store/app/slices';
+import { fetchAggregatedWords, fetchWords } from '../../store/book/actions';
+import { getAnswers, getGameOver } from '../../store/game/slices';
+import { getAggregatedWords } from '../../store/book/slices';
+import { getUserId, getToken, getAuthorized } from '../../store/app/slices';
+
 import Loader from '../Loader/Loader';
 import GameIntro from './GameIntro/GameIntro';
 import GameStats from './GameStats/GameStats';
@@ -13,8 +17,9 @@ import AudioGame from './AudioGame/AudioGame';
 import Kit from './Kit/Kit';
 import Savanna from './Savanna/Savanna';
 import GameSprint from './GameSprint/GameSprint';
-import { LocalStorageKeys, menu } from '../../common/constants';
-import _ from 'lodash';
+
+import { DictionarySections, LocalStorageKeys, menu } from '../../common/constants';
+import { updateData } from '../../common/helpers';
 
 import classes from './Game.module.scss';
 
@@ -22,12 +27,29 @@ const Game = () => {
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
 	const userId = useSelector(getUserId);
-	const allWords = useSelector(getAllWords);
+	const authorized = useSelector(getAuthorized);
+	const token = useSelector(getToken);
+	const aggregatedWords = useSelector(getAggregatedWords);
 	const gameOver = useSelector(getGameOver);
 	const answers = useSelector(getAnswers);
+	const filterRules = JSON.stringify({
+		$or: [
+			{ 'userWord.difficulty': DictionarySections.Hard },
+			{ 'userWord.difficulty': DictionarySections.Trained },
+			{ userWord: null },
+		],
+	});
 	const { linkName, linkId, rules } = menu.games.find((elem) => pathname.includes(elem.linkId));
 
 	useEffect(() => dispatch(updateGame(linkId)), [linkId]);
+
+	useEffect(() => {
+		if (authorized) {
+			dispatch(fetchAggregatedWords(null, null, userId, token, filterRules));
+		} else {
+			dispatch(fetchWords(null, null));
+		}
+	}, [authorized, userId, token]);
 
 	const renderGame = useCallback(
 		(data) => {
@@ -54,28 +76,34 @@ const Game = () => {
 			words: answers.words,
 		};
 
-		const updateData = (prev, curr) => {
-			const index = _.findIndex(prev, { name: curr.name });
-
-			if (index >= 0) {
-				prev[index].correct += curr.correct;
-				prev[index].wrong += curr.wrong;
-				prev[index].streak = _.max([prev[index].streak, curr.streak]);
-				prev[index].words = _.uniq([...prev[index].words, ...curr.words]);
-			} else {
-				prev.push(curr);
-			}
-
-			return prev;
-		};
-
 		if (gameOver) {
 			const name = userId || LocalStorageKeys.userStats;
 			const statsData = JSON.parse(localStorage.getItem(name)) || null;
-			console.log(statsData);
 			const totalStatsData = statsData ? updateData(statsData, newStatsData) : [newStatsData];
 
 			localStorage.setItem(name, JSON.stringify(totalStatsData));
+
+			// update word stats:
+			answers.correct.forEach((word) => {
+				const { wordDifficulty } = word;
+
+				if (wordDifficulty) {
+					dispatch(updateUserWord(userId, token, word, wordDifficulty, 1));
+				} else {
+					dispatch(setUserWord(userId, token, word, DictionarySections.Trained, 1));
+					// updateStats
+				}
+			});
+
+			answers.wrong.forEach((word) => {
+				const { wordDifficulty } = word;
+
+				if (wordDifficulty) {
+					dispatch(updateUserWord(userId, token, word, wordDifficulty, 0, 1));
+				} else {
+					dispatch(setUserWord(userId, token, word, DictionarySections.Trained, 0, 1));
+				}
+			});
 		}
 	}, [gameOver]);
 
@@ -83,10 +111,10 @@ const Game = () => {
 		<main className={classes.root}>
 			{gameOver ? (
 				<GameStats corrAnswersWords={answers.correct} wrongAnswersWords={answers.wrong} />
-			) : allWords.length ? (
+			) : aggregatedWords.length ? (
 				<>
 					<GameIntro name={linkName} settings={pathname.includes('true')} rules={rules} />
-					<GameOverLay> {renderGame(allWords)} </GameOverLay>
+					<GameOverLay> {renderGame(aggregatedWords)} </GameOverLay>
 				</>
 			) : (
 				<Loader />
