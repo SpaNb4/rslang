@@ -35,6 +35,7 @@ TeamCard.propTypes = {
 	name: PropTypes.string,
 	src: PropTypes.string,
 	quote: PropTypes.string,
+	fine: PropTypes.string,
 };
 
 export default Team;

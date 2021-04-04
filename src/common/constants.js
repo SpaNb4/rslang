@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-	FaMobileAlt,
 	FaDiceOne,
 	FaDiceTwo,
 	FaDiceThree,
@@ -15,6 +14,17 @@ import {
 	FaUnlock,
 	FaSkullCrossbones,
 } from 'react-icons/fa';
+
+import professor from '../assets/images/professor.png';
+import bender from '../assets/images/bender.png';
+import fry from '../assets/images/fry.png';
+import leela from '../assets/images/leela.png';
+import ship from '../assets/images/ship.png';
+import hypnotoad from '../assets/images/hypnotoad.png';
+import nibbler from '../assets/images/nibbler.png';
+import zoidberg from '../assets/images/zoidberg.png';
+import kif from '../assets/images/kif.png';
+import zapp from '../assets/images/zapp.png';
 
 // URLs
 export const ExternalUrls = {
@@ -167,67 +177,65 @@ export const DictionarySections = {
 export const ourTeammates = [
 	{
 		name: 'Алеся',
-		src: 'https://images.unsplash.com/photo-1534432586043-ead5b99229fb',
+		src: fry,
 		quote:
-			'Are own design entire former get should. Advantages boisterous day excellence. Out between our two waiting wishing',
+			'Из-за невероятной лени сначала продумывает функционал, потом только пишет код. Создатель “Спринт” игры, макетов приложения. Обладает генетической аномалией позволяющей организовывать командную работу.',
 	},
 	{
 		name: 'Дима',
-		src: 'https://images.unsplash.com/photo-1543852786-1cf6624b9987',
+		src: leela,
 		quote:
-			'Are own design entire former get should. Advantages boisterous day excellence. Out between our two waiting wishing',
+			'Отлично пилотирует техническую составляющую приложения. Разработчик "Саванна" и "Аудиовызов" игр, словаря. Питает слабость к работе с бекендом.',
 	},
 	{
 		name: 'Ира',
-		src: 'https://images.unsplash.com/photo-1575862202417-c725ea3f899c',
-		quote:
-			'Are own design entire former get should. Advantages boisterous day excellence. Out between our two waiting wishing',
+		src: professor,
+		quote: 'Владелец бекенда, основатель учебника, специалист по react, повелитель redux.',
 	},
 	{
 		name: 'Надя',
-		src: 'https://images.unsplash.com/photo-1513245543132-31f507417b26',
+		src: bender,
 
-		quote:
-			'Are own design entire former get should. Advantages boisterous day excellence. Out between our two waiting wishing',
+		quote: 'Злобный гений дизайна, заядлый разработчик "Конструктор" игры. Злоупотребляет меню и статистикой.',
 	},
 ];
 
 export const ourFeatures = [
 	{
-		title: 'Lorem ipsum',
+		title: 'Игры',
 		text:
-			'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.',
-		icon: <FaMobileAlt />,
+			'"Саванна", "Спринт", "Аудиовызов" и "Конструктор" помогают запониманию слов, тренеруют память и делают изучения английского языка нескучным.',
+		icon: <img src={zapp} alt="zapp" />,
 	},
 	{
-		title: 'Lorem ipsum',
+		title: 'Учебник',
 		text:
-			'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.',
-		icon: <FaMobileAlt />,
+			'Вы можете найти не только перевод слова в учебнике, но и прослушать его произношение. А также ознакомится с объяснением значения изучаемого слова, что позволит вам лучше усвоить информацию.',
+		icon: <img src={kif} alt="kif" />,
 	},
 	{
-		title: 'Lorem ipsum',
+		title: 'Словарь',
 		text:
-			'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.',
-		icon: <FaMobileAlt />,
+			'Вы можете создать свой словарь — с удалёнными, изучаемыми и сложными словами! Это позволит вам лучше контролировать процесс изучения слов.',
+		icon: <img src={zoidberg} alt="zoidberg" />,
 	},
 	{
-		title: 'Lorem ipsum',
+		title: 'Статистика',
 		text:
-			'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.',
-		icon: <FaMobileAlt />,
+			'Краткосрочная статистика помогает увидеть ваш результат за каждый день, а если вы зарегистрируетесь, то получите возможность отслеживать  долгосрочную статистику за весь период изучения.',
+		icon: <img src={nibbler} alt="nibbler" />,
 	},
 	{
-		title: 'Lorem ipsum',
+		title: 'Викторина',
 		text:
-			'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.',
-		icon: <FaMobileAlt />,
+			'Забыли изученные слова? Не переживайте, заходите на страницу "Викторины" и освежайте свои знания. А что бы было интереснее, каждый день у вас будут новые слова!',
+		icon: <img src={hypnotoad} alt="hypnotoad" />,
 	},
 	{
-		title: 'Lorem ipsum',
+		title: 'Бонус',
 		text:
-			'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.',
-		icon: <FaMobileAlt />,
+			'Наше приложение  бесплатное и удобное в использовании.  Мы доступны онлайн, поддерживаем вёрстку для ПК и планшета.',
+		icon: <img src={ship} alt="ship" />,
 	},
 ];
 
