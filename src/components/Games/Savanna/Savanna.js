@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import shuffle from 'lodash/shuffle';
 import sampleSize from 'lodash/sampleSize';
+import max from 'lodash/max';
 import { useSpring, animated } from 'react-spring';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { FaRegHeart, FaHeart } from 'react-icons/fa';
@@ -22,6 +23,8 @@ function Savanna({ wordData }) {
 	const [corrAnswersWords, setCorrAnswersWords] = useState([]);
 	const [wrongAnswersWords, setWrongAnswersWords] = useState([]);
 	const [isWordClicked, setIsWordClicked] = useState(false);
+	const [currStreak, setCurrStreak] = useState(0);
+	const [streakArr, setStreakArr] = useState([]);
 
 	const maxLivesCount = 5;
 	const lives = [...Array(maxLivesCount)].map((_, index) => {
@@ -65,10 +68,15 @@ function Savanna({ wordData }) {
 	useEffect(() => {
 		// if lives=0 then game over
 		if (!livesCount) {
+			const resWords = words.map((el) => el.word);
+			const maxStreak = max(streakArr);
+
 			dispatch(
 				finishGame({
 					correct: corrAnswersWords,
 					wrong: wrongAnswersWords,
+					maxStreak,
+					resWords,
 				})
 			);
 		}
@@ -85,6 +93,9 @@ function Savanna({ wordData }) {
 		setIsWordClicked(true);
 
 		playWrong();
+
+		setStreakArr([...streakArr, currStreak]);
+		setCurrStreak(0);
 	}
 
 	function handleCorrectWordClick() {
@@ -98,14 +109,21 @@ function Savanna({ wordData }) {
 		setIsWordClicked(true);
 
 		playCorrect();
+
+		setCurrStreak(currStreak + 1);
 	}
 
 	function checkEndWords() {
 		if (currWordIndex === words.length - 1) {
+			const resWords = words.map((el) => el.word);
+			const maxStreak = max(streakArr);
+
 			dispatch(
 				finishGame({
 					correct: corrAnswersWords,
 					wrong: wrongAnswersWords,
+					maxStreak,
+					resWords,
 				})
 			);
 		}
