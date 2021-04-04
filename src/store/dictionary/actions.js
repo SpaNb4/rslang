@@ -121,8 +121,9 @@ export const updateUserWord = (
 	if (!isTokenExpired) {
 		const wordId = wordData.id || wordData._id;
 		if (game) {
-			correctAnswers = correctAnswers ? wordData[game].correct + correctAnswers : wordData[game].correct;
-			wrongAnswers = wrongAnswers ? wordData[game].wrong + wrongAnswers : wordData[game].wrong;
+			correctAnswers =
+				correctAnswers && wordData[game] ? wordData[game].correct + correctAnswers : wordData[game].correct;
+			wrongAnswers = wrongAnswers && wordData[game] ? wordData[game].wrong + wrongAnswers : wordData[game].wrong;
 			wordData = {
 				...wordData,
 				[game]: {
