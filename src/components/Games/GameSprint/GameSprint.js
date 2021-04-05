@@ -24,6 +24,24 @@ import { playWrong, playCorrect } from '../../../common/helpers';
 
 import classes from './GameSprint.module.scss';
 
+const numberOfShips = 3;
+const numbersOfHeroes = 3;
+const heroImages = [zoidberg, professor, leela, bender];
+
+function streakToShips(streak) {
+	if (streak === 0) {
+		return 0;
+	}
+	return ((streak - 1) % numberOfShips) + 1;
+}
+
+function streakToHeroes(streak) {
+	if (streak === 0) {
+		return 0;
+	}
+	return Math.min(numbersOfHeroes, Math.floor((streak - 1) / numberOfShips));
+}
+
 function GameSprint({ wordData }) {
 	const dispatch = useDispatch();
 	const [result, setResult] = useState(null);
@@ -31,6 +49,8 @@ function GameSprint({ wordData }) {
 	const [corrAnswersWords, setCorrAnswersWords] = useState([]);
 	const [wrongAnswersWords, setWrongAnswersWords] = useState([]);
 	const [wordIndices, setWordIndices] = useState(shuffle(Array.from(Array(wordData.length).keys())));
+	const [currentStreak, setCurrentStreak] = useState(0);
+	const [maxStreak, setMaxStreak] = useState(0);
 
 	if (!objectWordData) {
 		generateObjectWordData();
@@ -46,10 +66,14 @@ function GameSprint({ wordData }) {
 		if (objectWordData.showValidPair) {
 			setResult(true);
 			setCorrAnswersWords([...corrAnswersWords, objectWordData.word]);
+			const nextStreak = currentStreak + 1;
+			setCurrentStreak(nextStreak);
+			setMaxStreak(Math.max(maxStreak, nextStreak));
 			playCorrect();
 		} else {
 			setResult(false);
 			setWrongAnswersWords([...wrongAnswersWords, objectWordData.word]);
+			setCurrentStreak(0);
 			playWrong();
 		}
 		setObjectWordData(null);
@@ -58,10 +82,14 @@ function GameSprint({ wordData }) {
 		if (!objectWordData.showValidPair) {
 			setResult(true);
 			setCorrAnswersWords([...corrAnswersWords, objectWordData.word]);
+			const nextStreak = currentStreak + 1;
+			setCurrentStreak(nextStreak);
+			setMaxStreak(Math.max(maxStreak, nextStreak));
 			playCorrect();
 		} else {
 			setResult(false);
 			setWrongAnswersWords([...wrongAnswersWords, objectWordData.word]);
+			setCurrentStreak(0);
 			playWrong();
 		}
 		setObjectWordData(null);
@@ -100,7 +128,7 @@ function GameSprint({ wordData }) {
 			finishGame({
 				correct: corrAnswersWords,
 				wrong: wrongAnswersWords,
-				streak: 0,
+				streak: maxStreak,
 				words: corrAnswersWords.concat(wrongAnswersWords),
 			})
 		);
@@ -127,6 +155,9 @@ function GameSprint({ wordData }) {
 		[objectWordData]
 	);
 
+	const currentHeroes = streakToHeroes(currentStreak);
+	const currentShips = currentHeroes < numbersOfHeroes ? streakToShips(currentStreak) : numberOfShips;
+
 	return (
 		objectWordData !== null && (
 			<div className={classes.position}>
@@ -136,15 +167,28 @@ function GameSprint({ wordData }) {
 					{result === null && <div>Удачи!</div>}
 					<div className={classes.border}>
 						<div className={classes.iconposition}>
-							<img src={ship} alt="ship" className={classes.icon} />
-							<img src={ship} alt="ship" className={classes.icon} />
-							<img src={ship} alt="ship" className={classes.icon} />
+							{[...Array(numberOfShips).keys()].map((i) => {
+								return (
+									<img
+										key={i}
+										src={ship}
+										alt="ship"
+										className={i < currentShips ? classes.icon : classes.icon_hidden}
+									/>
+								);
+							})}
 						</div>
 						<div className={classes.imgposition}>
-							<img src={zoidberg} alt="zoidberg" className={classes.img} />
-							<img src={professor} alt="professor" className={classes.img} />
-							<img src={leela} alt="leela" className={classes.img} />
-							<img src={bender} alt="bender" className={classes.img} />
+							{[...Array(heroImages.length).keys()].map((i) => {
+								return (
+									<img
+										key={i}
+										src={heroImages[i]}
+										alt="image"
+										className={i < currentHeroes + 1 ? classes.img : classes.img_hidden}
+									/>
+								);
+							})}
 						</div>
 						<button type="button" className={classes.buttonaudio} onClick={handlePlaySound}>
 							<FaVolumeUp />
