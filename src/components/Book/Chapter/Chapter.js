@@ -155,7 +155,7 @@ function Chapter() {
 					<OptionsControl openOptions={openOptions} />
 					<Options isOpen={isOptionsOpen} />
 				</div>
-				<GamesList words={authorized ? aggregatedWords : words} page={Number(page)} />
+				<GamesList words={authorized ? aggregatedWords : words} group={Number(group) - 1} page={Number(page)} />
 			</div>
 			{loading && <React.Fragment>Loading...</React.Fragment>}
 			{chapterItems}

@@ -6,7 +6,6 @@ import { globalClasses as c, menu } from '../../../common/constants';
 import GameIntroInput from './GameIntroInput';
 import classes from './GameIntro.module.scss';
 import { fetchWords } from '../../../store/book/actions';
-// eslint-disable-next-line no-unused-vars
 import _ from 'lodash';
 import { setLevel } from '../../../store/game/actions';
 

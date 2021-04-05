@@ -112,7 +112,7 @@ function Chapter() {
 				<h2>{sectionName}</h2>
 			</div>
 
-			<GamesList words={currentPageData} page={Number(page)} />
+			<GamesList words={currentPageData} group={Number(group) - 1} page={Number(page)} />
 
 			<div className={classes.sectionListTitle}>
 				<h3>Раздел учебника</h3>

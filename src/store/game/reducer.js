@@ -1,6 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
 import * as actions from './actions';
-import { DefaultValues } from '../../common/constants';
 
 const initialState = {
 	name: '',
@@ -13,7 +12,7 @@ const initialState = {
 		streak: 0,
 	},
 
-	level: DefaultValues.Group,
+	level: null,
 	volume: true,
 };
 
@@ -29,7 +28,7 @@ const reducer = createReducer(initialState, (builder) => {
 				wrong: [],
 				streak: 0,
 			};
-			state.level = DefaultValues.Group;
+			state.level = null;
 		})
 		.addCase(actions.fetchName, (state, action) => {
 			state.name = action.payload;

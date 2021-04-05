@@ -5,7 +5,7 @@ import menuClasses from '../Header/Header.module.scss';
 import { menu } from '../../common/constants';
 import { PropTypes } from 'prop-types';
 
-function GamesList({ words, page }) {
+function GamesList({ words, group, page }) {
 	return (
 		<div className={classes.gamesListContainer}>
 			<ul className={classes.gamesList}>
@@ -20,6 +20,7 @@ function GamesList({ words, page }) {
 									pathname: `/${listName}/${linkId}`,
 									state: {
 										words,
+										group,
 										page,
 									},
 								}}
@@ -38,6 +39,7 @@ function GamesList({ words, page }) {
 
 GamesList.propTypes = {
 	words: PropTypes.array.isRequired,
+	group: PropTypes.number.isRequired,
 	page: PropTypes.number.isRequired,
 };
 
