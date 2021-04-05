@@ -72,3 +72,18 @@ export function playChar() {
 export function createChartData(arr) {
 	return arr.map((num, index) => ({ x: index, y: num }));
 }
+
+export function updateData(prev, curr) {
+	const index = _.findIndex(prev, { name: curr.name });
+
+	if (index >= 0) {
+		prev[index].correct += curr.correct;
+		prev[index].wrong += curr.wrong;
+		prev[index].streak = _.max([prev[index].streak, curr.streak]);
+		prev[index].words = _.uniq([...prev[index].words, ...curr.words]);
+	} else {
+		prev.push(curr);
+	}
+
+	return prev;
+}

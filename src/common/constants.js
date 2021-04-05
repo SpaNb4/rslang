@@ -33,6 +33,7 @@ export const ExternalUrls = {
 	Words: 'https://rslang-app-be.herokuapp.com/words',
 	Users: 'https://rslang-app-be.herokuapp.com/users',
 	SignIn: 'https://rslang-app-be.herokuapp.com/signin',
+	Cloudinary: 'https://api.cloudinary.com/v1_1/imisha/image/upload',
 };
 
 // LOCAL STORAGE KEYs
@@ -284,3 +285,5 @@ export const colors = {
 	ocean: '#3aa76d',
 	cardinal: '#ce2029',
 };
+
+export const UPLOAD_PRESET = 'gfyjsw4r';

@@ -7,6 +7,7 @@ import { checkIsTokenExpired, saveRemovedWordsCountToLocalStorage } from '../../
 import { logout } from '../app/actions';
 import { updateRemovedWordsCountForPage } from '../book/actions';
 import { fetchAggregatedWords } from '../book/actions';
+import { updateStatistics } from '../statistics/actions';
 
 export const fetchUserWordsSuccess = createAction(types.FETCH_USER_WORDS_SUCCESS);
 export const createUserWordSuccess = createAction(types.CREATE_USER_WORD_SUCCESS);
@@ -43,13 +44,29 @@ export const fetchUserWords = (userId, token) => async (dispatch) => {
 	}
 };
 
-export const setUserWord = (userId, token, wordData, section, rightAnswersCount = 0, wrongAnswerCount = 0) => async (
-	dispatch
-) => {
+export const setUserWord = (
+	userId,
+	token,
+	wordData,
+	section,
+	game = null,
+	correctAnswers = 0,
+	wrongAnswers = 0
+) => async (dispatch) => {
 	const isTokenExpired = checkIsTokenExpired();
 	if (!isTokenExpired) {
 		const wordId = wordData.id || wordData._id;
 		const date = new Date().toISOString().slice(0, 10);
+		if (game) {
+			wordData = {
+				...wordData,
+				[game]: {
+					trained: true,
+					correct: correctAnswers,
+					wrong: wrongAnswers,
+				},
+			};
+		}
 		try {
 			const { data } = await axios({
 				method: 'post',
@@ -60,8 +77,6 @@ export const setUserWord = (userId, token, wordData, section, rightAnswersCount 
 					optional: {
 						...wordData,
 						created_at: date,
-						rightAnswersCount: rightAnswersCount,
-						wrongAnswerCount: wrongAnswerCount,
 					},
 				},
 				headers: {
@@ -82,6 +97,8 @@ export const setUserWord = (userId, token, wordData, section, rightAnswersCount 
 				dispatch(fetchAggregatedWords(wordData.group, wordData.page, userId, token, filterRules));
 				dispatch(updateRemovedWordsCountForPage({ group: +wordData.group, page: +wordData.page }));
 				saveRemovedWordsCountToLocalStorage(userId, +wordData.group, +wordData.page);
+			} else {
+				dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
 			}
 		} catch (error) {
 			dispatch(createUserWordFailure(error));
@@ -91,28 +108,38 @@ export const setUserWord = (userId, token, wordData, section, rightAnswersCount 
 	}
 };
 
-export const updateUserWord = (userId, token, wordData, section, rightAnswers, wrongAnswers) => async (dispatch) => {
+export const updateUserWord = (
+	userId,
+	token,
+	wordData,
+	section,
+	game = null,
+	correctAnswers = 0,
+	wrongAnswers = 0
+) => async (dispatch) => {
 	const isTokenExpired = checkIsTokenExpired();
 	if (!isTokenExpired) {
 		const wordId = wordData.id || wordData._id;
-		const rightAnswersCount = rightAnswers ? wordData.rightAnswersCount + rightAnswers : wordData.rightAnswersCount;
-		const wrongAnswerCount = wrongAnswers ? wordData.wrongAnswerCount + wrongAnswers : wordData.wrongAnswerCount;
-		const date = new Date().toISOString().slice(0, 10);
+		if (game) {
+			correctAnswers = wordData[game] ? wordData[game].correct + correctAnswers : correctAnswers;
+			wrongAnswers = wordData[game] ? wordData[game].wrong + wrongAnswers : wrongAnswers;
+			wordData = {
+				...wordData,
+				[game]: {
+					trained: true,
+					correct: correctAnswers,
+					wrong: wrongAnswers,
+				},
+			};
+		}
 		try {
 			const { data } = await axios({
 				method: 'put',
 				url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', wordId),
-				params: {
-					id: userId,
-					wordId: wordId,
-					created_at: date,
-				},
 				data: {
 					difficulty: section,
 					optional: {
 						...wordData,
-						rightAnswersCount: rightAnswersCount,
-						wrongAnswerCount: wrongAnswerCount,
 					},
 				},
 				headers: {
