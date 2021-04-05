@@ -34,8 +34,10 @@ const reducer = createReducer(initialState, (builder) => {
 		.addCase(actions.fetchName, (state, action) => {
 			state.name = action.payload;
 		})
-		.addCase(actions.startGame, (state, action) => {
+		.addCase(actions.startGame, (state) => {
 			state.start = true;
+		})
+		.addCase(actions.setLevel, (state, action) => {
 			state.level = action.payload;
 		})
 		.addCase(actions.finishGame, (state, action) => {

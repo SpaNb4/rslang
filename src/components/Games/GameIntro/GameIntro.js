@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { startGame } from '../../../store/game/actions';
 import { getCurrentLevel, getGameStart } from '../../../store/game/slices';
 import { globalClasses as c, menu } from '../../../common/constants';
 import GameIntroInput from './GameIntroInput';
 import classes from './GameIntro.module.scss';
+import { fetchWords } from '../../../store/book/actions';
+// eslint-disable-next-line no-unused-vars
+import _ from 'lodash';
+import { setLevel } from '../../../store/game/actions';
 
 const GameIntro = ({ name, rules, settings }) => {
 	const dispatch = useDispatch();
@@ -26,7 +29,8 @@ const GameIntro = ({ name, rules, settings }) => {
 		evt.preventDefault();
 
 		if (value !== null) {
-			dispatch(startGame(value));
+			dispatch(setLevel(value));
+			dispatch(fetchWords(value, _.random(0, 29)));
 		}
 	};
 

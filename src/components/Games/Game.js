@@ -17,14 +17,16 @@ import { PropTypes } from 'prop-types';
 import { MIN_WORD_COUNT } from './../../common/constants';
 import { getToken, getUserId } from './../../store/app/slices';
 import { fetchAggregatedWords } from '../../store/book/actions';
-import { getAggregatedWords } from './../../store/book/slices';
+import { getAggregatedWords, getAllWords } from './../../store/book/slices';
 import { updateGame } from '../../store/game/actions';
-import { getGameStart, getCurrentLevel } from './../../store/game/slices';
+import { getGameStart } from './../../store/game/slices';
+import { startGame } from './../../store/game/actions';
 
 const Game = (props) => {
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
 	const prevPageWords = useSelector(getAggregatedWords);
+	const allWords = useSelector(getAllWords);
 	const [words, setWords] = useState([]);
 	const [isEnoughWords, setIsEnoughWords] = useState(true);
 	const gameOver = useSelector(getGameOver);
@@ -32,25 +34,32 @@ const Game = (props) => {
 	const answers = useSelector(getAnswers);
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
-	const level = useSelector(getCurrentLevel);
-	const levelWords = useSelector(getAggregatedWords);
 	const propsState = props.location.state;
 	const { linkName, linkId, rules } = menu.games.find((elem) => pathname.includes(elem.linkId));
 
 	useEffect(() => {
 		// from book or vocabulary and words <= 5
-		if (propsState && isGameStart && propsState.words.length <= MIN_WORD_COUNT) {
+		if (propsState && propsState.words.length <= MIN_WORD_COUNT) {
 			setWords([...prevPageWords, ...propsState.words]);
 		}
 		// just from book or vocabulary
-		else if (propsState && isGameStart) {
+		else if (propsState) {
 			setWords(propsState.words);
 		}
-		// from menu
-		else {
-			dispatch(fetchAggregatedWords(level, _.random(0, 29), userId, token));
-		}
 	}, [isGameStart]);
+
+	useEffect(() => {
+		// from menu
+		if (!propsState) {
+			setWords(allWords);
+		}
+	}, [allWords]);
+
+	useEffect(() => {
+		if (words.length) {
+			dispatch(startGame());
+		}
+	}, [words]);
 
 	useEffect(() => {
 		// not 0 page and words<=5, get words from prev page
@@ -62,11 +71,6 @@ const Game = (props) => {
 			setIsEnoughWords(false);
 		}
 	}, []);
-
-	useEffect(() => {
-		// set words when we click from menu
-		setWords(levelWords);
-	}, [levelWords]);
 
 	useEffect(() => dispatch(updateGame(linkId)), [linkId]);
 
