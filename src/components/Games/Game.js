@@ -50,7 +50,7 @@ const Game = (props) => {
 	const [tmpPageCount, setTmpPageCount] = useState(2);
 
 	useEffect(() => {
-		if (propsState && propsState.words.length <= MIN_WORD_COUNT) {
+		if (propsState && propsState.words.length < MIN_WORD_COUNT) {
 			// not 0 page and words<=5, get words from prev page
 			if (propsState.page !== 0) {
 				dispatch(fetchGameWords(propsState.group, propsState.page - 1, userId, token, filterRules));
@@ -72,7 +72,7 @@ const Game = (props) => {
 	}, []);
 
 	useEffect(() => {
-		if (propsState && tmpWords.length <= MIN_WORD_COUNT) {
+		if (propsState && tmpWords.length < MIN_WORD_COUNT) {
 			dispatch(fetchGameWords(propsState.group, propsState.page - tmpPageCount, userId, token, filterRules));
 			setTmpPageCount(tmpPageCount + 1);
 			setTmpWords([...tmpWords, ...prevPageWords]);
@@ -80,7 +80,7 @@ const Game = (props) => {
 	}, [prevPageWords]);
 
 	useEffect(() => {
-		if (propsState && tmpWords.length >= MIN_WORD_COUNT) {
+		if (propsState && tmpWords.length > MIN_WORD_COUNT) {
 			setWords(tmpWords);
 		}
 	}, [tmpWords]);
