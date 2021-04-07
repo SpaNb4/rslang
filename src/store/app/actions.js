@@ -13,9 +13,12 @@ export const menuToggle = createAction(types.MENU_TOGGLE);
 export const clearErrorMessage = createAction(types.CLEAR_ERROR_MESSAGE);
 export const updateErrorMessage = createAction(types.UPDATE_ERROR_MESSAGE);
 export const updateUserErrorMessage = createAction(types.UPDATE_USER_ERROR_MESSAGE);
+export const showLoader = createAction(types.SHOW_LOADER);
+export const hideLoader = createAction(types.HIDE_LOADER);
 
 export const register = (email, password, username, image) => async (dispatch) => {
 	try {
+		dispatch(showLoader());
 		const imgFormData = new FormData();
 		imgFormData.append('file', image);
 		imgFormData.append('upload_preset', UPLOAD_PRESET);
@@ -36,9 +39,11 @@ export const register = (email, password, username, image) => async (dispatch) =
 				image: imgURL,
 			},
 		});
+		dispatch(hideLoader());
 		dispatch(clearErrorMessage());
 		dispatch(login(data.email, password));
 	} catch (error) {
+		dispatch(hideLoader());
 		if (error.response && error.response.status === 417) {
 			dispatch(updateUserErrorMessage('Пользователь с таким email уже существует.'));
 		} else if (error.response && error.response.status === 422) {

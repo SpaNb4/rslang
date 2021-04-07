@@ -7,12 +7,14 @@ import classes from '../../../ChapterItem//ChapterItem.module.scss';
 import { FaVolumeUp } from 'react-icons/fa';
 
 import Button from '../../../Button/Button';
+import ResultList from '../../../ResultList/ResultList';
 
 import { buildUrl } from '../../../../common/helpers';
 import { ExternalUrls, DictionarySections } from '../../../../common/constants';
 import { setUserWord, updateUserWord } from '../../../../store/dictionary/actions';
 import { getUserId, getAuthorized, getToken } from '../../../../store/app/slices';
 import { getIsTranslationOn, getIsEditDictionaryButtons, getWordsLoading } from '../../../../store/book/slices';
+
 function ChapterItem({ wordData, handleVolume, isPlayDisabled, color }) {
 	const dispatch = useDispatch();
 	const loading = useSelector(getWordsLoading);
@@ -104,7 +106,9 @@ function ChapterItem({ wordData, handleVolume, isPlayDisabled, color }) {
 			</div>
 			<div
 				className={
-					isEditDictionaryButtons ? classes.itemSettings : [classes.itemSettings, classes.Hide].join(' ')
+					isEditDictionaryButtons && authorized
+						? classes.itemSettings
+						: [classes.itemSettings, classes.Hide].join(' ')
 				}
 			>
 				<Button
@@ -119,24 +123,11 @@ function ChapterItem({ wordData, handleVolume, isPlayDisabled, color }) {
 					Удалить
 				</Button>
 			</div>
-			<div className={classes.itemResults}>
-				<div className={classes.resultItem}>
-					<div>Игра 1</div>
-					<div>Изучено</div>
+			{authorized && (
+				<div className={classes.itemResults}>
+					<ResultList wordData={wordData} />
 				</div>
-				<div className={classes.resultItem}>
-					<div>Игра 2</div>
-					<div>Изучено</div>
-				</div>
-				<div className={classes.resultItem}>
-					<div>Игра 3</div>
-					<div>Повторено</div>
-				</div>
-				<div className={classes.resultItem}>
-					<div>Игра 4</div>
-					<div>Повторено</div>
-				</div>
-			</div>
+			)}
 		</div>
 	);
 }
@@ -157,6 +148,9 @@ ChapterItem.propTypes = {
 		textExampleTranslate: PropTypes.string,
 		userWord: PropTypes.shape({
 			difficulty: PropTypes.string,
+			optional: PropTypes.shape({
+				word: PropTypes.string,
+			}),
 		}),
 		group: PropTypes.number,
 		page: PropTypes.number,
