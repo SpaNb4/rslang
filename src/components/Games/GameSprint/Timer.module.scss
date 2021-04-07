@@ -28,16 +28,5 @@
 		stroke-width: 2px;
 		stroke: $color-black;
 		fill: none;
-		animation: countdown 61s linear infinite forwards;
-	}
-}
-
-@keyframes countdown {
-	from {
-		stroke-dashoffset: 0;
-	}
-
-	to {
-		stroke-dashoffset: 175px;
 	}
 }

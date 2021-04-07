@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 const initialState = {
 	words: [],
 	aggregatedWords: [],
+	gameWords: [],
 	currentGroup: DefaultValues.Group,
 	currentPage: DefaultValues.Page,
 	loading: false,
@@ -34,6 +35,12 @@ const reducer = createReducer(initialState, (builder) => {
 			state.aggregatedWords = action.payload;
 		})
 		.addCase(actions.fetchAggregatedWordsFailure, (state, action) => {
+			state.errorMessage = action.payload;
+		})
+		.addCase(actions.fetchGameWordsSuccess, (state, action) => {
+			state.gameWords = action.payload;
+		})
+		.addCase(actions.fetchGameWordsFailure, (state, action) => {
 			state.errorMessage = action.payload;
 		})
 		.addCase(actions.showLoader, (state) => {

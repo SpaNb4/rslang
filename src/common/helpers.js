@@ -1,5 +1,6 @@
 import { ExternalUrls, LocalStorageKeys, DefaultValues } from './constants';
 import * as _ from 'lodash';
+import store from './../store/store';
 import correctSound from '../assets/audio/correct.wav';
 import wrongSound from '../assets/audio/wrong.wav';
 import charSound from '../assets/audio/char.wav';
@@ -42,21 +43,29 @@ export function getStreak(array) {
 
 export function playSound(soundSrc) {
 	const sound = new Audio(soundSrc);
+	const isMuted = !store.getState().game.volume;
+	sound.muted = isMuted;
 	sound.play();
 }
 
 export function playWrong() {
 	const sound = new Audio(wrongSound);
+	const isMuted = !store.getState().game.volume;
+	sound.muted = isMuted;
 	sound.play();
 }
 
 export function playCorrect() {
 	const sound = new Audio(correctSound);
+	const isMuted = !store.getState().game.volume;
+	sound.muted = isMuted;
 	sound.play();
 }
 
 export function playChar() {
 	const sound = new Audio(charSound);
+	const isMuted = !store.getState().game.volume;
+	sound.muted = isMuted;
 	sound.play();
 }
 

@@ -1,10 +1,9 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import * as _ from 'lodash';
 import classes from './Chapter.module.scss';
 import titleClasses from './ChapterTitle.module.scss';
-import menuClasses from '../../Header/Header.module.scss';
 
 import ChapterItem from './ChapterItem/ChapterItem';
 import OptionsControl from './OptionsControl/OptionsControl';
@@ -29,6 +28,7 @@ import { DictionarySections, LocalStorageKeys, DefaultValues, menu } from '../..
 import Pagination from '../../Pagination/Pagination';
 import { handleVolume } from '../../../common/helpers';
 import { saveRemovedPagesToLocalStorage } from '../../../common/service';
+import GamesList from './../../GamesList/GamesList';
 
 function getNextPage(currentPage, removedPages, pageCount) {
 	const pageList = _.range(pageCount);
@@ -146,27 +146,6 @@ function Chapter() {
 		))
 	);
 
-	const gamesList = (
-		<ul className={classes.gamesList}>
-			{menu.games.map(({ listName, linkName, linkId, icon, color }, index) => {
-				return (
-					<li className={[menuClasses.menuItem, classes.gamesListItem].join(' ')} key={index}>
-						<Link
-							className={[menuClasses.menuLink, menuClasses.innerLink, classes.listItemLink].join(' ')}
-							to={{
-								pathname: `/${listName}/${linkId}`,
-							}}
-							data-color={color}
-						>
-							{icon}
-							<span>{linkName}</span>
-						</Link>
-					</li>
-				);
-			})}
-		</ul>
-	);
-
 	return (
 		<div className={classes.chapter}>
 			<div className={classes.chapterHeader}>
@@ -177,7 +156,7 @@ function Chapter() {
 					<OptionsControl openOptions={openOptions} />
 					<Options isOpen={isOptionsOpen} />
 				</div>
-				<div className={classes.gamesListContainer}>{gamesList}</div>
+				<GamesList words={authorized ? aggregatedWords : words} group={Number(group) - 1} page={Number(page)} />
 			</div>
 			{loading && <Loader />}
 			{chapterItems}

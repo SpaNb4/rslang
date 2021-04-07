@@ -5,7 +5,7 @@
 	justify-content: center;
 	height: 100%;
 	color: $color-black;
-	background-image: linear-gradient(315deg, $color-secondary 0%, $color-secondary 74%);
+	width: 500px;
 }
 
 .buttoncontainer {
@@ -23,9 +23,10 @@
 	width: 150px;
 	align-items: center;
 	justify-content: center;
+	cursor: pointer;
 }
 
-.button {
+.buttonvalid {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -35,7 +36,7 @@
 	font-weight: 700;
 	color: $color-white;
 	cursor: pointer;
-	background-color: $color-primary;
+	background-color: $color-green;
 	border: none;
 	border-radius: 5px;
 	outline: none;
@@ -45,7 +46,31 @@
 
 	&:hover,
 	&:active {
-		background: lighten($color-primary, 10) radial-gradient(circle, transparent 1%, lighten($color-primary, 10) 0)
+		background: lighten($color-green, 10) radial-gradient(circle, transparent 1%, lighten($color-green, 10) 0) 50%/15000%;
+	}
+}
+
+.buttoninvalid {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 150px;
+	height: 40px;
+	font-size: 16px;
+	font-weight: 700;
+	color: $color-white;
+	cursor: pointer;
+	background-color: $color-cardinal;
+	border: none;
+	border-radius: 5px;
+	outline: none;
+	margin-top: 20px;
+	margin-left: 5px;
+	margin-right: 5px;
+
+	&:hover,
+	&:active {
+		background: lighten($color-cardinal, 10) radial-gradient(circle, transparent 1%, lighten($color-cardinal, 10) 0)
 			50%/15000%;
 	}
 }
@@ -55,14 +80,14 @@
 	align-items: center;
 	display: flex;
 	flex-direction: column;
-	margin-top: 10px;
-	margin-bottom: 50px;
 	border-radius: 5px;
+	width: 450px;
+	height: 400px;
 }
 
-.color {
-	background-color: $color-secondary;
-	color: $color-black;
+.position {
+	display: flex;
+	flex-direction: column;
 }
 
 .buttonaudio {
@@ -74,9 +99,46 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	margin-top: 20px;
 
 	&:hover,
 	&:active {
 		color: lighten($color-primary, 30);
+	}
+}
+
+.imgposition {
+	margin-top: 10px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+
+	.img {
+		height: 100px;
+	}
+
+	.img_hidden {
+		height: 100px;
+		opacity: 0;
+	}
+}
+
+.iconposition {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+
+	.icon {
+		height: 30px;
+		opacity: 1;
+	}
+
+	.icon_hidden {
+		height: 30px;
+		opacity: 0.1;
 	}
 }
