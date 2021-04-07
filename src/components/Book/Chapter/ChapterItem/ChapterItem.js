@@ -70,7 +70,7 @@ function ChapterItem({ wordData, handleVolume, isPlayDisabled, color }) {
 				<div className={classes.itemTitle}>
 					<div>{wordData.word}</div>
 					<div>{wordData.transcription}</div>
-					<div>{wordData.wordTranslate}</div>
+					<div className={isTranslationOn ? null : classes.Hide}>{wordData.wordTranslate}</div>
 					<Button handler={() => handleVolume(wordData)} disabled={isPlayDisabled} color={color}>
 						<FaVolumeUp />
 					</Button>

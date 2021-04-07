@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useLocation } from 'react-router-dom';
 
 import Header from './components/Header/Header';
 import Features from './components/Features/Features';
@@ -29,6 +29,8 @@ import { getCurrentDate, updateAttempts } from './common/helpers';
 
 function App() {
 	const dispatch = useDispatch();
+	const { pathname } = useLocation();
+
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
 	const authorized = useSelector(getAuthorized);
@@ -99,7 +101,7 @@ function App() {
 			<Route path="/game/:name" component={Game} />
 			<Route path="/stats" component={Stats} />
 
-			<Footer />
+			{pathname.includes('game') ? null : <Footer />}
 		</React.Fragment>
 	);
 }

@@ -1,16 +1,12 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { setUserWord, updateUserWord } from '../../store/dictionary/actions';
-import { updateGame } from '../../store/game/actions';
-import { fetchAggregatedWords, fetchWords } from '../../store/book/actions';
+import { startGame, updateGame } from '../../store/game/actions';
 import { updateStatistics } from '../../store/statistics/actions';
-import { getAnswers, getGameOver } from '../../store/game/slices';
-import { getAggregatedWords } from '../../store/book/slices';
-import { getUserId, getToken, getAuthorized } from '../../store/app/slices';
+import { getAnswers, getCurrentLevel, getGameOver, getGameStart } from '../../store/game/slices';
 
-import Loader from '../Loader/Loader';
 import GameIntro from './GameIntro/GameIntro';
 import GameStats from './GameStats/GameStats';
 import GameOverLay from './GameOverlay/GameOverlay';
@@ -19,20 +15,30 @@ import Kit from './Kit/Kit';
 import Savanna from './Savanna/Savanna';
 import GameSprint from './GameSprint/GameSprint';
 
-import { DictionarySections, LocalStorageKeys, menu } from '../../common/constants';
+import { LocalStorageKeys, menu, MIN_WORD_COUNT, DictionarySections } from '../../common/constants';
 import { updateData } from '../../common/helpers';
 
 import classes from './Game.module.scss';
+import { PropTypes } from 'prop-types';
+import { getToken, getUserId } from './../../store/app/slices';
+import { fetchGameWords } from '../../store/book/actions';
+import { getAllWords, getGameWords } from './../../store/book/slices';
 
-const Game = () => {
+const Game = (props) => {
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
-	const userId = useSelector(getUserId);
-	const authorized = useSelector(getAuthorized);
-	const token = useSelector(getToken);
-	const aggregatedWords = useSelector(getAggregatedWords);
+	const prevPageWords = useSelector(getGameWords);
+	const allWords = useSelector(getAllWords);
+	const [words, setWords] = useState([]);
+	const [isEnoughWords, setIsEnoughWords] = useState(true);
 	const gameOver = useSelector(getGameOver);
+	const isGameStart = useSelector(getGameStart);
+	const level = useSelector(getCurrentLevel);
 	const answers = useSelector(getAnswers);
+	const userId = useSelector(getUserId);
+	const token = useSelector(getToken);
+	const propsState = props.location.state;
+	const { linkName, linkId, rules } = menu.games.find((elem) => pathname.includes(elem.linkId));
 	const filterRules = JSON.stringify({
 		$or: [
 			{ 'userWord.difficulty': DictionarySections.Hard },
@@ -40,17 +46,52 @@ const Game = () => {
 			{ userWord: null },
 		],
 	});
-	const { linkName, linkId, rules } = menu.games.find((elem) => pathname.includes(elem.linkId));
-
-	useEffect(() => dispatch(updateGame(linkId)), [linkId]);
+	const [tmpWords, setTmpWords] = useState(propsState ? propsState.words : null);
+	const [tmpPageCount, setTmpPageCount] = useState(2);
 
 	useEffect(() => {
-		if (authorized) {
-			dispatch(fetchAggregatedWords(null, null, userId, token, filterRules));
+		if (propsState && propsState.words.length <= MIN_WORD_COUNT) {
+			// not 0 page and words<=5, get words from prev page
+			if (propsState.page !== 0) {
+				dispatch(fetchGameWords(propsState.group, propsState.page - 1, userId, token, filterRules));
+			}
+			// 0 page, can't get words from pre page, show message
+			else if (propsState.page === 0) {
+				setIsEnoughWords(false);
+			}
 		} else {
-			dispatch(fetchWords(null, null));
+			// just from book or vocabulary
+			if (propsState) {
+				setWords(propsState.words);
+			}
+			// from menu
+			else if (!propsState) {
+				setWords(allWords);
+			}
 		}
-	}, [authorized, userId, token]);
+	}, []);
+
+	useEffect(() => {
+		if (propsState && tmpWords.length <= MIN_WORD_COUNT) {
+			dispatch(fetchGameWords(propsState.group, propsState.page - tmpPageCount, userId, token, filterRules));
+			setTmpPageCount(tmpPageCount + 1);
+			setTmpWords([...tmpWords, ...prevPageWords]);
+		}
+	}, [prevPageWords]);
+
+	useEffect(() => {
+		if (propsState && tmpWords.length >= MIN_WORD_COUNT) {
+			setWords(tmpWords);
+		}
+	}, [tmpWords]);
+
+	useEffect(() => {
+		if (!isGameStart && words.length && level !== null) {
+			dispatch(startGame());
+		}
+	}, [words, level]);
+
+	useEffect(() => dispatch(updateGame(linkId)), [linkId]);
 
 	const renderGame = useCallback(
 		(data) => {
@@ -111,18 +152,29 @@ const Game = () => {
 
 	return (
 		<main className={classes.root}>
-			{gameOver ? (
-				<GameStats corrAnswersWords={answers.correct} wrongAnswersWords={answers.wrong} />
-			) : aggregatedWords.length ? (
-				<>
-					<GameIntro name={linkName} settings={pathname.includes('true')} rules={rules} />
-					<GameOverLay> {renderGame(aggregatedWords)} </GameOverLay>
-				</>
+			{isEnoughWords ? (
+				gameOver ? (
+					<GameStats corrAnswersWords={answers.correct} wrongAnswersWords={answers.wrong} />
+				) : (
+					<>
+						{isGameStart ? (
+							<GameOverLay> {renderGame(words)} </GameOverLay>
+						) : (
+							<GameIntro name={linkName} settings={pathname.includes('true')} rules={rules} />
+						)}
+					</>
+				)
 			) : (
-				<Loader />
+				<div className={classes.noWordsContainer}>
+					<h2>Недостаточно слов для игры :(</h2>
+				</div>
 			)}
 		</main>
 	);
+};
+
+Game.propTypes = {
+	location: PropTypes.object,
 };
 
 export default Game;

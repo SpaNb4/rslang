@@ -173,12 +173,12 @@ export const removeUserWord = (userId, token, wordData) => async (dispatch) => {
 		try {
 			await axios({
 				method: 'delete',
-				url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', wordData.wordId),
+				url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', wordData._id),
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
 			});
-			dispatch(deleteUserWordSuccess(wordData.wordId));
+			dispatch(deleteUserWordSuccess(wordData._id));
 		} catch (error) {
 			dispatch(deleteUserWordFailure(error));
 		}
