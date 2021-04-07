@@ -26,8 +26,8 @@ const RelChart = () => {
 		<FlexibleWidthXYPlot height={300} width={600} color={colors.cardinal} xType="ordinal">
 			<VerticalGridLines />
 			<HorizontalGridLines />
-			<XAxis />
-			<YAxis />
+			<XAxis title="дата" />
+			<YAxis title="кол-во слов" />
 			<LineSeries data={data} уPadding={10} xPadding={50} />
 		</FlexibleWidthXYPlot>
 	) : (
