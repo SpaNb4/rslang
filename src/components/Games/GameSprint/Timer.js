@@ -4,10 +4,13 @@ import { PropTypes } from 'prop-types';
 import { getGameStart } from '../../../store/game/slices';
 import classes from './Timer.module.scss';
 
+const totalTime = 60;
+const circlePixels = 175;
+
 export default function Timer({ onTimeout }) {
 	const gameStarted = useSelector(getGameStart);
 
-	const [counter, setCounter] = useState(60);
+	const [counter, setCounter] = useState(totalTime);
 
 	useEffect(() => {
 		let timeout;
@@ -25,11 +28,19 @@ export default function Timer({ onTimeout }) {
 		};
 	}, [counter, gameStarted]);
 
+	const currentCirclePixels = circlePixels * ((totalTime - counter) / totalTime);
+
 	return (
 		<div className={classes.countdown}>
 			<div className={classes.numbers}> {counter === 0 ? '0' : counter}</div>
 			<svg className={classes.svg}>
-				<circle className={classes.circle} r="28" cx="30" cy="30"></circle>
+				<circle
+					className={classes.circle}
+					r="28"
+					cx="30"
+					cy="30"
+					style={{ 'stroke-dashoffset': currentCirclePixels }}
+				></circle>
 			</svg>
 		</div>
 	);
