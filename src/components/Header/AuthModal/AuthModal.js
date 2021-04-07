@@ -1,10 +1,11 @@
 import React, { useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import { FaCamera, FaTimes } from 'react-icons/fa';
 import classes from './AuthModal.module.scss';
 import { globalClasses as c } from '../../../common/constants';
 import { updateAttempts } from '../../../common/helpers';
+import { getAuthLoading } from '../../../store/app/slices';
 
 const AuthModal = ({ hidden, buttonName, callback, reg, title, handleClose, errorMessage }) => {
 	const dispatch = useDispatch();
@@ -12,6 +13,7 @@ const AuthModal = ({ hidden, buttonName, callback, reg, title, handleClose, erro
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [image, setImage] = useState(null);
+	const loading = useSelector(getAuthLoading);
 
 	const usernameRef = useRef(null);
 	const emailRef = useRef(null);
@@ -76,6 +78,12 @@ const AuthModal = ({ hidden, buttonName, callback, reg, title, handleClose, erro
 					<FaTimes />
 				</button>
 				<h2 className={classes.title}>{title}</h2>
+				{loading && (
+					<div className={classes.loader}>
+						<div></div>
+						<div></div>
+					</div>
+				)}
 				<div className={errorAlertClasses}>{errorMessage && errorMessage}</div>
 				<form autoComplete="false" name="form" onSubmit={handleSubmit}>
 					{reg && (
@@ -173,4 +181,4 @@ AuthModal.propTypes = {
 	errorMessage: PropTypes.string,
 };
 
-export default AuthModal;
+export default React.memo(AuthModal);

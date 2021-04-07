@@ -6,6 +6,7 @@ import { ExternalUrls } from '../../common/constants';
 import Button from '../Button/Button';
 import classes from './ChapterItem.module.scss';
 import { PropTypes } from 'prop-types';
+import ResultList from '../ResultList/ResultList';
 
 function ChapterItem({ wordData, children, difficulty, setIsCurrentlyPlaying, isPlayDisabled, color }) {
 	return (
@@ -47,22 +48,7 @@ function ChapterItem({ wordData, children, difficulty, setIsCurrentlyPlaying, is
 			</div>
 			<div className={classes.itemSettings}>{children}</div>
 			<div className={classes.itemResults}>
-				<div className={classes.resultItem}>
-					<div>Игра 1</div>
-					<div>Изучено</div>
-				</div>
-				<div className={classes.resultItem}>
-					<div>Игра 2</div>
-					<div>Изучено</div>
-				</div>
-				<div className={classes.resultItem}>
-					<div>Игра 3</div>
-					<div>Повторено</div>
-				</div>
-				<div className={classes.resultItem}>
-					<div>Игра 4</div>
-					<div>Повторено</div>
-				</div>
+				<ResultList wordData={wordData} />
 			</div>
 		</div>
 	);

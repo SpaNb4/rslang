@@ -8,6 +8,7 @@ import titleClasses from './ChapterTitle.module.scss';
 import ChapterItem from './ChapterItem/ChapterItem';
 import OptionsControl from './OptionsControl/OptionsControl';
 import Options from './Options/Options';
+import Loader from '../../Loader/Loader';
 
 import {
 	fetchAggregatedWords,
@@ -157,7 +158,7 @@ function Chapter() {
 				</div>
 				<GamesList words={authorized ? aggregatedWords : words} group={Number(group) - 1} page={Number(page)} />
 			</div>
-			{loading && <React.Fragment>Loading...</React.Fragment>}
+			{loading && <Loader />}
 			{chapterItems}
 			<Pagination
 				handlePageClick={handlePageClick}
