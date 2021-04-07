@@ -39,7 +39,7 @@ function Savanna({ wordData }) {
 	});
 
 	useEffect(() => {
-		if (isGameEnd && [...corrAnswersWords, ...wrongAnswersWords].length === words.length) {
+		if (isGameEnd && (corrAnswersWords.includes(currWord) || wrongAnswersWords.includes(currWord))) {
 			const resWords = words.map((el) => el.word);
 			const maxStreak = max(streakArr);
 
