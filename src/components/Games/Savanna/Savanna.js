@@ -25,6 +25,7 @@ function Savanna({ wordData }) {
 	const [isWordClicked, setIsWordClicked] = useState(false);
 	const [currStreak, setCurrStreak] = useState(0);
 	const [streakArr, setStreakArr] = useState([]);
+	const [isGameEnd, setIsGameEnd] = useState(false);
 
 	const maxLivesCount = 5;
 	const lives = [...Array(maxLivesCount)].map((_, index) => {
@@ -34,6 +35,22 @@ function Savanna({ wordData }) {
 			return <FaRegHeart key={index} className={classes.heart} />;
 		}
 	});
+
+	useEffect(() => {
+		if (isGameEnd && [...corrAnswersWords, ...wrongAnswersWords].length === words.length) {
+			const resWords = words.map((el) => el.word);
+			const maxStreak = max(streakArr);
+
+			dispatch(
+				finishGame({
+					correct: corrAnswersWords,
+					wrong: wrongAnswersWords,
+					maxStreak,
+					resWords,
+				})
+			);
+		}
+	}, [corrAnswersWords, wrongAnswersWords, isGameEnd]);
 
 	useEffect(() => {
 		if (words) {
@@ -68,17 +85,7 @@ function Savanna({ wordData }) {
 	useEffect(() => {
 		// if lives=0 then game over
 		if (!livesCount) {
-			const resWords = words.map((el) => el.word);
-			const maxStreak = max(streakArr);
-
-			dispatch(
-				finishGame({
-					correct: corrAnswersWords,
-					wrong: wrongAnswersWords,
-					maxStreak,
-					resWords,
-				})
-			);
+			setIsGameEnd(true);
 		}
 	}, [livesCount]);
 
@@ -115,17 +122,7 @@ function Savanna({ wordData }) {
 
 	function checkEndWords() {
 		if (currWordIndex === words.length - 1) {
-			const resWords = words.map((el) => el.word);
-			const maxStreak = max(streakArr);
-
-			dispatch(
-				finishGame({
-					correct: corrAnswersWords,
-					wrong: wrongAnswersWords,
-					maxStreak,
-					resWords,
-				})
-			);
+			setIsGameEnd(true);
 		}
 	}
 

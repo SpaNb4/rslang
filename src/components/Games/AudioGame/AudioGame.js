@@ -24,8 +24,25 @@ function AudioGame({ wordData }) {
 	const [currStreak, setCurrStreak] = useState(0);
 	const [streakArr, setStreakArr] = useState([]);
 	const audioRef = useRef(null);
+	const [isGameEnd, setIsGameEnd] = useState(false);
 
 	const randomWordCount = 4;
+
+	useEffect(() => {
+		if (isGameEnd && [...corrAnswersWords, ...wrongAnswersWords].length === words.length) {
+			const resWords = words.map((el) => el.word);
+			const maxStreak = max(streakArr);
+
+			dispatch(
+				finishGame({
+					correct: corrAnswersWords,
+					wrong: wrongAnswersWords,
+					maxStreak,
+					resWords,
+				})
+			);
+		}
+	}, [corrAnswersWords, wrongAnswersWords, isGameEnd]);
 
 	useEffect(() => {
 		if (words) {
@@ -88,17 +105,7 @@ function AudioGame({ wordData }) {
 
 	function checkEndWords() {
 		if (currWordIndex === words.length - 1) {
-			const resWords = words.map((el) => el.word);
-			const maxStreak = max(streakArr);
-
-			dispatch(
-				finishGame({
-					correct: corrAnswersWords,
-					wrong: wrongAnswersWords,
-					maxStreak,
-					resWords,
-				})
-			);
+			setIsGameEnd(true);
 		}
 	}
 
