@@ -3,7 +3,7 @@ import classes from './Stats.module.scss';
 import { LocalStorageKeys, menu } from '../../common/constants';
 import { useSelector } from 'react-redux';
 import { getUserId } from '../../store/app/slices';
-import { sumBy, map, flatten } from 'lodash';
+import _ from 'lodash';
 
 const Table = () => {
 	const currUserId = useSelector(getUserId) || LocalStorageKeys.userStats;
@@ -12,10 +12,10 @@ const Table = () => {
 
 	const data = JSON.parse(localStorage.getItem(currUserId)) || [];
 
-	const calculatePercent = (a, b) => (a * 100) / (a + b);
+	const calculatePercent = (a, b) => Math.floor((a * 100) / (a + b));
 
-	const totalPercent = useMemo(() => calculatePercent(sumBy(data, 'correct'), sumBy(data, 'wrong')));
-	const totalNumber = useMemo(() => flatten(map(data, 'words')).length);
+	const totalPercent = useMemo(() => calculatePercent(_.sumBy(data, 'correct'), _.sumBy(data, 'wrong')));
+	const totalNumber = useMemo(() => _.flatten(_.map(data, 'words')).length);
 
 	return (
 		<>

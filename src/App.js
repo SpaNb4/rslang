@@ -25,12 +25,14 @@ import {
 } from './store/book/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
 import { getUserDataFromLocalStorage } from './common/service';
+import { getCurrentDate, updateAttempts } from './common/helpers';
 
 function App() {
 	const dispatch = useDispatch();
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
 	const authorized = useSelector(getAuthorized);
+	const date = useSelector(getCurrentDate);
 
 	useEffect(() => {
 		if (!authorized) {
@@ -56,6 +58,27 @@ function App() {
 			dispatch(fetchWords());
 		}
 	}, [userId, token, authorized]);
+
+	useEffect(() => {
+		if (date) {
+			const localDate = localStorage.getItem(LocalStorageKeys.date) || null;
+
+			if (!localDate) {
+				localStorage.setItem(LocalStorageKeys.date, date);
+			} else if (localDate !== date) {
+				// clear local stats ad quiz attempts
+				updateAttempts();
+
+				if (authorized) {
+					localStorage.removeItem(userId);
+				} else {
+					localStorage.removeItem(LocalStorageKeys.userStats);
+				}
+
+				localStorage.setItem(LocalStorageKeys.date, date);
+			}
+		}
+	}, [date, userId, authorized]);
 
 	return (
 		<React.Fragment>

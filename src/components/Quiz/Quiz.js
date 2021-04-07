@@ -7,9 +7,9 @@ import { fetchKeys, reset, setWords, submit } from '../../store/quiz/actions';
 import Loader from '../Loader/Loader';
 import DailyQuizItem from './QuizItem';
 import { globalClasses as c, LocalStorageKeys as l, questionsData, DefaultValues as d } from '../../common/constants';
-import { updateAttempts } from '../../common/helpers';
 import classes from './Quiz.module.scss';
 import { FaUndoAlt } from 'react-icons/fa';
+import { getCurrentDate } from '../../common/helpers';
 
 const Quiz = () => {
 	const dispatch = useDispatch();
@@ -20,30 +20,12 @@ const Quiz = () => {
 	const submitted = useSelector(getSubmitted);
 	const answers = useSelector(getAnswers);
 	const keys = useSelector(getKeys);
+	const date = useSelector(getCurrentDate);
 
-	const [date, setDate] = useState(null);
 	const [errors, setErrors] = useState(null);
 	const [variants, setVariants] = useState([]);
 	const [attempts, setAttempts] = useState(0);
 	const [showForm, setShowForm] = useState(false);
-
-	useEffect(() => {
-		setDate(new Date().toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' }));
-	}, []);
-
-	useEffect(() => {
-		if (date) {
-			const localDate = localStorage.getItem(l.QuizDate) || null;
-			if (!localDate) {
-				localStorage.setItem(l.QuizDate, date);
-			} else if (localDate !== date) {
-				console.log(localDate, date);
-
-				console.log(true);
-				updateAttempts();
-			}
-		}
-	}, [date]);
 
 	useEffect(() => {
 		let timeout;
@@ -79,8 +61,6 @@ const Quiz = () => {
 
 			if (localAttempts) {
 				setAttempts(localAttempts);
-			} else {
-				updateAttempts();
 			}
 		}
 	}, [words, submitted]);
@@ -107,7 +87,7 @@ const Quiz = () => {
 					<Loader />
 				) : (
 					<>
-						{userWords.length ? (
+						{userWords.length && date ? (
 							<>
 								<span className={classes.date}>{date}</span>
 								{words.length && variants.length ? (
