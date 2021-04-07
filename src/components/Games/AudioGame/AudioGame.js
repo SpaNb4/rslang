@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
 import shuffle from 'lodash/shuffle';
 import sampleSize from 'lodash/sampleSize';
@@ -10,7 +11,9 @@ import classes from './AudioGame.module.scss';
 import { playWrong, playCorrect } from '../../../common/helpers';
 import { PropTypes } from 'prop-types';
 import { finishGame } from './../../../store/game/actions';
+import { ONE_SECONDS_IN_MS } from './../../../common/constants';
 
+let timeStamp = 0;
 function AudioGame({ wordData }) {
 	const dispatch = useDispatch();
 	const words = wordData;
@@ -149,6 +152,21 @@ function AudioGame({ wordData }) {
 		}
 	}
 
+	useHotkeys(
+		'enter',
+		(e) => {
+			if (e.timeStamp - timeStamp > ONE_SECONDS_IN_MS) {
+				timeStamp = e.timeStamp;
+				enterKeyHandler();
+			}
+		},
+		[isWordClicked]
+	);
+
+	function enterKeyHandler() {
+		nextClickHandler();
+	}
+
 	return (
 		<div className={classes.audioGame}>
 			{currWord && (
@@ -201,12 +219,9 @@ function AudioGame({ wordData }) {
 							})}
 						</div>
 					)}
-					<button
-						className={classes.btn}
-						onClick={() => nextClickHandler({ target: audioRef.current }, currWord)}
-					>
+					<div className={classes.btn} onClick={nextClickHandler}>
 						{isWordClicked ? 'Далее' : 'Не знаю'}
-					</button>
+					</div>
 				</>
 			)}
 		</div>

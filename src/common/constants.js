@@ -287,3 +287,5 @@ export const colors = {
 };
 
 export const UPLOAD_PRESET = 'gfyjsw4r';
+
+export const ONE_SECONDS_IN_MS = 1000;
