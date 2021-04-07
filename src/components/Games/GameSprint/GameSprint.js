@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// eslint-disable-next-line no-unused-vars
+import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 
 import { useDispatch } from 'react-redux';
@@ -17,13 +18,19 @@ import classes from './GameSprint.module.scss';
 function GameSprint({ wordData }) {
 	const dispatch = useDispatch();
 	const [result, setResult] = useState(null);
-	const [objectWordData, setObjectWordData] = useState(null);
+	const [objectWordData, setObjectWordData] = useState([]);
 	const [corrAnswersWords, setCorrAnswersWords] = useState([]);
 	const [wrongAnswersWords, setWrongAnswersWords] = useState([]);
 
-	if (objectWordData === null) {
+	if (!objectWordData) {
 		generateObjectWordData();
 	}
+
+	useEffect(() => {
+		if (wordData.length) {
+			generateObjectWordData();
+		}
+	}, [wordData]);
 
 	function onClickButtonValid() {
 		if (objectWordData.showValidPair) {
@@ -99,7 +106,7 @@ function GameSprint({ wordData }) {
 	);
 
 	return (
-		objectWordData !== null && (
+		objectWordData && (
 			<div className={classes.color}>
 				<Timer onTimeout={handleTimeout} />
 				<div className={classes.sprint}>

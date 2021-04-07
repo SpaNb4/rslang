@@ -2,13 +2,22 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	// header + footer + main_container_padding = 206
-	min-height: calc(100vh - 146px);
+	// header = 66px
+	min-height: calc(100vh - 66px);
 
 	.fullScreenBtn {
 		position: absolute;
 		top: 25px;
 		left: 20px;
+		font-size: 30px;
+		color: $color-black;
+		cursor: pointer;
+	}
+
+	.soundBtn {
+		position: absolute;
+		top: 25px;
+		left: 75px;
 		font-size: 30px;
 		color: $color-black;
 		cursor: pointer;
