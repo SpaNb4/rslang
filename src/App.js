@@ -44,17 +44,18 @@ function App() {
 					dispatch(saveUserAuthData(userAuthData));
 				}
 			}
-		}
-		if (authorized) {
-			dispatch(fetchUserWords(userId, token));
-			dispatch(fetchUserStatistics(userId, token));
-			const removedPages = getUserDataFromLocalStorage(LocalStorageKeys.RemovedPages, userId);
-			dispatch(updateRemovedPages(removedPages));
-			const removedWordsCount = getUserDataFromLocalStorage(LocalStorageKeys.RemovedWordsCount, userId);
-			dispatch(updateRemovedWordsCount(removedWordsCount));
-			dispatch(updateIsEditDictionaryButtons(true));
 		} else {
-			dispatch(fetchWords());
+			if (authorized) {
+				dispatch(fetchUserWords(userId, token));
+				dispatch(fetchUserStatistics(userId, token));
+				const removedPages = getUserDataFromLocalStorage(LocalStorageKeys.RemovedPages, userId);
+				dispatch(updateRemovedPages(removedPages));
+				const removedWordsCount = getUserDataFromLocalStorage(LocalStorageKeys.RemovedWordsCount, userId);
+				dispatch(updateRemovedWordsCount(removedWordsCount));
+				dispatch(updateIsEditDictionaryButtons(true));
+			} else {
+				dispatch(fetchWords());
+			}
 		}
 	}, [userId, token, authorized]);
 
