@@ -324,3 +324,4 @@ export const mockChartData = [
 		learnedWords: 54,
 	},
 ];
+export const ONE_SECONDS_IN_MS = 1000;

@@ -10,7 +10,9 @@ import { playWrong, playCorrect } from '../../../common/helpers';
 import { PropTypes } from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { finishGame } from './../../../store/game/actions';
+import { ONE_SECONDS_IN_MS } from './../../../common/constants';
 
+let timeStamp = 0;
 function Savanna({ wordData }) {
 	const dispatch = useDispatch();
 	const words = wordData;
@@ -25,6 +27,7 @@ function Savanna({ wordData }) {
 	const [isWordClicked, setIsWordClicked] = useState(false);
 	const [currStreak, setCurrStreak] = useState(0);
 	const [streakArr, setStreakArr] = useState([]);
+	const [isGameEnd, setIsGameEnd] = useState(false);
 
 	const maxLivesCount = 5;
 	const lives = [...Array(maxLivesCount)].map((_, index) => {
@@ -34,6 +37,22 @@ function Savanna({ wordData }) {
 			return <FaRegHeart key={index} className={classes.heart} />;
 		}
 	});
+
+	useEffect(() => {
+		if (isGameEnd && (corrAnswersWords.includes(currWord) || wrongAnswersWords.includes(currWord))) {
+			const resWords = words.map((el) => el.word);
+			const maxStreak = max(streakArr);
+
+			dispatch(
+				finishGame({
+					correct: corrAnswersWords,
+					wrong: wrongAnswersWords,
+					maxStreak,
+					resWords,
+				})
+			);
+		}
+	}, [corrAnswersWords, wrongAnswersWords, isGameEnd]);
 
 	useEffect(() => {
 		if (words) {
@@ -60,37 +79,31 @@ function Savanna({ wordData }) {
 
 			const filteredArr = words.filter((item) => item !== words[currWordIndex]);
 			setRandomWords(sampleSize(filteredArr, randomWordCount));
-
-			setIsWordClicked(false);
 		}
 	}, [currWordIndex]);
 
 	useEffect(() => {
 		// if lives=0 then game over
 		if (!livesCount) {
-			const resWords = words.map((el) => el.word);
-			const maxStreak = max(streakArr);
-
-			dispatch(
-				finishGame({
-					correct: corrAnswersWords,
-					wrong: wrongAnswersWords,
-					maxStreak,
-					resWords,
-				})
-			);
+			setIsGameEnd(true);
 		}
 	}, [livesCount]);
+
+	useEffect(() => {
+		if (isWordClicked) {
+			setTimeout(() => {
+				setIsWordClicked(false);
+				setCurrWordIndex(currWordIndex + 1);
+			}, 500);
+		}
+	}, [isWordClicked]);
 
 	function handleWrongWordClick() {
 		checkEndWords();
 
-		setTimeout(() => {
-			setCurrWordIndex(currWordIndex + 1);
-		}, 500);
 		setWrongAnswersWords([...wrongAnswersWords, currWord]);
-		setLivesCount(livesCount - 1);
 		setIsWordClicked(true);
+		setLivesCount(livesCount - 1);
 
 		playWrong();
 
@@ -101,10 +114,6 @@ function Savanna({ wordData }) {
 	function handleCorrectWordClick() {
 		checkEndWords();
 
-		// go to next word
-		setTimeout(() => {
-			setCurrWordIndex(currWordIndex + 1);
-		}, 500);
 		setCorrAnswersWords([...corrAnswersWords, currWord]);
 		setIsWordClicked(true);
 
@@ -115,17 +124,7 @@ function Savanna({ wordData }) {
 
 	function checkEndWords() {
 		if (currWordIndex === words.length - 1) {
-			const resWords = words.map((el) => el.word);
-			const maxStreak = max(streakArr);
-
-			dispatch(
-				finishGame({
-					correct: corrAnswersWords,
-					wrong: wrongAnswersWords,
-					maxStreak,
-					resWords,
-				})
-			);
+			setIsGameEnd(true);
 		}
 	}
 
@@ -134,7 +133,10 @@ function Savanna({ wordData }) {
 	useHotkeys(
 		keysStr,
 		(e) => {
-			keyHandler(e);
+			if (e.timeStamp - timeStamp > ONE_SECONDS_IN_MS) {
+				timeStamp = e.timeStamp;
+				keyHandler(e);
+			}
 		},
 		[commonWords, currWord, isWordClicked]
 	);
@@ -163,9 +165,11 @@ function Savanna({ wordData }) {
 			<div className={classes.lives}>{lives.reverse()}</div>
 			{currWord && (
 				<>
-					<animated.h3 style={animation} className={classes.currWord}>
-						{currWord.word}
-					</animated.h3>
+					{!isWordClicked && (
+						<animated.h3 style={animation} className={classes.currWord}>
+							{currWord.word}
+						</animated.h3>
+					)}
 					{commonWords && (
 						<div className={classes.wordList}>
 							{commonWords.map((word, index) => {
