@@ -33,25 +33,30 @@ const Table = () => {
 				<tbody>
 					<tr>
 						<td>Количество изученных слов</td>
-						{games.map((_, index) => (
-							<td key={`number${index}`}>{data[index] ? data[index].words.length : 0}</td>
-						))}
+						{games.map((elem) => {
+							const index = _.findIndex(data, { name: elem.linkId });
+							return <td key={`number${elem.linkId}`}>{data[index] ? data[index].words.length : 0}</td>;
+						})}
 					</tr>
 
 					<tr>
 						<td>Процент правильных ответов</td>
-						{games.map((_, index) => (
-							<td key={`proc${index}`}>
-								{data[index] ? calculatePercent(data[index].correct, data[index].wrong) : 0}%
-							</td>
-						))}
+						{games.map((elem) => {
+							const index = _.findIndex(data, { name: elem.linkId });
+							return (
+								<td key={`proc${elem.linkId}`}>
+									{data[index] ? calculatePercent(data[index].correct, data[index].wrong) : 0}%
+								</td>
+							);
+						})}
 					</tr>
 
 					<tr>
 						<td>Самая длинная серия правильных ответов</td>
-						{games.map((_, index) => (
-							<td key={`streak${index}`}>{data[index] ? data[index].streak : 0}</td>
-						))}
+						{games.map((elem) => {
+							const index = _.findIndex(data, { name: elem.linkId });
+							return <td key={`streak${elem.linkId}`}>{data[index] ? data[index].streak : 0}</td>;
+						})}
 					</tr>
 
 					<tr className={classes.result}>

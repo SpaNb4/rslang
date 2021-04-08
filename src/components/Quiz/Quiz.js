@@ -78,6 +78,8 @@ const Quiz = () => {
 		dispatch(reset());
 	};
 
+	console.log(loading);
+
 	return (
 		<main className={c.container}>
 			<div className={classes.root}>
