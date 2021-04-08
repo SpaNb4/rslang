@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCurrentLevel, getGameStart } from '../../../store/game/slices';
+import { getGameStart } from '../../../store/game/slices';
 import { globalClasses as c, menu } from '../../../common/constants';
 import GameIntroInput from './GameIntroInput';
 import classes from './GameIntro.module.scss';
@@ -11,26 +11,36 @@ import { setLevel } from '../../../store/game/actions';
 
 const GameIntro = ({ name, rules, settings }) => {
 	const dispatch = useDispatch();
-	const defaultLevel = Number(useSelector(getCurrentLevel));
+	const defaultLevel = 0;
 	const gameStart = useSelector(getGameStart);
 
-	const [value, setValue] = useState(null);
+	const [value, setValue] = useState(defaultLevel);
+	const [isStart, setIsStart] = useState(false);
+	const FROM_BOOK = 'from book';
 
 	const handleChange = (evt) => {
 		setValue(evt.target.value);
 	};
 
 	useEffect(() => {
-		setValue(defaultLevel);
-	}, []);
+		if (isStart) {
+			if (value !== FROM_BOOK) {
+				dispatch(setLevel(value));
+				dispatch(fetchWords(value, _.random(0, 29)));
+			} else {
+				dispatch(setLevel(FROM_BOOK));
+			}
+		}
+	}, [isStart, value]);
 
 	const handleSubmit = (evt) => {
 		evt.preventDefault();
 
-		if (value !== null) {
-			dispatch(setLevel(value));
-			dispatch(fetchWords(value, _.random(0, 29)));
+		if (!settings) {
+			setValue(FROM_BOOK);
 		}
+
+		setIsStart(true);
 	};
 
 	return (

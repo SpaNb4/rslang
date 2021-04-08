@@ -64,12 +64,15 @@ const Game = (props) => {
 			if (propsState) {
 				setWords(propsState.words);
 			}
-			// from menu
-			else if (!propsState) {
-				setWords(allWords);
-			}
 		}
-	}, []);
+	}, [words]);
+
+	useEffect(() => {
+		// from menu
+		if (!propsState && allWords.length) {
+			setWords(allWords);
+		}
+	}, [allWords]);
 
 	useEffect(() => {
 		if (propsState && tmpWords.length < MIN_WORD_COUNT) {
@@ -91,7 +94,10 @@ const Game = (props) => {
 		}
 	}, [words, level]);
 
-	useEffect(() => dispatch(updateGame(linkId)), [linkId]);
+	useEffect(() => {
+		setWords([]);
+		dispatch(updateGame(linkId));
+	}, [linkId]);
 
 	const renderGame = useCallback(
 		(data) => {
