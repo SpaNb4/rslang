@@ -79,8 +79,6 @@ function Savanna({ wordData }) {
 
 			const filteredArr = words.filter((item) => item !== words[currWordIndex]);
 			setRandomWords(sampleSize(filteredArr, randomWordCount));
-
-			setIsWordClicked(false);
 		}
 	}, [currWordIndex]);
 
@@ -91,15 +89,21 @@ function Savanna({ wordData }) {
 		}
 	}, [livesCount]);
 
+	useEffect(() => {
+		if (isWordClicked) {
+			setTimeout(() => {
+				setIsWordClicked(false);
+				setCurrWordIndex(currWordIndex + 1);
+			}, 500);
+		}
+	}, [isWordClicked]);
+
 	function handleWrongWordClick() {
 		checkEndWords();
 
-		setTimeout(() => {
-			setCurrWordIndex(currWordIndex + 1);
-		}, 500);
 		setWrongAnswersWords([...wrongAnswersWords, currWord]);
-		setLivesCount(livesCount - 1);
 		setIsWordClicked(true);
+		setLivesCount(livesCount - 1);
 
 		playWrong();
 
@@ -110,10 +114,6 @@ function Savanna({ wordData }) {
 	function handleCorrectWordClick() {
 		checkEndWords();
 
-		// go to next word
-		setTimeout(() => {
-			setCurrWordIndex(currWordIndex + 1);
-		}, 500);
 		setCorrAnswersWords([...corrAnswersWords, currWord]);
 		setIsWordClicked(true);
 
@@ -152,8 +152,6 @@ function Savanna({ wordData }) {
 		}
 	}
 
-	useEffect(() => {}, [timeStamp]);
-
 	const animation = useSpring({
 		config: { duration: 3000 },
 		from: { top: 70 },
@@ -167,9 +165,11 @@ function Savanna({ wordData }) {
 			<div className={classes.lives}>{lives.reverse()}</div>
 			{currWord && (
 				<>
-					<animated.h3 style={animation} className={classes.currWord}>
-						{currWord.word}
-					</animated.h3>
+					{!isWordClicked && (
+						<animated.h3 style={animation} className={classes.currWord}>
+							{currWord.word}
+						</animated.h3>
+					)}
 					{commonWords && (
 						<div className={classes.wordList}>
 							{commonWords.map((word, index) => {
