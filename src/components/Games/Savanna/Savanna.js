@@ -47,8 +47,8 @@ function Savanna({ wordData }) {
 				finishGame({
 					correct: corrAnswersWords,
 					wrong: wrongAnswersWords,
-					maxStreak,
-					resWords,
+					streak: maxStreak,
+					words: resWords,
 				})
 			);
 		}

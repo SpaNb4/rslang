@@ -12,6 +12,7 @@ const initialState = {
 
 const reducer = createReducer(initialState, (builder) => {
 	builder
+		.addCase(actions.resetGame, () => initialState)
 		.addCase(actions.setRandomWords, (state, action) => {
 			state.randomWords = action.payload;
 		})

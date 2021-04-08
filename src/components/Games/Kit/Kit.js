@@ -13,6 +13,7 @@ import {
 	addAnswer,
 	increaseFocusedIndex,
 	reduceFocusedIndex,
+	resetGame,
 } from '../../../store/kit/actions';
 import { evtKeys, globalClasses as c } from '../../../common/constants';
 import { finishGame } from '../../../store/game/actions';
@@ -75,6 +76,7 @@ const Kit = ({ wordData }) => {
 			};
 
 			dispatch(finishGame(result));
+			dispatch(resetGame());
 		}
 	}, [currWordIndex]);
 

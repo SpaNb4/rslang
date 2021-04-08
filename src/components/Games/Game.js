@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { PropTypes } from 'prop-types';
+
 import { useLocation } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { setUserWord, updateUserWord } from '../../store/dictionary/actions';
 import { startGame, updateGame } from '../../store/game/actions';
 import { updateStatistics } from '../../store/statistics/actions';
+import { fetchGameWords } from '../../store/book/actions';
 import { getAnswers, getCurrentLevel, getGameOver, getGameStart } from '../../store/game/slices';
+import { getToken, getUserId } from './../../store/app/slices';
+import { getAllWords, getGameWords } from './../../store/book/slices';
 
 import GameIntro from './GameIntro/GameIntro';
 import GameStats from './GameStats/GameStats';
@@ -19,10 +24,6 @@ import { LocalStorageKeys, menu, MIN_WORD_COUNT, DictionarySections } from '../.
 import { updateData } from '../../common/helpers';
 
 import classes from './Game.module.scss';
-import { PropTypes } from 'prop-types';
-import { getToken, getUserId } from './../../store/app/slices';
-import { fetchGameWords } from '../../store/book/actions';
-import { getAllWords, getGameWords } from './../../store/book/slices';
 
 const Game = (props) => {
 	const dispatch = useDispatch();
@@ -94,10 +95,16 @@ const Game = (props) => {
 		}
 	}, [words, level]);
 
+	// useEffect(() => {
+	// 	setWords([]);
+	// 	// dispatch(updateGame(linkId));
+	// }, [linkId]);
+
 	useEffect(() => {
-		setWords([]);
-		dispatch(updateGame(linkId));
-	}, [linkId]);
+		if (linkId) {
+			dispatch(updateGame(linkId));
+		}
+	}, [pathname, linkId]);
 
 	const renderGame = useCallback(
 		(data) => {
