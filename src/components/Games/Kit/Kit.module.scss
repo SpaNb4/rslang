@@ -102,14 +102,17 @@
 
 .skipButton {
 	padding: 10px 27px;
-	color: $color-chestnut;
-	border: 1px solid;
+	color: $color-white;
+	font-size: 16px;
+	font-weight: 700;
+	border: none;
+	background-color: $color-cardinal;
+	border-radius: 5px;
 	box-shadow: $box-shadow-3;
-	border-radius: 8px;
-	background-color: $color-white;
 
-	&:hover {
-		color: $color-white;
-		background-color: $color-chestnut;
+	&:hover,
+	&:active {
+		background: lighten($color-primary, 10) radial-gradient(circle, transparent 1%, lighten($color-primary, 10) 0)
+			50%/15000%;
 	}
 }
