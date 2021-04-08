@@ -88,10 +88,7 @@ export function createChartData(objArr) {
 }
 
 export function updateData(prev, curr) {
-	console.log(prev, curr);
 	const index = _.findIndex(prev, { name: curr.name });
-
-	console.log(index);
 
 	if (index >= 0) {
 		prev[index].correct += curr.correct;
