@@ -95,13 +95,9 @@ const Game = (props) => {
 		}
 	}, [words, level]);
 
-	// useEffect(() => {
-	// 	setWords([]);
-	// 	// dispatch(updateGame(linkId));
-	// }, [linkId]);
-
 	useEffect(() => {
 		if (linkId) {
+			setWords([]);
 			dispatch(updateGame(linkId));
 		}
 	}, [pathname, linkId]);
