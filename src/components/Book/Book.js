@@ -1,16 +1,16 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { globalClasses as c } from '../../common/constants';
+import classes from './Book.module.scss';
 
 import Chapter from './Chapter/Chapter';
 
 function Book() {
 	return (
-		<main className={c.container}>
+		<div className={classes.Book}>
 			<Switch>
 				<Route exact path="/book/:group" component={Chapter} />
 			</Switch>
-		</main>
+		</div>
 	);
 }
 

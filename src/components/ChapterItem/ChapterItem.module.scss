@@ -96,6 +96,10 @@
 		padding: 10px;
 		flex-grow: 2;
 
+		&.Hide {
+			display: none;
+		}
+
 		@include resolution(tablet) {
 			flex-basis: 100%;
 		}
@@ -142,8 +146,4 @@
 	&[data-color='cardinal'] {
 		@include cardColor($color-cardinal);
 	}
-}
-
-.Hide {
-	display: none;
 }
