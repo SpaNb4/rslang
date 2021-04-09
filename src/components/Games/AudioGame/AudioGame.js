@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import shuffle from 'lodash/shuffle';
 import sampleSize from 'lodash/sampleSize';
 import max from 'lodash/max';
-import map from 'lodash/map';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { AiFillSound } from 'react-icons/ai';
 import { ExternalUrls } from '../../../common/constants';
@@ -42,7 +41,7 @@ function AudioGame({ wordData }) {
 					correct: corrAnswersWords,
 					wrong: wrongAnswersWords,
 					streak: maxStreak,
-					words: map(resWords, 'word'),
+					words: resWords,
 				})
 			);
 		}
