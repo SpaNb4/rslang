@@ -7,3 +7,4 @@ export const increaseCharIndex = createAction(types.CHAR_INCREMENT);
 export const addAnswer = createAction(types.ADD_ANSWER);
 export const increaseFocusedIndex = createAction(types.FOCUS_INDEX_INCREMENT);
 export const reduceFocusedIndex = createAction(types.FOCUS_INDEX_REDUCER);
+export const resetGame = createAction(types.RESET_GAME);

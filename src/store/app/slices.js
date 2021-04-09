@@ -9,4 +9,5 @@ export const getAvatar = (store) => getUser(store) && getUser(store).image;
 export const getAuthorized = (store) => getSlice(store).auth;
 export const getMenu = (store) => getSlice(store).menuHidden;
 export const getErrorMessage = (store) => getSlice(store).userErrorMessage;
+export const getCurrentDate = (store) => getSlice(store).date;
 export const getAuthLoading = (store) => getSlice(store).loading;

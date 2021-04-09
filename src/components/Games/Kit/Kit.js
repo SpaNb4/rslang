@@ -13,8 +13,9 @@ import {
 	addAnswer,
 	increaseFocusedIndex,
 	reduceFocusedIndex,
+	resetGame,
 } from '../../../store/kit/actions';
-import { evtKeys, globalClasses as c } from '../../../common/constants';
+import { evtKeys } from '../../../common/constants';
 import { finishGame } from '../../../store/game/actions';
 import { getStreak, playWrong, playCorrect } from '../../../common/helpers';
 import classes from './Kit.module.scss';
@@ -75,6 +76,7 @@ const Kit = ({ wordData }) => {
 			};
 
 			dispatch(finishGame(result));
+			dispatch(resetGame());
 		}
 	}, [currWordIndex]);
 
@@ -127,7 +129,12 @@ const Kit = ({ wordData }) => {
 							</div>
 						</>
 					)}
-					<button className={c.button} aria-label="skip word" onClick={handleSkipWord} type="button">
+					<button
+						className={classes.skipButton}
+						aria-label="skip word"
+						onClick={handleSkipWord}
+						type="button"
+					>
 						Пропустить слово
 					</button>
 				</div>

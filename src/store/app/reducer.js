@@ -1,4 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
+import { getCurrentDate } from '../../common/helpers';
 import * as actions from './actions';
 
 const initialState = {
@@ -7,6 +8,7 @@ const initialState = {
 	errorMessage: '',
 	userErrorMessage: '',
 	menuHidden: true,
+	date: getCurrentDate(),
 };
 
 const reducer = createReducer(initialState, (builder) => {

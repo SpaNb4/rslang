@@ -11,6 +11,7 @@ import { PropTypes } from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { finishGame } from './../../../store/game/actions';
 import { ONE_SECONDS_IN_MS } from './../../../common/constants';
+import { map } from 'lodash';
 
 let timeStamp = 0;
 function Savanna({ wordData }) {
@@ -47,8 +48,8 @@ function Savanna({ wordData }) {
 				finishGame({
 					correct: corrAnswersWords,
 					wrong: wrongAnswersWords,
-					maxStreak,
-					resWords,
+					streak: maxStreak,
+					words: map(resWords, 'word'),
 				})
 			);
 		}
