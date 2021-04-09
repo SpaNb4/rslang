@@ -135,27 +135,29 @@ const Game = (props) => {
 			localStorage.setItem(name, JSON.stringify(totalStatsData));
 
 			// update word stats:
-			answers.correct.forEach((word) => {
-				const { wordDifficulty } = word;
 
-				if (wordDifficulty) {
-					dispatch(updateUserWord(userId, token, word, wordDifficulty, linkId, 1));
-				} else {
-					dispatch(setUserWord(userId, token, word, DictionarySections.Trained, linkId, 1));
-					dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
-				}
-			});
+			if (userId) {
+				answers.correct.forEach((word) => {
+					const { wordDifficulty } = word;
+					if (wordDifficulty) {
+						dispatch(updateUserWord(userId, token, word, wordDifficulty, linkId, 1));
+					} else {
+						dispatch(setUserWord(userId, token, word, DictionarySections.Trained, linkId, 1));
+						dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
+					}
+				});
 
-			answers.wrong.forEach((word) => {
-				const { wordDifficulty } = word;
+				answers.wrong.forEach((word) => {
+					const { wordDifficulty } = word;
 
-				if (wordDifficulty) {
-					dispatch(updateUserWord(userId, token, word, wordDifficulty, linkId, 0, 1));
-				} else {
-					dispatch(setUserWord(userId, token, word, DictionarySections.Trained, linkId, 0, 1));
-					dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
-				}
-			});
+					if (wordDifficulty) {
+						dispatch(updateUserWord(userId, token, word, wordDifficulty, linkId, 0, 1));
+					} else {
+						dispatch(setUserWord(userId, token, word, DictionarySections.Trained, linkId, 0, 1));
+						dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
+					}
+				});
+			}
 		}
 	}, [gameOver]);
 
