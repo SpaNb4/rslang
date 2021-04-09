@@ -26,6 +26,7 @@ import {
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
 import { getUserDataFromLocalStorage } from './common/service';
 import { getCurrentDate, updateAttempts } from './common/helpers';
+import { resetGame } from './store/game/actions';
 
 function App() {
 	const dispatch = useDispatch();
@@ -82,6 +83,12 @@ function App() {
 			}
 		}
 	}, [date, userId, authorized]);
+
+	useEffect(() => {
+		if (!pathname.includes('game')) {
+			dispatch(resetGame());
+		}
+	}, [pathname]);
 
 	return (
 		<React.Fragment>

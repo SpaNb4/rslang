@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import sampleSize from 'lodash/sampleSize';
 import shuffle from 'lodash/shuffle';
 import HiddenChar from './HiddenChar';
 import ShuffledChar from './ShuffledChar';
@@ -20,8 +19,6 @@ import { finishGame } from '../../../store/game/actions';
 import { getStreak, playWrong, playCorrect } from '../../../common/helpers';
 import classes from './Kit.module.scss';
 
-const NUMBER_OF_WORDS = 5;
-
 const Kit = ({ wordData }) => {
 	const dispatch = useDispatch();
 	const randomWords = useSelector(getRandomWords);
@@ -35,7 +32,7 @@ const Kit = ({ wordData }) => {
 
 	useEffect(() => {
 		if (wordData.length) {
-			dispatch(setRandomWords(sampleSize(wordData, NUMBER_OF_WORDS).map((elem) => elem)));
+			dispatch(setRandomWords(wordData.map((elem) => elem)));
 		}
 	}, [wordData]);
 

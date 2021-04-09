@@ -95,11 +95,6 @@ const Game = (props) => {
 		}
 	}, [words, level]);
 
-	// useEffect(() => {
-	// 	setWords([]);
-	// 	// dispatch(updateGame(linkId));
-	// }, [linkId]);
-
 	useEffect(() => {
 		if (linkId) {
 			dispatch(updateGame(linkId));
@@ -134,6 +129,7 @@ const Game = (props) => {
 		if (gameOver) {
 			const name = userId || LocalStorageKeys.userStats;
 			const statsData = JSON.parse(localStorage.getItem(name)) || null;
+
 			const totalStatsData = statsData ? updateData(statsData, newStatsData) : [newStatsData];
 
 			localStorage.setItem(name, JSON.stringify(totalStatsData));
