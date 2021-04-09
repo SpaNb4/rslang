@@ -45,6 +45,7 @@ export const LocalStorageKeys = {
 	VocabularyPage: 'vocabularyPage',
 	VocabularySection: 'vocabularySection',
 	QuizAttempts: 'quizAttempts',
+	quiz: 'quiz',
 	date: 'date',
 	RemovedPages: 'removed-pages',
 	RemovedWordsCount: 'removed-words-count',

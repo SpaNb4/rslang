@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { differenceBy, sampleSize } from 'lodash';
+import _, { differenceBy, sampleSize } from 'lodash';
 import { getUserWords, getUserWordsLoading } from '../../store/dictionary/slices';
 import { getAnswers, getKeys, getSubmitted, getWords } from '../../store/quiz/slices';
 import { fetchKeys, reset, setWords, submit } from '../../store/quiz/actions';
@@ -10,10 +10,11 @@ import { globalClasses as c, LocalStorageKeys as l, questionsData, DefaultValues
 import classes from './Quiz.module.scss';
 import { FaUndoAlt } from 'react-icons/fa';
 import { getCurrentDate } from '../../common/helpers';
+import { getUserId } from '../../store/app/slices';
 
 const Quiz = () => {
 	const dispatch = useDispatch();
-
+	const userId = useSelector(getUserId);
 	const userWords = useSelector(getUserWords);
 	const loading = useSelector(getUserWordsLoading);
 	const words = useSelector(getWords);
@@ -57,28 +58,44 @@ const Quiz = () => {
 
 	useEffect(() => {
 		if (words.length) {
-			const localAttempts = localStorage.getItem(l.QuizAttempts) || null;
+			const data = JSON.parse(localStorage.getItem(userId)) || null;
 
-			if (localAttempts) {
-				setAttempts(localAttempts);
+			if (data) {
+				const index = _.findIndex(data, { name: l.quiz });
+
+				if (index >= 0) {
+					setAttempts(data[index].attempts);
+				} else {
+					localStorage.setItem(
+						userId,
+						JSON.stringify([...data, { name: l.quiz, attempts: d.attemptsNumber }])
+					);
+					setAttempts(d.attemptsNumber);
+				}
+			} else {
+				localStorage.setItem(userId, JSON.stringify([{ name: l.quiz, attempts: d.attemptsNumber }]));
 			}
 		}
-	}, [words, submitted]);
+	}, [words, submitted, userId]);
 
 	const handleSubmit = (evt) => {
 		evt.preventDefault();
 
 		setErrors(differenceBy(Object.values(answers), Object.values(keys)).length);
 
-		localStorage.setItem(l.QuizAttempts, attempts - 1);
+		const data = JSON.parse(localStorage.getItem(userId));
+		localStorage.setItem(
+			userId,
+			JSON.stringify(
+				_.map(data, (elem) => (elem.name === l.quiz ? { name: l.quiz, attempts: attempts - 1 } : elem))
+			)
+		);
 		dispatch(submit());
 	};
 
 	const handleClick = () => {
 		dispatch(reset());
 	};
-
-	console.log(loading);
 
 	return (
 		<main className={c.container}>

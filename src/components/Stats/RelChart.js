@@ -8,7 +8,6 @@ import 'react-vis/dist/style.css';
 
 const RelChart = () => {
 	const statsData = useSelector(getStatistics);
-	// const statsData = mockChartData;
 
 	const data = useMemo(() => {
 		if (statsData.length) {

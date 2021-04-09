@@ -25,7 +25,7 @@ import {
 } from './store/book/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
 import { getUserDataFromLocalStorage } from './common/service';
-import { getCurrentDate, updateAttempts } from './common/helpers';
+import { getCurrentDate } from './common/helpers';
 import { resetGame } from './store/game/actions';
 
 function App() {
@@ -70,9 +70,6 @@ function App() {
 			if (!localDate) {
 				localStorage.setItem(LocalStorageKeys.date, date);
 			} else if (localDate !== date) {
-				// clear local stats ad quiz attempts
-				updateAttempts();
-
 				if (authorized) {
 					localStorage.removeItem(userId);
 				} else {

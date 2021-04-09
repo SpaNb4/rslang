@@ -1,4 +1,4 @@
-import { ExternalUrls, LocalStorageKeys, DefaultValues } from './constants';
+import { ExternalUrls, DefaultValues } from './constants';
 import * as _ from 'lodash';
 import store from './../store/store';
 import correctSound from '../assets/audio/correct.wav';
@@ -23,10 +23,6 @@ export function handleVolume(wordData, setIsCurrentlyPlaying) {
 		};
 	}
 	_.first(audioList).play();
-}
-
-export function updateAttempts() {
-	localStorage.setItem(LocalStorageKeys.QuizAttempts, DefaultValues.attemptsNumber);
 }
 
 export function getStreak(array) {
