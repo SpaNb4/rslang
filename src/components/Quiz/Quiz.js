@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import _, { differenceBy, sampleSize } from 'lodash';
+import { getCurrentDate } from '../../store/app/slices';
 import { getUserWords, getUserWordsLoading } from '../../store/dictionary/slices';
 import { getAnswers, getKeys, getSubmitted, getWords } from '../../store/quiz/slices';
 import { fetchKeys, reset, setWords, submit } from '../../store/quiz/actions';
@@ -9,7 +10,6 @@ import DailyQuizItem from './QuizItem';
 import { globalClasses as c, LocalStorageKeys as l, questionsData, DefaultValues as d } from '../../common/constants';
 import classes from './Quiz.module.scss';
 import { FaUndoAlt } from 'react-icons/fa';
-import { getCurrentDate } from '../../common/helpers';
 import { getUserId } from '../../store/app/slices';
 
 const Quiz = () => {

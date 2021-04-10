@@ -13,7 +13,7 @@ import Quiz from './components/Quiz/Quiz';
 import Game from './components/Games/Game';
 import Stats from './components/Stats/Stats';
 
-import { getUserId, getToken, getAuthorized } from './store/app/slices';
+import { getUserId, getToken, getAuthorized, getCurrentDate } from './store/app/slices';
 import { saveUserAuthData } from './store/app/actions';
 import { fetchUserWords } from './store/dictionary/actions';
 import { fetchUserStatistics } from './store/statistics/actions';
@@ -25,7 +25,6 @@ import {
 } from './store/book/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
 import { getUserDataFromLocalStorage } from './common/service';
-import { getCurrentDate } from './common/helpers';
 import { resetGame } from './store/game/actions';
 
 function App() {

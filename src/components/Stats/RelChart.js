@@ -3,7 +3,7 @@ import { colors } from '../../common/constants';
 import { createChartData } from '../../common/helpers';
 import { useSelector } from 'react-redux';
 import { getStatistics } from '../../store/statistics/slices';
-import { FlexibleWidthXYPlot, LineSeries, XAxis, YAxis, VerticalGridLines, HorizontalGridLines } from 'react-vis';
+import { FlexibleWidthXYPlot, LineMarkSeries, XAxis, YAxis, VerticalGridLines, HorizontalGridLines } from 'react-vis';
 import 'react-vis/dist/style.css';
 
 const RelChart = () => {
@@ -27,7 +27,7 @@ const RelChart = () => {
 			<HorizontalGridLines />
 			<XAxis title="дата" />
 			<YAxis title="кол-во слов" />
-			<LineSeries data={data} />
+			<LineMarkSeries data={data} strokeWidth={8} />
 		</FlexibleWidthXYPlot>
 	) : (
 		<div>loading</div>

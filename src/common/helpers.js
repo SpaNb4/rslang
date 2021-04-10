@@ -98,6 +98,8 @@ export function updateData(prev, curr) {
 	return prev;
 }
 
-export function getCurrentDate() {
-	return new Date().toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
+export function getDate(date) {
+	return date
+		? new Date(date).toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' })
+		: new Date().toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
 }
