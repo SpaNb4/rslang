@@ -21,8 +21,8 @@ const AbsChart = () => {
 		<FlexibleWidthXYPlot height={300} width={600} color={colors.ocean} xType="ordinal">
 			<VerticalGridLines />
 			<HorizontalGridLines />
-			<XAxis title="дата" bottom={20} />
-			<YAxis title="кол-во слов" left={-20} />
+			<XAxis title="дата" />
+			<YAxis title="кол-во слов" />
 			<VerticalBarSeries data={data} barWidth={0.15} />
 		</FlexibleWidthXYPlot>
 	) : (

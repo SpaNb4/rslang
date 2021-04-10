@@ -27,7 +27,7 @@ const RelChart = () => {
 			<HorizontalGridLines />
 			<XAxis title="дата" />
 			<YAxis title="кол-во слов" />
-			<LineSeries data={data} уPadding={10} xPadding={50} />
+			<LineSeries data={data} />
 		</FlexibleWidthXYPlot>
 	) : (
 		<div>loading</div>
