@@ -97,6 +97,7 @@ const Game = (props) => {
 
 	useEffect(() => {
 		if (linkId) {
+			setWords([]);
 			dispatch(updateGame(linkId));
 		}
 	}, [pathname, linkId]);
