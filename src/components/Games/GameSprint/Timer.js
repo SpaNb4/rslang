@@ -4,7 +4,7 @@ import { PropTypes } from 'prop-types';
 import { getGameStart } from '../../../store/game/slices';
 import classes from './Timer.module.scss';
 
-const totalTime = 60;
+const totalTime = 20;
 const circlePixels = 175;
 
 export default function Timer({ onTimeout }) {
