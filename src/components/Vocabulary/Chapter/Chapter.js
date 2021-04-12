@@ -44,7 +44,6 @@ function Chapter() {
 
 	const filteredWords = filter[group] && filter[group].filter((word) => currentSection === word.optional.group);
 	const [isCurrentlyPlaying, setIsCurrentlyPlaying] = useState(false);
-	const WORDS_IN_SECTION_COUNT = 600;
 
 	let sectionName = '';
 	menu.dictionary.forEach((section) => {
@@ -119,17 +118,17 @@ function Chapter() {
 			</div>
 			{sectionList}
 
-			{group === 'trained' ? (
+			{filter[group].length && (
 				<div className={classes.progress}>
 					<h3 className={classes.progressTitel}>Прогресс изучения</h3>
 					<div className={classes.progressValue}>
-						Раздел - {filteredWords.length}/{WORDS_IN_SECTION_COUNT}
+						Раздел - {filteredWords.length}/{filter[group].length}
 					</div>
 					<div className={classes.progressValue}>
 						Страница - {currentPageData.length}/{DefaultValues.WordsPerPage}
 					</div>
 				</div>
-			) : null}
+			)}
 
 			{loading && <React.Fragment>Loading...</React.Fragment>}
 			{currentPageData.length ? (

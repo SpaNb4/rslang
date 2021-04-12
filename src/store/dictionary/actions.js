@@ -169,16 +169,18 @@ export const updateUserWord = (
 
 export const removeUserWord = (userId, token, wordData) => async (dispatch) => {
 	const isTokenExpired = checkIsTokenExpired();
+	const id = wordData._id || wordData.id;
+
 	if (!isTokenExpired) {
 		try {
 			await axios({
 				method: 'delete',
-				url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', wordData._id),
+				url: buildUrl(ExternalUrls.Users, '/', userId, '/words/', id),
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
 			});
-			dispatch(deleteUserWordSuccess(wordData._id));
+			dispatch(deleteUserWordSuccess(id));
 		} catch (error) {
 			dispatch(deleteUserWordFailure(error));
 		}
