@@ -4,7 +4,7 @@ import { PropTypes } from 'prop-types';
 import { getGameStart } from '../../../store/game/slices';
 import classes from './Timer.module.scss';
 
-const totalTime = 20;
+const totalTime = 60;
 const circlePixels = 175;
 
 export default function Timer({ onTimeout }) {
@@ -39,7 +39,7 @@ export default function Timer({ onTimeout }) {
 					r="28"
 					cx="30"
 					cy="30"
-					style={{ 'stroke-dashoffset': currentCirclePixels }}
+					style={{ strokeDashoffset: currentCirclePixels }}
 				></circle>
 			</svg>
 		</div>
