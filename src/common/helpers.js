@@ -1,4 +1,4 @@
-import { ExternalUrls, LocalStorageKeys, DefaultValues } from './constants';
+import { ExternalUrls, DefaultValues } from './constants';
 import * as _ from 'lodash';
 import store from './../store/store';
 import correctSound from '../assets/audio/correct.wav';
@@ -23,10 +23,6 @@ export function handleVolume(wordData, setIsCurrentlyPlaying) {
 		};
 	}
 	_.first(audioList).play();
-}
-
-export function updateAttempts() {
-	localStorage.setItem(LocalStorageKeys.QuizAttempts, DefaultValues.attemptsNumber);
 }
 
 export function getStreak(array) {
@@ -69,8 +65,22 @@ export function playChar() {
 	sound.play();
 }
 
-export function createChartData(arr) {
-	return arr.map((num, index) => ({ x: index, y: num }));
+export function createChartData(objArr) {
+	if (objArr.length && objArr.length < DefaultValues.minStatsDataLength) {
+		const firstDay = new Date(objArr[0].day);
+
+		const arr = new Array(DefaultValues.minStatsDataLength).fill(0).map((_, index) => {
+			var nextDay = new Date(firstDay);
+			nextDay.setDate(firstDay.getDate() + index);
+			return nextDay.toISOString().slice(5, 10);
+		});
+
+		return arr.map((elem, index) =>
+			objArr[index] ? { x: elem, y: objArr[index].learnedWords } : { x: elem, y: 0 }
+		);
+	} else {
+		return objArr.map((elem) => ({ x: elem.day.slice(5, 10), y: elem.learnedWords }));
+	}
 }
 
 export function updateData(prev, curr) {
@@ -86,4 +96,10 @@ export function updateData(prev, curr) {
 	}
 
 	return prev;
+}
+
+export function getDate(date) {
+	return date
+		? new Date(date).toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' })
+		: new Date().toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
 }

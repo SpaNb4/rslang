@@ -18,7 +18,6 @@ import {
 } from 'react-icons/fa';
 import classes from './Header.module.scss';
 import { menu, LocalStorageKeys } from './../../common/constants';
-import { updateAttempts } from '../../common/helpers';
 
 const quizLink = 'quiz';
 const statsLink = 'stats';
@@ -72,8 +71,6 @@ const Header = () => {
 
 	const handleLogout = useCallback(() => {
 		localStorage.removeItem(LocalStorageKeys.User);
-		updateAttempts();
-
 		dispatch(logout());
 		dispatch(menuToggle(true));
 	}, []);
@@ -140,17 +137,14 @@ const Header = () => {
 							<li className={classes.menuItem}>
 								<DropDown array={menu.games} name="Тренировки" icon={<FaTableTennis />} />
 							</li>
-							<li className={classes.menuItem}>
-								<Link
-									className={classes.menuLink}
-									to={`/${quizLink}`}
-									aria-current={currentQuiz}
-									// onClick={handleQuizReset}
-								>
-									<FaGraduationCap />
-									<span>Викторина</span>
-								</Link>
-							</li>
+							{auth && (
+								<li className={classes.menuItem}>
+									<Link className={classes.menuLink} to={`/${quizLink}`} aria-current={currentQuiz}>
+										<FaGraduationCap />
+										<span>Викторина</span>
+									</Link>
+								</li>
+							)}
 							<li className={classes.menuItem}>
 								<Link className={classes.menuLink} to={`/${statsLink}`} aria-current={currentStats}>
 									<FaPercentage />

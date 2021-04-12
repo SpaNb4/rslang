@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { PropTypes } from 'prop-types';
+
 import { useLocation } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { setUserWord, updateUserWord } from '../../store/dictionary/actions';
 import { startGame, updateGame } from '../../store/game/actions';
 import { updateStatistics } from '../../store/statistics/actions';
+import { fetchGameWords } from '../../store/book/actions';
 import { getAnswers, getCurrentLevel, getGameOver, getGameStart } from '../../store/game/slices';
+import { getToken, getUserId } from './../../store/app/slices';
+import { getAllWords, getGameWords } from './../../store/book/slices';
 
 import GameIntro from './GameIntro/GameIntro';
 import GameStats from './GameStats/GameStats';
@@ -19,10 +24,6 @@ import { LocalStorageKeys, menu, MIN_WORD_COUNT, DictionarySections } from '../.
 import { updateData } from '../../common/helpers';
 
 import classes from './Game.module.scss';
-import { PropTypes } from 'prop-types';
-import { getToken, getUserId } from './../../store/app/slices';
-import { fetchGameWords } from '../../store/book/actions';
-import { getAllWords, getGameWords } from './../../store/book/slices';
 
 const Game = (props) => {
 	const dispatch = useDispatch();
@@ -50,7 +51,7 @@ const Game = (props) => {
 	const [tmpPageCount, setTmpPageCount] = useState(2);
 
 	useEffect(() => {
-		if (propsState && propsState.words.length <= MIN_WORD_COUNT) {
+		if (propsState && propsState.words.length < MIN_WORD_COUNT) {
 			// not 0 page and words<=5, get words from prev page
 			if (propsState.page !== 0) {
 				dispatch(fetchGameWords(propsState.group, propsState.page - 1, userId, token, filterRules));
@@ -64,15 +65,18 @@ const Game = (props) => {
 			if (propsState) {
 				setWords(propsState.words);
 			}
-			// from menu
-			else if (!propsState) {
-				setWords(allWords);
-			}
 		}
-	}, []);
+	}, [words]);
 
 	useEffect(() => {
-		if (propsState && tmpWords.length <= MIN_WORD_COUNT) {
+		// from menu
+		if (!propsState && allWords.length) {
+			setWords(allWords);
+		}
+	}, [allWords]);
+
+	useEffect(() => {
+		if (propsState && tmpWords.length < MIN_WORD_COUNT) {
 			dispatch(fetchGameWords(propsState.group, propsState.page - tmpPageCount, userId, token, filterRules));
 			setTmpPageCount(tmpPageCount + 1);
 			setTmpWords([...tmpWords, ...prevPageWords]);
@@ -80,7 +84,7 @@ const Game = (props) => {
 	}, [prevPageWords]);
 
 	useEffect(() => {
-		if (propsState && tmpWords.length >= MIN_WORD_COUNT) {
+		if (propsState && tmpWords.length > MIN_WORD_COUNT) {
 			setWords(tmpWords);
 		}
 	}, [tmpWords]);
@@ -91,7 +95,12 @@ const Game = (props) => {
 		}
 	}, [words, level]);
 
-	useEffect(() => dispatch(updateGame(linkId)), [linkId]);
+	useEffect(() => {
+		if (linkId) {
+			setWords([]);
+			dispatch(updateGame(linkId));
+		}
+	}, [pathname, linkId]);
 
 	const renderGame = useCallback(
 		(data) => {
@@ -121,32 +130,35 @@ const Game = (props) => {
 		if (gameOver) {
 			const name = userId || LocalStorageKeys.userStats;
 			const statsData = JSON.parse(localStorage.getItem(name)) || null;
+
 			const totalStatsData = statsData ? updateData(statsData, newStatsData) : [newStatsData];
 
 			localStorage.setItem(name, JSON.stringify(totalStatsData));
 
 			// update word stats:
-			answers.correct.forEach((word) => {
-				const { wordDifficulty } = word;
 
-				if (wordDifficulty) {
-					dispatch(updateUserWord(userId, token, word, wordDifficulty, linkId, 1));
-				} else {
-					dispatch(setUserWord(userId, token, word, DictionarySections.Trained, linkId, 1));
-					dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
-				}
-			});
+			if (userId) {
+				answers.correct.forEach((word) => {
+					const { wordDifficulty } = word;
+					if (wordDifficulty) {
+						dispatch(updateUserWord(userId, token, word, wordDifficulty, linkId, 1));
+					} else {
+						dispatch(setUserWord(userId, token, word, DictionarySections.Trained, linkId, 1));
+						dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
+					}
+				});
 
-			answers.wrong.forEach((word) => {
-				const { wordDifficulty } = word;
+				answers.wrong.forEach((word) => {
+					const { wordDifficulty } = word;
 
-				if (wordDifficulty) {
-					dispatch(updateUserWord(userId, token, word, wordDifficulty, linkId, 0, 1));
-				} else {
-					dispatch(setUserWord(userId, token, word, DictionarySections.Trained, linkId, 0, 1));
-					dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
-				}
-			});
+					if (wordDifficulty) {
+						dispatch(updateUserWord(userId, token, word, wordDifficulty, linkId, 0, 1));
+					} else {
+						dispatch(setUserWord(userId, token, word, DictionarySections.Trained, linkId, 0, 1));
+						dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
+					}
+				});
+			}
 		}
 	}, [gameOver]);
 

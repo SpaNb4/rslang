@@ -13,7 +13,7 @@ import Quiz from './components/Quiz/Quiz';
 import Game from './components/Games/Game';
 import Stats from './components/Stats/Stats';
 
-import { getUserId, getToken, getAuthorized } from './store/app/slices';
+import { getUserId, getToken, getAuthorized, getCurrentDate } from './store/app/slices';
 import { saveUserAuthData } from './store/app/actions';
 import { fetchUserWords } from './store/dictionary/actions';
 import { fetchUserStatistics } from './store/statistics/actions';
@@ -25,13 +25,16 @@ import {
 } from './store/book/actions';
 import { globalClasses as c, LocalStorageKeys } from './common/constants';
 import { getUserDataFromLocalStorage } from './common/service';
+import { resetGame } from './store/game/actions';
 
 function App() {
 	const dispatch = useDispatch();
+	const { pathname } = useLocation();
+
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
 	const authorized = useSelector(getAuthorized);
-	const { pathname } = useLocation();
+	const date = useSelector(getCurrentDate);
 
 	useEffect(() => {
 		if (!authorized) {
@@ -44,19 +47,44 @@ function App() {
 					dispatch(saveUserAuthData(userAuthData));
 				}
 			}
-		}
-		if (authorized) {
-			dispatch(fetchUserWords(userId, token));
-			dispatch(fetchUserStatistics(userId, token));
-			const removedPages = getUserDataFromLocalStorage(LocalStorageKeys.RemovedPages, userId);
-			dispatch(updateRemovedPages(removedPages));
-			const removedWordsCount = getUserDataFromLocalStorage(LocalStorageKeys.RemovedWordsCount, userId);
-			dispatch(updateRemovedWordsCount(removedWordsCount));
-			dispatch(updateIsEditDictionaryButtons(true));
 		} else {
-			dispatch(fetchWords());
+			if (authorized) {
+				dispatch(fetchUserWords(userId, token));
+				dispatch(fetchUserStatistics(userId, token));
+				const removedPages = getUserDataFromLocalStorage(LocalStorageKeys.RemovedPages, userId);
+				dispatch(updateRemovedPages(removedPages));
+				const removedWordsCount = getUserDataFromLocalStorage(LocalStorageKeys.RemovedWordsCount, userId);
+				dispatch(updateRemovedWordsCount(removedWordsCount));
+				dispatch(updateIsEditDictionaryButtons(true));
+			} else {
+				dispatch(fetchWords());
+			}
 		}
 	}, [userId, token, authorized]);
+
+	useEffect(() => {
+		if (date) {
+			const localDate = localStorage.getItem(LocalStorageKeys.date) || null;
+
+			if (!localDate) {
+				localStorage.setItem(LocalStorageKeys.date, date);
+			} else if (localDate !== date) {
+				if (authorized) {
+					localStorage.removeItem(userId);
+				} else {
+					localStorage.removeItem(LocalStorageKeys.userStats);
+				}
+
+				localStorage.setItem(LocalStorageKeys.date, date);
+			}
+		}
+	}, [date, userId, authorized]);
+
+	useEffect(() => {
+		if (!pathname.includes('game')) {
+			dispatch(resetGame());
+		}
+	}, [pathname]);
 
 	return (
 		<React.Fragment>

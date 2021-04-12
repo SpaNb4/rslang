@@ -1,25 +1,37 @@
 import React, { useMemo } from 'react';
 import { colors } from '../../common/constants';
-import Chart from './Chart';
 import { createChartData } from '../../common/helpers';
-
-const wordsByDay = [50, 10, 56, 40, 48, 35, 45, 28, 56];
-const TotalNumberOfWords = 1000;
+import { useSelector } from 'react-redux';
+import { getStatistics } from '../../store/statistics/slices';
+import { FlexibleWidthXYPlot, LineMarkSeries, XAxis, YAxis, VerticalGridLines, HorizontalGridLines } from 'react-vis';
+import 'react-vis/dist/style.css';
 
 const RelChart = () => {
+	const statsData = useSelector(getStatistics);
+
 	const data = useMemo(() => {
-		const relWordsByDay = [];
+		if (statsData.length) {
+			const chartData = createChartData(statsData);
+			let sum = 0;
 
-		wordsByDay.reduce((acc, value) => {
-			const sum = acc + value;
-			relWordsByDay.push((sum * 1000) / TotalNumberOfWords);
-			return sum;
-		});
-
-		return createChartData(relWordsByDay);
+			return chartData.map((elem) => {
+				sum += elem.y;
+				return { x: elem.x, y: sum };
+			});
+		}
 	});
 
-	return <Chart data={data} color={colors.cardinal} />;
+	return data ? (
+		<FlexibleWidthXYPlot height={300} width={600} color={colors.cardinal} xType="ordinal">
+			<VerticalGridLines />
+			<HorizontalGridLines />
+			<XAxis title="дата" />
+			<YAxis title="кол-во слов" />
+			<LineMarkSeries data={data} strokeWidth={8} />
+		</FlexibleWidthXYPlot>
+	) : (
+		<div>loading</div>
+	);
 };
 
 export default RelChart;

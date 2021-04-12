@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { useHotkeys } from 'react-hotkeys-hook';
 import Timer from './Timer';
 import shuffle from 'lodash/shuffle';
+import map from 'lodash/map';
 
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 import { FaVolumeUp } from 'react-icons/fa';
@@ -129,7 +130,7 @@ function GameSprint({ wordData }) {
 				correct: corrAnswersWords,
 				wrong: wrongAnswersWords,
 				streak: maxStreak,
-				words: corrAnswersWords.concat(wrongAnswersWords),
+				words: map(wordData, 'word'),
 			})
 		);
 	}

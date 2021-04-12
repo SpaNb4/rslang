@@ -1,49 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { differenceBy, sampleSize } from 'lodash';
+import _, { differenceBy, sampleSize } from 'lodash';
+import { getCurrentDate } from '../../store/app/slices';
 import { getUserWords, getUserWordsLoading } from '../../store/dictionary/slices';
 import { getAnswers, getKeys, getSubmitted, getWords } from '../../store/quiz/slices';
 import { fetchKeys, reset, setWords, submit } from '../../store/quiz/actions';
 import Loader from '../Loader/Loader';
 import DailyQuizItem from './QuizItem';
 import { globalClasses as c, LocalStorageKeys as l, questionsData, DefaultValues as d } from '../../common/constants';
-import { updateAttempts } from '../../common/helpers';
 import classes from './Quiz.module.scss';
 import { FaUndoAlt } from 'react-icons/fa';
+import { getUserId } from '../../store/app/slices';
 
 const Quiz = () => {
 	const dispatch = useDispatch();
-
+	const userId = useSelector(getUserId);
 	const userWords = useSelector(getUserWords);
 	const loading = useSelector(getUserWordsLoading);
 	const words = useSelector(getWords);
 	const submitted = useSelector(getSubmitted);
 	const answers = useSelector(getAnswers);
 	const keys = useSelector(getKeys);
+	const date = useSelector(getCurrentDate);
 
-	const [date, setDate] = useState(null);
 	const [errors, setErrors] = useState(null);
 	const [variants, setVariants] = useState([]);
 	const [attempts, setAttempts] = useState(0);
 	const [showForm, setShowForm] = useState(false);
-
-	useEffect(() => {
-		setDate(new Date().toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' }));
-	}, []);
-
-	useEffect(() => {
-		if (date) {
-			const localDate = localStorage.getItem(l.QuizDate) || null;
-			if (!localDate) {
-				localStorage.setItem(l.QuizDate, date);
-			} else if (localDate !== date) {
-				console.log(localDate, date);
-
-				console.log(true);
-				updateAttempts();
-			}
-		}
-	}, [date]);
 
 	useEffect(() => {
 		let timeout;
@@ -75,22 +58,38 @@ const Quiz = () => {
 
 	useEffect(() => {
 		if (words.length) {
-			const localAttempts = localStorage.getItem(l.QuizAttempts) || null;
+			const data = JSON.parse(localStorage.getItem(userId)) || null;
 
-			if (localAttempts) {
-				setAttempts(localAttempts);
+			if (data) {
+				const index = _.findIndex(data, { name: l.quiz });
+
+				if (index >= 0) {
+					setAttempts(data[index].attempts);
+				} else {
+					localStorage.setItem(
+						userId,
+						JSON.stringify([...data, { name: l.quiz, attempts: d.attemptsNumber }])
+					);
+					setAttempts(d.attemptsNumber);
+				}
 			} else {
-				updateAttempts();
+				localStorage.setItem(userId, JSON.stringify([{ name: l.quiz, attempts: d.attemptsNumber }]));
 			}
 		}
-	}, [words, submitted]);
+	}, [words, submitted, userId]);
 
 	const handleSubmit = (evt) => {
 		evt.preventDefault();
 
 		setErrors(differenceBy(Object.values(answers), Object.values(keys)).length);
 
-		localStorage.setItem(l.QuizAttempts, attempts - 1);
+		const data = JSON.parse(localStorage.getItem(userId));
+		localStorage.setItem(
+			userId,
+			JSON.stringify(
+				_.map(data, (elem) => (elem.name === l.quiz ? { name: l.quiz, attempts: attempts - 1 } : elem))
+			)
+		);
 		dispatch(submit());
 	};
 
@@ -107,7 +106,7 @@ const Quiz = () => {
 					<Loader />
 				) : (
 					<>
-						{userWords.length ? (
+						{userWords.length && date ? (
 							<>
 								<span className={classes.date}>{date}</span>
 								{words.length && variants.length ? (

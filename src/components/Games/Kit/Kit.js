@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { PropTypes } from 'prop-types';
-import sampleSize from 'lodash/sampleSize';
 import shuffle from 'lodash/shuffle';
 import HiddenChar from './HiddenChar';
 import ShuffledChar from './ShuffledChar';
@@ -13,13 +12,12 @@ import {
 	addAnswer,
 	increaseFocusedIndex,
 	reduceFocusedIndex,
+	resetGame,
 } from '../../../store/kit/actions';
-import { evtKeys, globalClasses as c } from '../../../common/constants';
+import { evtKeys } from '../../../common/constants';
 import { finishGame } from '../../../store/game/actions';
 import { getStreak, playWrong, playCorrect } from '../../../common/helpers';
 import classes from './Kit.module.scss';
-
-const NUMBER_OF_WORDS = 5;
 
 const Kit = ({ wordData }) => {
 	const dispatch = useDispatch();
@@ -34,7 +32,7 @@ const Kit = ({ wordData }) => {
 
 	useEffect(() => {
 		if (wordData.length) {
-			dispatch(setRandomWords(sampleSize(wordData, NUMBER_OF_WORDS).map((elem) => elem)));
+			dispatch(setRandomWords(wordData.map((elem) => elem)));
 		}
 	}, [wordData]);
 
@@ -75,6 +73,7 @@ const Kit = ({ wordData }) => {
 			};
 
 			dispatch(finishGame(result));
+			dispatch(resetGame());
 		}
 	}, [currWordIndex]);
 
@@ -127,7 +126,12 @@ const Kit = ({ wordData }) => {
 							</div>
 						</>
 					)}
-					<button className={c.button} aria-label="skip word" onClick={handleSkipWord} type="button">
+					<button
+						className={classes.skipButton}
+						aria-label="skip word"
+						onClick={handleSkipWord}
+						type="button"
+					>
 						Пропустить слово
 					</button>
 				</div>
