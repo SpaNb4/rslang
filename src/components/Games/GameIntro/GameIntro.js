@@ -8,8 +8,10 @@ import classes from './GameIntro.module.scss';
 import { fetchWords } from '../../../store/book/actions';
 import _ from 'lodash';
 import { setLevel } from '../../../store/game/actions';
+import { getToken, getUserId, getAuthorized } from '../../../store/app/slices';
+import { fetchGameWords } from '../../../store/book/actions';
 
-const GameIntro = ({ name, rules, settings }) => {
+const GameIntro = ({ name, rules, settings, filterRules }) => {
 	const dispatch = useDispatch();
 	const defaultLevel = 0;
 	const gameStart = useSelector(getGameStart);
@@ -18,20 +20,27 @@ const GameIntro = ({ name, rules, settings }) => {
 	const [isStart, setIsStart] = useState(false);
 	const FROM_BOOK = 'from book';
 
+	const userId = useSelector(getUserId);
+	const token = useSelector(getToken);
+	const authorized = useSelector(getAuthorized);
+
 	const handleChange = (evt) => {
 		setValue(evt.target.value);
 	};
 
 	useEffect(() => {
 		if (isStart) {
-			if (value !== FROM_BOOK) {
+			if (value !== FROM_BOOK && !authorized) {
 				dispatch(setLevel(value));
 				dispatch(fetchWords(value, _.random(0, 29)));
+			} else if (value !== FROM_BOOK && authorized) {
+				dispatch(setLevel(value));
+				dispatch(fetchGameWords(value, null, userId, token, filterRules));
 			} else {
 				dispatch(setLevel(FROM_BOOK));
 			}
 		}
-	}, [isStart, value]);
+	}, [isStart, value, token, userId, authorized]);
 
 	const handleSubmit = (evt) => {
 		evt.preventDefault();
@@ -74,6 +83,7 @@ GameIntro.propTypes = {
 	name: PropTypes.string,
 	rules: PropTypes.string,
 	settings: PropTypes.bool,
+	filterRules: PropTypes.string,
 };
 
 export default GameIntro;

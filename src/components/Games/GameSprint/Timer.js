@@ -39,7 +39,7 @@ export default function Timer({ onTimeout }) {
 					r="28"
 					cx="30"
 					cy="30"
-					style={{ 'stroke-dashoffset': currentCirclePixels }}
+					style={{ strokeDashoffset: currentCirclePixels }}
 				></circle>
 			</svg>
 		</div>

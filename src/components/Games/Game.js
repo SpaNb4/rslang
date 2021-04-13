@@ -9,8 +9,8 @@ import { startGame, updateGame } from '../../store/game/actions';
 import { updateStatistics } from '../../store/statistics/actions';
 import { fetchGameWords } from '../../store/book/actions';
 import { getAnswers, getCurrentLevel, getGameOver, getGameStart } from '../../store/game/slices';
-import { getToken, getUserId } from './../../store/app/slices';
-import { getAllWords, getGameWords } from './../../store/book/slices';
+import { getToken, getUserId, getAuthorized } from '../../store/app/slices';
+import { getAllWords, getGameWords } from '../../store/book/slices';
 
 import GameIntro from './GameIntro/GameIntro';
 import GameStats from './GameStats/GameStats';
@@ -49,6 +49,7 @@ const Game = (props) => {
 	});
 	const [tmpWords, setTmpWords] = useState(propsState ? propsState.words : null);
 	const [tmpPageCount, setTmpPageCount] = useState(2);
+	const authorized = useSelector(getAuthorized);
 
 	useEffect(() => {
 		if (propsState && propsState.words.length < MIN_WORD_COUNT) {
@@ -65,15 +66,18 @@ const Game = (props) => {
 			if (propsState) {
 				setWords(propsState.words);
 			}
+			if (!propsState && prevPageWords) {
+				setWords(prevPageWords);
+			}
 		}
-	}, [words]);
+	}, [words, prevPageWords]);
 
 	useEffect(() => {
 		// from menu
-		if (!propsState && allWords.length) {
+		if (!propsState && !authorized && allWords.length) {
 			setWords(allWords);
 		}
-	}, [allWords]);
+	}, [allWords, authorized]);
 
 	useEffect(() => {
 		if (propsState && tmpWords.length < MIN_WORD_COUNT) {
@@ -139,9 +143,11 @@ const Game = (props) => {
 
 			if (userId) {
 				answers.correct.forEach((word) => {
-					const { wordDifficulty } = word;
-					if (wordDifficulty) {
-						dispatch(updateUserWord(userId, token, word, wordDifficulty, linkId, 1));
+					if (word.userWord || word.difficulty) {
+						const difficulty = word.userWord ? word.userWord.difficulty : word.difficulty;
+						if (difficulty) {
+							dispatch(updateUserWord(userId, token, word, difficulty, linkId, 1));
+						}
 					} else {
 						dispatch(setUserWord(userId, token, word, DictionarySections.Trained, linkId, 1));
 						dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
@@ -149,10 +155,11 @@ const Game = (props) => {
 				});
 
 				answers.wrong.forEach((word) => {
-					const { wordDifficulty } = word;
-
-					if (wordDifficulty) {
-						dispatch(updateUserWord(userId, token, word, wordDifficulty, linkId, 0, 1));
+					if (word.userWord || word.difficulty) {
+						const difficulty = word.userWord ? word.userWord.difficulty : word.difficulty;
+						if (difficulty) {
+							dispatch(updateUserWord(userId, token, word, difficulty, linkId, 0, 1));
+						}
 					} else {
 						dispatch(setUserWord(userId, token, word, DictionarySections.Trained, linkId, 0, 1));
 						dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
@@ -172,7 +179,12 @@ const Game = (props) => {
 						{isGameStart ? (
 							<GameOverLay> {renderGame(words)} </GameOverLay>
 						) : (
-							<GameIntro name={linkName} settings={pathname.includes('true')} rules={rules} />
+							<GameIntro
+								name={linkName}
+								settings={pathname.includes('true')}
+								rules={rules}
+								filterRules={filterRules}
+							/>
 						)}
 					</>
 				)

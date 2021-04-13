@@ -53,7 +53,10 @@ function Chapter() {
 	});
 
 	const currentPageData =
-		filteredWords && filteredWords.slice(offset, offset + DefaultValues.WordsPerPage).map((el) => el.optional);
+		filteredWords &&
+		filteredWords
+			.slice(offset, offset + DefaultValues.WordsPerPage)
+			.map((el) => ({ ...el.optional, difficulty: el.difficulty }));
 
 	useEffect(() => {
 		setPageCount(Math.ceil(filteredWords.length / DefaultValues.WordsPerPage));
