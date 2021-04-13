@@ -25,6 +25,11 @@ import { updateData } from '../../common/helpers';
 
 import classes from './Game.module.scss';
 
+import savannaImg from '../../assets/images/savannaImg.png';
+import conImg from '../../assets/images/conImg.png';
+import sprintImg from '../../assets/images/sprintImg.png';
+import audioImg from '../../assets/images/audioImg.jpg';
+
 const Game = (props) => {
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
@@ -117,6 +122,18 @@ const Game = (props) => {
 		},
 		[linkId]
 	);
+	const makeBackground = useCallback(() => {
+		switch (linkName) {
+			case 'Аудиовызов':
+				return audioImg;
+			case 'Конструктор':
+				return conImg;
+			case 'Саванна':
+				return savannaImg;
+			case 'Спринт':
+				return sprintImg;
+		}
+	}, [linkId]);
 
 	useEffect(() => {
 		const newStatsData = {
@@ -170,7 +187,7 @@ const Game = (props) => {
 				) : (
 					<>
 						{isGameStart ? (
-							<GameOverLay> {renderGame(words)} </GameOverLay>
+							<GameOverLay backgroundUrl={makeBackground()}> {renderGame(words)} </GameOverLay>
 						) : (
 							<GameIntro name={linkName} settings={pathname.includes('true')} rules={rules} />
 						)}
