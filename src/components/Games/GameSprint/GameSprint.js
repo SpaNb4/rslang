@@ -29,11 +29,11 @@ const numberOfShips = 3;
 const numbersOfHeroes = 3;
 const heroImages = [zoidberg, professor, leela, bender];
 
-function streakToShips(streak) {
+export function streakToShips(streak) {
 	return streak % (numberOfShips + 1);
 }
 
-function streakToHeroes(streak) {
+export function streakToHeroes(streak) {
 	return Math.min(numbersOfHeroes, Math.floor(streak / (numberOfShips + 1)));
 }
 
