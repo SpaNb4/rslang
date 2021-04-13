@@ -66,7 +66,7 @@ const Game = (props) => {
 			if (propsState) {
 				setWords(propsState.words);
 			}
-			if (!propsState && prevPageWords) {
+			if (!propsState && prevPageWords.length) {
 				setWords(prevPageWords);
 			}
 		}
