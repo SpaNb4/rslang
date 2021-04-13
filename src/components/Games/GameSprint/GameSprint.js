@@ -137,15 +137,19 @@ function GameSprint({ wordData }) {
 	}
 	useHotkeys(
 		'left',
-		function () {
-			onClickButtonInvalid();
+		function (e) {
+			if (!e.repeat) {
+				onClickButtonInvalid();
+			}
 		},
 		[objectWordData]
 	);
 	useHotkeys(
 		'right',
-		function () {
-			onClickButtonValid();
+		function (e) {
+			if (!e.repeat) {
+				onClickButtonValid();
+			}
 		},
 		[objectWordData]
 	);
