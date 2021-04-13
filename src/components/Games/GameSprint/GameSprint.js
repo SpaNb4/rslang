@@ -30,17 +30,11 @@ const numbersOfHeroes = 3;
 const heroImages = [zoidberg, professor, leela, bender];
 
 function streakToShips(streak) {
-	if (streak === 0) {
-		return 0;
-	}
-	return ((streak - 1) % numberOfShips) + 1;
+	return streak % (numberOfShips + 1);
 }
 
 function streakToHeroes(streak) {
-	if (streak === 0) {
-		return 0;
-	}
-	return Math.min(numbersOfHeroes, Math.floor((streak - 1) / numberOfShips));
+	return Math.min(numbersOfHeroes, Math.floor(streak / (numberOfShips + 1)));
 }
 
 function GameSprint({ wordData }) {
