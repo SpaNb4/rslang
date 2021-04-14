@@ -18,7 +18,7 @@ const AbsChart = () => {
 	const statsData = useSelector(getStatistics);
 	const data = useMemo(() => statsData.length && createChartData(statsData));
 	return data ? (
-		<FlexibleWidthXYPlot height={300} width={600} color={colors.ocean} xType="ordinal">
+		<FlexibleWidthXYPlot height={300} width={500} color={colors.ocean} xType="ordinal">
 			<VerticalGridLines />
 			<HorizontalGridLines />
 			<XAxis title="дата" />
