@@ -12,7 +12,7 @@ import Button from '../../Button/Button';
 import GamesList from './../../GamesList/GamesList';
 import { getRemovedPages } from '../../../store/book/slices';
 import { updateRemovedPagesForGroup, updateRemovedWordsCountForPage } from '../../../store/book/actions';
-import { saveRemovedPagesToLocalStorage } from '../../../common/service';
+import { saveRemovedPagesToLocalStorage, saveRemovedWordsCountToLocalStorage } from '../../../common/service';
 
 function Chapter() {
 	const pageArr = JSON.parse(localStorage.getItem(LocalStorageKeys.VocabularyPage)) || [
@@ -74,6 +74,7 @@ function Chapter() {
 			saveRemovedPagesToLocalStorage(userId, word.group, word.page, 'restore');
 		}
 		dispatch(updateRemovedWordsCountForPage({ group: word.group, page: word.page, action: 'decrement' }));
+		saveRemovedWordsCountToLocalStorage(userId, word.group, word.page, 'decrement');
 	}
 
 	function handlePageClick(data) {

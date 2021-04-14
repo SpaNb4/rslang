@@ -60,48 +60,81 @@ export function saveRemovedPagesToLocalStorage(userId, group, page, action) {
 	localStorage.setItem(LocalStorageKeys.RemovedPages, JSON.stringify(removedPages));
 }
 
-export function saveRemovedWordsCountToLocalStorage(userId, group, page) {
+export function saveRemovedWordsCountToLocalStorage(userId, group, page, action) {
 	let data = JSON.parse(localStorage.getItem(LocalStorageKeys.RemovedWordsCount) || null);
 	let removedWordsCount;
-	if (data) {
-		removedWordsCount = data;
-		if (removedWordsCount[userId]) {
-			if (removedWordsCount[userId][group]) {
-				if (removedWordsCount[userId][group][page]) {
-					removedWordsCount = {
-						...removedWordsCount,
-						[userId]: {
-							...removedWordsCount[userId],
-							[group]: {
-								...removedWordsCount[userId][group],
-								[page]: removedWordsCount[userId][group][page] + 1,
+
+	if (action === 'increment') {
+		if (data) {
+			removedWordsCount = data;
+			if (removedWordsCount[userId]) {
+				if (removedWordsCount[userId][group]) {
+					if (removedWordsCount[userId][group][page]) {
+						removedWordsCount = {
+							...removedWordsCount,
+							[userId]: {
+								...removedWordsCount[userId],
+								[group]: {
+									...removedWordsCount[userId][group],
+									[page]: removedWordsCount[userId][group][page] + 1,
+								},
 							},
-						},
-					};
+						};
+					} else {
+						removedWordsCount = {
+							...removedWordsCount,
+							[userId]: {
+								...removedWordsCount[userId],
+								[group]: { ...removedWordsCount[userId][group], [page]: 1 },
+							},
+						};
+					}
 				} else {
 					removedWordsCount = {
 						...removedWordsCount,
-						[userId]: {
-							...removedWordsCount[userId],
-							[group]: { ...removedWordsCount[userId][group], [page]: 1 },
-						},
+						[userId]: { ...removedWordsCount[userId], [group]: { [page]: 1 } },
 					};
 				}
 			} else {
 				removedWordsCount = {
 					...removedWordsCount,
-					[userId]: { ...removedWordsCount[userId], [group]: { [page]: 1 } },
+					[userId]: { [group]: { [page]: 1 } },
 				};
 			}
 		} else {
-			removedWordsCount = {
-				...removedWordsCount,
-				[userId]: { [group]: { [page]: 1 } },
-			};
+			removedWordsCount = { [userId]: { [group]: { [page]: 1 } } };
 		}
-	} else {
-		removedWordsCount = { [userId]: { [group]: { [page]: 1 } } };
 	}
+	if (action === 'decrement') {
+		if (data) {
+			removedWordsCount = data;
+			if (removedWordsCount[userId]) {
+				if (removedWordsCount[userId][group]) {
+					if (removedWordsCount[userId][group][page] > 0) {
+						removedWordsCount = {
+							...removedWordsCount,
+							[userId]: {
+								...removedWordsCount[userId],
+								[group]: {
+									...removedWordsCount[userId][group],
+									[page]: removedWordsCount[userId][group][page] - 1,
+								},
+							},
+						};
+					} else {
+						removedWordsCount = {
+							...removedWordsCount,
+							[userId]: {
+								...removedWordsCount[userId],
+								[group]: { ...removedWordsCount[userId][group], [page]: 0 },
+							},
+						};
+					}
+				}
+			}
+		}
+	}
+
 	localStorage.setItem(LocalStorageKeys.RemovedWordsCount, JSON.stringify(removedWordsCount));
 }
 

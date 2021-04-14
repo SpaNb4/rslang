@@ -102,7 +102,7 @@ export const setUserWord = (
 						action: 'increment',
 					})
 				);
-				saveRemovedWordsCountToLocalStorage(userId, +wordData.group, +wordData.page);
+				saveRemovedWordsCountToLocalStorage(userId, +wordData.group, +wordData.page, 'increment');
 			} else {
 				dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
 			}
@@ -169,7 +169,7 @@ export const updateUserWord = (
 						action: 'increment',
 					})
 				);
-				saveRemovedWordsCountToLocalStorage(userId, +wordData.group, +wordData.page);
+				saveRemovedWordsCountToLocalStorage(userId, +wordData.group, +wordData.page, 'increment');
 			}
 		} catch (error) {
 			dispatch(createUserWordFailure(error));
