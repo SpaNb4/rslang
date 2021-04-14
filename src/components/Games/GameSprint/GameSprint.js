@@ -40,54 +40,67 @@ export function streakToHeroes(streak) {
 function GameSprint({ wordData }) {
 	const dispatch = useDispatch();
 	const [result, setResult] = useState(null);
-	const [objectWordData, setObjectWordData] = useState([]);
-	const [corrAnswersWords, setCorrAnswersWords] = useState([]);
-	const [wrongAnswersWords, setWrongAnswersWords] = useState([]);
+	const [objectWordData, setObjectWordData] = useState({
+		currentWord: null,
+		corrAnswersWords: [],
+		wrongAnswersWords: [],
+		currentStreak: 0,
+		maxStreak: 0,
+		currentWordTranslation: null,
+		showValidPair: false,
+		word: null,
+	});
 	const [wordIndices, setWordIndices] = useState(shuffle(Array.from(Array(wordData.length).keys())));
-	const [currentStreak, setCurrentStreak] = useState(0);
-	const [maxStreak, setMaxStreak] = useState(0);
-
-	if (!objectWordData) {
-		generateObjectWordData();
-	}
 
 	useEffect(() => {
-		if (wordData.length) {
+		if (objectWordData.currentWord === null && wordData.length) {
 			generateObjectWordData();
 		}
-	}, [wordData]);
+	}, [wordData, objectWordData]);
+
+	function handleCorrectWord() {
+		const nextStreak = objectWordData.currentStreak + 1;
+		setObjectWordData({
+			...objectWordData,
+			currentWord: null,
+			corrAnswersWords: [...objectWordData.corrAnswersWords, objectWordData.word],
+			currentStreak: nextStreak,
+			maxStreak: Math.max(objectWordData.maxStreak, nextStreak),
+		});
+		setResult(true);
+		playCorrect();
+	}
+
+	function handleIncorrectWord() {
+		setObjectWordData({
+			...objectWordData,
+			currentWord: null,
+			wrongAnswersWords: [...objectWordData.wrongAnswersWords, objectWordData.word],
+			currentStreak: 0,
+		});
+		setResult(false);
+		playWrong();
+	}
 
 	function onClickButtonValid() {
-		if (objectWordData.showValidPair) {
-			setResult(true);
-			setCorrAnswersWords([...corrAnswersWords, objectWordData.word]);
-			const nextStreak = currentStreak + 1;
-			setCurrentStreak(nextStreak);
-			setMaxStreak(Math.max(maxStreak, nextStreak));
-			playCorrect();
-		} else {
-			setResult(false);
-			setWrongAnswersWords([...wrongAnswersWords, objectWordData.word]);
-			setCurrentStreak(0);
-			playWrong();
+		if (objectWordData.currentWord === null) {
+			return;
 		}
-		setObjectWordData(null);
+		if (objectWordData.showValidPair) {
+			handleCorrectWord();
+		} else {
+			handleIncorrectWord();
+		}
 	}
 	function onClickButtonInvalid() {
-		if (!objectWordData.showValidPair) {
-			setResult(true);
-			setCorrAnswersWords([...corrAnswersWords, objectWordData.word]);
-			const nextStreak = currentStreak + 1;
-			setCurrentStreak(nextStreak);
-			setMaxStreak(Math.max(maxStreak, nextStreak));
-			playCorrect();
-		} else {
-			setResult(false);
-			setWrongAnswersWords([...wrongAnswersWords, objectWordData.word]);
-			setCurrentStreak(0);
-			playWrong();
+		if (objectWordData.currentWord === null) {
+			return;
 		}
-		setObjectWordData(null);
+		if (!objectWordData.showValidPair) {
+			handleCorrectWord();
+		} else {
+			handleIncorrectWord();
+		}
 	}
 
 	function generateObjectWordData() {
@@ -111,6 +124,7 @@ function GameSprint({ wordData }) {
 			currentWordTranslation = wordData[invalidWordIndex].wordTranslate;
 		}
 		setObjectWordData({
+			...objectWordData,
 			currentWord: currentWord,
 			currentWordTranslation: currentWordTranslation,
 			showValidPair: showValidPair,
@@ -121,9 +135,9 @@ function GameSprint({ wordData }) {
 	function handleGameOver() {
 		dispatch(
 			finishGame({
-				correct: corrAnswersWords,
-				wrong: wrongAnswersWords,
-				streak: maxStreak,
+				correct: objectWordData.corrAnswersWords,
+				wrong: objectWordData.wrongAnswersWords,
+				streak: objectWordData.maxStreak,
 				words: map(wordData, 'word'),
 			})
 		);
@@ -154,13 +168,13 @@ function GameSprint({ wordData }) {
 		[objectWordData]
 	);
 
-	const currentHeroes = streakToHeroes(currentStreak);
-	const currentShips = currentHeroes < numbersOfHeroes ? streakToShips(currentStreak) : numberOfShips;
+	const currentHeroes = streakToHeroes(objectWordData.currentStreak);
+	const currentShips = currentHeroes < numbersOfHeroes ? streakToShips(objectWordData.currentStreak) : numberOfShips;
 
 	return (
-		objectWordData !== null && (
-			<div className={classes.position}>
-				<Timer onTimeout={handleGameOver} />
+		<div className={classes.position}>
+			<Timer onTimeout={handleGameOver} />
+			{objectWordData.currentWord !== null && (
 				<div className={classes.sprint}>
 					{result !== null && (result ? <div>Ура!</div> : <div>Упс, ошибка</div>)}
 					{result === null && <div>Удачи!</div>}
@@ -208,8 +222,8 @@ function GameSprint({ wordData }) {
 						</div>
 					</div>
 				</div>
-			</div>
-		)
+			)}
+		</div>
 	);
 }
 
