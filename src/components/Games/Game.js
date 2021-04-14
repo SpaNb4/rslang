@@ -77,17 +77,19 @@ const Game = (props) => {
 
 	useEffect(() => {
 		// from menu - authorized
-		if (!propsState && prevPageWords.length >= MIN_WORD_COUNT) {
-			setWords(prevPageWords);
-		} else {
-			if (pageFromMenu !== 0) {
-				setPageFromMenu(pageFromMenu - 1);
-				dispatch(fetchGameWords(level, pageFromMenu - 1, userId, token, filterRules));
-			} else if (pageFromMenu === 0) {
-				setIsEnoughWords(false);
+		if (authorized) {
+			if (!propsState && prevPageWords.length >= MIN_WORD_COUNT) {
+				setWords(prevPageWords);
+			} else {
+				if (pageFromMenu !== 0) {
+					setPageFromMenu(pageFromMenu - 1);
+					dispatch(fetchGameWords(level, pageFromMenu - 1, userId, token, filterRules));
+				} else if (pageFromMenu === 0) {
+					setIsEnoughWords(false);
+				}
 			}
 		}
-	}, [prevPageWords]);
+	}, [prevPageWords, authorized]);
 
 	useEffect(() => {
 		// from menu - unauthorized
