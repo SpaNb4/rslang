@@ -50,6 +50,7 @@ const Game = (props) => {
 	const [tmpWords, setTmpWords] = useState(propsState ? propsState.words : null);
 	const [tmpPageCount, setTmpPageCount] = useState(2);
 	const authorized = useSelector(getAuthorized);
+	const [pageFromMenu, setPageFromMenu] = useState(29);
 
 	useEffect(() => {
 		if (propsState && propsState.words.length < MIN_WORD_COUNT) {
@@ -70,13 +71,21 @@ const Game = (props) => {
 	}, [words]);
 
 	useEffect(() => {
-		if (!propsState && prevPageWords.length) {
+		// from menu - authorized
+		if (!propsState && prevPageWords.length >= MIN_WORD_COUNT) {
 			setWords(prevPageWords);
+		} else {
+			if (pageFromMenu !== 0) {
+				setPageFromMenu(pageFromMenu - 1);
+				dispatch(fetchGameWords(level, pageFromMenu - 1, userId, token, filterRules));
+			} else if (pageFromMenu === 0) {
+				setIsEnoughWords(false);
+			}
 		}
 	}, [prevPageWords]);
 
 	useEffect(() => {
-		// from menu
+		// from menu - unauthorized
 		if (!propsState && !authorized && allWords.length) {
 			setWords(allWords);
 		}

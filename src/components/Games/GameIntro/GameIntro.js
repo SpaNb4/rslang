@@ -35,7 +35,7 @@ const GameIntro = ({ name, rules, settings, filterRules }) => {
 				dispatch(fetchWords(value, _.random(0, 29)));
 			} else if (value !== FROM_BOOK && authorized) {
 				dispatch(setLevel(value));
-				dispatch(fetchGameWords(value, null, userId, token, filterRules));
+				dispatch(fetchGameWords(value, 29, userId, token, filterRules));
 			} else {
 				dispatch(setLevel(FROM_BOOK));
 			}
