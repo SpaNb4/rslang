@@ -55,6 +55,10 @@ button {
 	max-width: 1600px;
 	padding: 30px 6.7%;
 	margin: 0 auto auto;
+
+	@include resolution(desktop) {
+		max-width: 100%;
+	}
 }
 
 .section-title {

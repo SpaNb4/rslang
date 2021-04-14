@@ -291,38 +291,4 @@ export const colors = {
 
 export const UPLOAD_PRESET = 'gfyjsw4r';
 
-export const mockChartData = [
-	{
-		day: '2021-04-04',
-		learnedWords: 35,
-	},
-	{
-		day: '2021-04-05',
-		learnedWords: 25,
-	},
-	{
-		day: '2021-04-06',
-		learnedWords: 78,
-	},
-	{
-		day: '2021-04-07',
-		learnedWords: 65,
-	},
-	{
-		day: '2021-04-09',
-		learnedWords: 54,
-	},
-	{
-		day: '2021-04-10',
-		learnedWords: 73,
-	},
-	{
-		day: '2021-04-11',
-		learnedWords: 65,
-	},
-	{
-		day: '2021-04-12',
-		learnedWords: 54,
-	},
-];
 export const ONE_SECONDS_IN_MS = 1000;
