@@ -23,6 +23,7 @@
 	background-size: 120px 100%;
 	box-shadow: $box-shadow-2;
 	border-radius: 16px;
+	color: $color-text;
 
 	@include resolution(big-desktop) {
 		display: block;
