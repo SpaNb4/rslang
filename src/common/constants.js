@@ -28,7 +28,7 @@ import zapp from '../assets/images/zapp.png';
 
 // URLs
 export const ExternalUrls = {
-	Video: 'https://www.youtube.com/embed/DHQngnnHE_0',
+	Video: 'https://www.youtube.com/embed/fxF056rHeuc',
 	Root: 'https://rslang-app-be.herokuapp.com/',
 	Words: 'https://rslang-app-be.herokuapp.com/words',
 	Users: 'https://rslang-app-be.herokuapp.com/users',
