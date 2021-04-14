@@ -174,55 +174,53 @@ function GameSprint({ wordData }) {
 	return (
 		<div className={classes.position}>
 			<Timer onTimeout={handleGameOver} />
-			{objectWordData.currentWord !== null && (
-				<div className={classes.sprint}>
-					{result !== null && (result ? <div>Ура!</div> : <div>Упс, ошибка</div>)}
-					{result === null && <div>Удачи!</div>}
-					<div className={classes.border}>
-						<div className={classes.iconposition}>
-							{[...Array(numberOfShips).keys()].map((i) => {
-								return (
-									<img
-										key={i}
-										src={ship}
-										alt="ship"
-										className={i < currentShips ? classes.icon : classes.icon_hidden}
-									/>
-								);
-							})}
+			<div className={classes.sprint}>
+				{result !== null && (result ? <div>Ура!</div> : <div>Упс, ошибка</div>)}
+				{result === null && <div>Удачи!</div>}
+				<div className={classes.border}>
+					<div className={classes.iconposition}>
+						{[...Array(numberOfShips).keys()].map((i) => {
+							return (
+								<img
+									key={i}
+									src={ship}
+									alt="ship"
+									className={i < currentShips ? classes.icon : classes.icon_hidden}
+								/>
+							);
+						})}
+					</div>
+					<div className={classes.imgposition}>
+						{[...Array(heroImages.length).keys()].map((i) => {
+							return (
+								<img
+									key={i}
+									src={heroImages[i]}
+									alt="image"
+									className={i < currentHeroes + 1 ? classes.img : classes.img_hidden}
+								/>
+							);
+						})}
+					</div>
+					<button type="button" className={classes.buttonaudio} onClick={handlePlaySound}>
+						<FaVolumeUp />
+					</button>
+					<div>{objectWordData.currentWord !== null && objectWordData.currentWord}</div>
+					<div>{objectWordData.currentWordTranslation !== null && objectWordData.currentWordTranslation}</div>
+					<div className={classes.buttoncontainer}>
+						<div className={classes.buttoninvalid} onClick={onClickButtonInvalid}>
+							Неверно
 						</div>
-						<div className={classes.imgposition}>
-							{[...Array(heroImages.length).keys()].map((i) => {
-								return (
-									<img
-										key={i}
-										src={heroImages[i]}
-										alt="image"
-										className={i < currentHeroes + 1 ? classes.img : classes.img_hidden}
-									/>
-								);
-							})}
-						</div>
-						<button type="button" className={classes.buttonaudio} onClick={handlePlaySound}>
-							<FaVolumeUp />
-						</button>
-						<div>{objectWordData.currentWord}</div>
-						<div>{objectWordData.currentWordTranslation}</div>
-						<div className={classes.buttoncontainer}>
-							<div className={classes.buttoninvalid} onClick={onClickButtonInvalid}>
-								Неверно
-							</div>
-							<div className={classes.buttonvalid} onClick={onClickButtonValid}>
-								Верно
-							</div>
-						</div>
-						<div className={classes.buttonArrow}>
-							<BsArrowLeft className={classes.arrow} onClick={onClickButtonInvalid}></BsArrowLeft>
-							<BsArrowRight className={classes.arrow} onClick={onClickButtonValid}></BsArrowRight>
+						<div className={classes.buttonvalid} onClick={onClickButtonValid}>
+							Верно
 						</div>
 					</div>
+					<div className={classes.buttonArrow}>
+						<BsArrowLeft className={classes.arrow} onClick={onClickButtonInvalid}></BsArrowLeft>
+						<BsArrowRight className={classes.arrow} onClick={onClickButtonValid}></BsArrowRight>
+					</div>
 				</div>
-			)}
+			</div>
 		</div>
 	);
 }
