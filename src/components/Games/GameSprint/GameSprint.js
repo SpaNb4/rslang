@@ -205,9 +205,13 @@ function GameSprint({ wordData }) {
 					<button type="button" className={classes.buttonaudio} onClick={handlePlaySound}>
 						<FaVolumeUp />
 					</button>
-					<div>{objectWordData.currentWord !== null ? objectWordData.currentWord : ' '}</div>
+					<div>{objectWordData.currentWord !== null ? objectWordData.currentWord : <div>&nbsp;</div>}</div>
 					<div>
-						{objectWordData.currentWordTranslation !== null ? objectWordData.currentWordTranslation : ' '}
+						{objectWordData.currentWordTranslation !== null ? (
+							objectWordData.currentWordTranslation
+						) : (
+							<div>&nbsp;</div>
+						)}
 					</div>
 					<div className={classes.buttoncontainer}>
 						<div className={classes.buttoninvalid} onClick={onClickButtonInvalid}>
