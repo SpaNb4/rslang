@@ -80,7 +80,7 @@ const Game = (props) => {
 		if (authorized) {
 			if (!propsState && prevPageWords.length >= MIN_WORD_COUNT) {
 				setWords(prevPageWords);
-			} else {
+			} else if (!propsState && prevPageWords.length < MIN_WORD_COUNT) {
 				if (pageFromMenu !== 0) {
 					setPageFromMenu(pageFromMenu - 1);
 					dispatch(fetchGameWords(level, pageFromMenu - 1, userId, token, filterRules));
