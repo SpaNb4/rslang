@@ -22,7 +22,7 @@ const RelChart = () => {
 	});
 
 	return data ? (
-		<FlexibleWidthXYPlot height={300} width={600} color={colors.cardinal} xType="ordinal">
+		<FlexibleWidthXYPlot height={300} width={500} color={colors.cardinal} xType="ordinal">
 			<VerticalGridLines />
 			<HorizontalGridLines />
 			<XAxis title="дата" />

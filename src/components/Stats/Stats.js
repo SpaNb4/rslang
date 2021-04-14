@@ -30,45 +30,43 @@ const Stats = () => {
 
 	return (
 		<main className={c.container}>
-			<div className={classes.root}>
-				{loading ? (
-					<Loader />
-				) : (
-					<>
-						<h2 className={c.pageTitle}>Статистика на {today}</h2>
-						<div className={classes.wrapper}>
-							<Table />
+			{loading ? (
+				<Loader />
+			) : (
+				<>
+					<h2 className={c.pageTitle}>Статистика на {today}</h2>
+					<div className={classes.wrapper}>
+						<Table />
+					</div>
+					{auth && (
+						<div className={classes.statsWrapper}>
+							{stats.length ? (
+								<>
+									<h2 className={c.pageTitle}>Статистика с {date}</h2>
+									<h4 className={classes.sub}>График №1</h4>
+									<p className={classes.info}>
+										<FaInfoCircle />
+										количество изученных слов
+									</p>
+									<div className={classes.wrapper}>
+										<AbsChart />
+									</div>
+									<h4 className={classes.sub}>График №2</h4>
+									<p className={classes.info}>
+										<FaInfoCircle />
+										увеличение количества изученных слов
+									</p>
+									<div className={classes.wrapper}>
+										<RelChart />
+									</div>
+								</>
+							) : (
+								<Loader />
+							)}
 						</div>
-						{auth && (
-							<div className={classes.statsWrapper}>
-								{stats.length ? (
-									<>
-										<h2 className={c.pageTitle}>Статистика с {date}</h2>
-										<div className={classes.wrapper}>
-											<h4 className={classes.sub}>График №1</h4>
-											<p className={classes.info}>
-												<FaInfoCircle />
-												количество изученных слов
-											</p>
-											<AbsChart />
-										</div>
-										<div className={classes.wrapper}>
-											<h4 className={classes.sub}>График №2</h4>
-											<p className={classes.info}>
-												<FaInfoCircle />
-												увеличение количества изученных слов
-											</p>
-											<RelChart />
-										</div>
-									</>
-								) : (
-									<Loader />
-								)}
-							</div>
-						)}
-					</>
-				)}
-			</div>
+					)}
+				</>
+			)}
 		</main>
 	);
 };

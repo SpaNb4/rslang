@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { changeVolume } from './../../../store/game/actions';
 import { getVolume } from './../../../store/game/slices';
 
-function GameOverlay({ children }) {
+function GameOverlay({ children, backgroundUrl }) {
 	const dispatch = useDispatch();
 	const [isFullScreen, setIsFullScreen] = useState(false);
 	const volume = useSelector(getVolume);
@@ -24,7 +24,11 @@ function GameOverlay({ children }) {
 	}
 
 	return (
-		<div className={classes.fullScreenWrapper} ref={overlayRef}>
+		<div
+			className={classes.fullScreenWrapper}
+			ref={overlayRef}
+			style={{ backgroundImage: 'url(' + backgroundUrl + ')' }}
+		>
 			{children}
 			<div onClick={fullScreenClickHandler} className={classes.fullScreenBtn}>
 				{isFullScreen ? <BsFullscreenExit /> : <BsArrowsFullscreen />}
@@ -38,6 +42,7 @@ function GameOverlay({ children }) {
 
 GameOverlay.propTypes = {
 	children: PropTypes.node.isRequired,
+	backgroundUrl: PropTypes.string,
 };
 
 export default GameOverlay;
