@@ -8,9 +8,9 @@ function Pagination({ handlePageClick, pageCount, startPage, removedPages, force
 		(pageIndex) => {
 			if (removedPages) {
 				if (removedPages && removedPages.includes(pageIndex - 1)) {
-					return `disabled-${pageIndex}`;
+					return `disabled`;
 				}
-				return `active-${pageIndex}`;
+				return `active`;
 			}
 		},
 		[removedPages]
