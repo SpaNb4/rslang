@@ -61,9 +61,11 @@
 	border: 2px solid $color-botticelli;
 	border-radius: 8px;
 	transition: $transition;
+	font-size: 14px;
 
 	&::placeholder {
 		color: $color-emperor;
+		font-size: 14px;
 	}
 
 	&:focus::placeholder {
@@ -89,6 +91,7 @@
 }
 
 .button {
+	font-size: 14px;
 	width: 100%;
 	margin-top: 20px;
 	padding: 10px;
@@ -96,29 +99,12 @@
 	border-radius: 8px;
 	background-color: $color-white;
 	box-shadow: $box-shadow-2;
-
-	&[aria-label='register'] {
-		color: $color-primary;
-
-		&:hover {
-			color: $color-white;
-			background-color: $color-primary;
-			border-color: $color-primary;
-		}
-	}
-
-	&[aria-label='login'] {
-		color: $color-secondary;
-
-		&:hover {
-			color: $color-white;
-			background-color: $color-secondary;
-			border-color: $color-secondary;
-		}
-	}
+	color: $color-primary;
 
 	&:hover {
 		color: $color-white;
+		background-color: $color-primary;
+		border-color: $color-primary;
 	}
 }
 

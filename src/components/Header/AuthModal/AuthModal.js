@@ -160,7 +160,7 @@ const AuthModal = ({ hidden, buttonName, callback, reg, title, handleClose, erro
 						</React.Fragment>
 					)}
 
-					<button type="submit" aria-label={callback.name} className={classes.button}>
+					<button type="submit" className={classes.button}>
 						{buttonName}
 					</button>
 				</form>
