@@ -50,7 +50,7 @@ function Chapter() {
 	const words = useSelector(getAllWords);
 	const aggregatedWords = useSelector(getAggregatedWords);
 	const { group } = useParams();
-	const [page, setPage] = useState(localStorage.getItem(LocalStorageKeys.BookPage) || '1');
+	const [page, setPage] = useState(localStorage.getItem(LocalStorageKeys.BookPage) || '0');
 	const userId = useSelector(getUserId);
 	const token = useSelector(getToken);
 	const authorized = useSelector(getAuthorized);
