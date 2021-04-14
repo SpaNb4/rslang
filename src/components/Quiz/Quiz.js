@@ -18,7 +18,7 @@ const Quiz = () => {
 	const userWords = useSelector(getUserWords);
 	const loading = useSelector(getUserWordsLoading);
 	const words = useSelector(getWords);
-	const submitted = useSelector(getSubmitted);
+	const submitted = useSelector(getSubmitted); // TODO: try another
 	const answers = useSelector(getAnswers);
 	const keys = useSelector(getKeys);
 	const date = useSelector(getCurrentDate);
@@ -59,7 +59,6 @@ const Quiz = () => {
 	useEffect(() => {
 		if (words.length) {
 			const data = JSON.parse(localStorage.getItem(userId)) || null;
-
 			if (data) {
 				const index = _.findIndex(data, { name: l.quiz });
 
@@ -74,6 +73,7 @@ const Quiz = () => {
 				}
 			} else {
 				localStorage.setItem(userId, JSON.stringify([{ name: l.quiz, attempts: d.attemptsNumber }]));
+				setAttempts(d.attemptsNumber);
 			}
 		}
 	}, [words, submitted, userId]);
