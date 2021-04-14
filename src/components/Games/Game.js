@@ -66,11 +66,14 @@ const Game = (props) => {
 			if (propsState) {
 				setWords(propsState.words);
 			}
-			if (!propsState && prevPageWords.length) {
-				setWords(prevPageWords);
-			}
 		}
-	}, [words, prevPageWords]);
+	}, [words]);
+
+	useEffect(() => {
+		if (!propsState && prevPageWords.length) {
+			setWords(prevPageWords);
+		}
+	}, [prevPageWords]);
 
 	useEffect(() => {
 		// from menu
