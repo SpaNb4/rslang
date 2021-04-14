@@ -77,11 +77,11 @@ function Chapter() {
 		if (authorized && removedWordsCountForGroup && removedWordsCountForGroup[page] === DefaultValues.WordsPerPage) {
 			const currentPage = +page;
 			if (typeof removedPages !== 'undefined') {
-				dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: currentPage }));
-				saveRemovedPagesToLocalStorage(userId, +group - 1, currentPage);
+				dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: currentPage, action: 'remove' }));
+				saveRemovedPagesToLocalStorage(userId, +group - 1, currentPage, 'remove');
 			} else {
-				dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: currentPage }));
-				saveRemovedPagesToLocalStorage(userId, +group - 1, currentPage);
+				dispatch(updateRemovedPagesForGroup({ group: +group - 1, page: currentPage, action: 'remove' }));
+				saveRemovedPagesToLocalStorage(userId, +group - 1, currentPage, 'remove');
 			}
 
 			let nextPage;

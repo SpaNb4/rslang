@@ -95,7 +95,13 @@ export const setUserWord = (
 					],
 				});
 				dispatch(fetchAggregatedWords(wordData.group, wordData.page, userId, token, filterRules));
-				dispatch(updateRemovedWordsCountForPage({ group: +wordData.group, page: +wordData.page }));
+				dispatch(
+					updateRemovedWordsCountForPage({
+						group: +wordData.group,
+						page: +wordData.page,
+						action: 'increment',
+					})
+				);
 				saveRemovedWordsCountToLocalStorage(userId, +wordData.group, +wordData.page);
 			} else {
 				dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
@@ -156,7 +162,13 @@ export const updateUserWord = (
 					],
 				});
 				dispatch(fetchAggregatedWords(wordData.group, wordData.page, userId, token, filterRules));
-				dispatch(updateRemovedWordsCountForPage({ group: +wordData.group, page: +wordData.page }));
+				dispatch(
+					updateRemovedWordsCountForPage({
+						group: +wordData.group,
+						page: +wordData.page,
+						action: 'increment',
+					})
+				);
 				saveRemovedWordsCountToLocalStorage(userId, +wordData.group, +wordData.page);
 			}
 		} catch (error) {

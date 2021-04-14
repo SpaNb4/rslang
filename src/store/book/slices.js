@@ -11,3 +11,5 @@ export const getIsTranslationOn = (store) => getSlice(store).isTranslationOn;
 export const getIsEditDictionaryButtons = (store) => getSlice(store).isEditDictionaryButtons;
 export const getRemovedPagesForGroup = (store) => getSlice(store).removedPages[getCurrentGroup(store)];
 export const getRemovedWordsCountForGroup = (store) => getSlice(store).removedWordsCount[getCurrentGroup(store)];
+export const getRemovedPages = (store) => getSlice(store).removedPages;
+export const getRemovedWordsCount = (store) => getSlice(store).removedWordsCount;

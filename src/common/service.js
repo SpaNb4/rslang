@@ -12,31 +12,51 @@ export function checkIsTokenExpired() {
 	}
 }
 
-export function saveRemovedPagesToLocalStorage(userId, group, page) {
+export function saveRemovedPagesToLocalStorage(userId, group, page, action) {
 	let data = localStorage.getItem(LocalStorageKeys.RemovedPages) || null;
 	let removedPages;
-	if (data) {
-		removedPages = JSON.parse(data);
-		if (removedPages[userId]) {
-			if (removedPages[userId][group]) {
-				if (!removedPages[userId][group].includes(page)) {
-					removedPages = {
-						...removedPages,
-						[userId]: {
-							...removedPages[userId],
-							[group]: _.sortBy([...removedPages[userId][group], page]),
-						},
-					};
+
+	if (action === 'remove') {
+		if (data) {
+			removedPages = JSON.parse(data);
+			if (removedPages[userId]) {
+				if (removedPages[userId][group]) {
+					if (!removedPages[userId][group].includes(page)) {
+						removedPages = {
+							...removedPages,
+							[userId]: {
+								...removedPages[userId],
+								[group]: _.sortBy([...removedPages[userId][group], page]),
+							},
+						};
+					}
+				} else {
+					removedPages = { ...removedPages, [userId]: { ...removedPages[userId], [group]: [page] } };
 				}
 			} else {
-				removedPages = { ...removedPages, [userId]: { ...removedPages[userId], [group]: [page] } };
+				removedPages = { ...removedPages, [userId]: { [group]: [page] } };
 			}
 		} else {
-			removedPages = { ...removedPages, [userId]: { [group]: [page] } };
+			removedPages = { [userId]: { [group]: [page] } };
 		}
-	} else {
-		removedPages = { [userId]: { [group]: [page] } };
 	}
+
+	if (action === 'restore') {
+		if (data) {
+			removedPages = JSON.parse(data);
+			if (removedPages[userId]) {
+				if (removedPages[userId][group]) {
+					const pages = [...removedPages[userId][group]];
+					const pageIndex = pages.indexOf(page);
+					if (pageIndex !== -1) {
+						pages.splice(pageIndex, 1);
+						removedPages = { ...removedPages, [userId]: { ...removedPages[userId], [group]: pages } };
+					}
+				}
+			}
+		}
+	}
+
 	localStorage.setItem(LocalStorageKeys.RemovedPages, JSON.stringify(removedPages));
 }
 

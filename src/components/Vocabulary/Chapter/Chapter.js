@@ -10,6 +10,9 @@ import ChapterItem from '../../ChapterItem/ChapterItem';
 import classes from './Chapter.module.scss';
 import Button from '../../Button/Button';
 import GamesList from './../../GamesList/GamesList';
+import { getRemovedPages } from '../../../store/book/slices';
+import { updateRemovedPagesForGroup, updateRemovedWordsCountForPage } from '../../../store/book/actions';
+import { saveRemovedPagesToLocalStorage } from '../../../common/service';
 
 function Chapter() {
 	const pageArr = JSON.parse(localStorage.getItem(LocalStorageKeys.VocabularyPage)) || [
@@ -58,12 +61,19 @@ function Chapter() {
 			.slice(offset, offset + DefaultValues.WordsPerPage)
 			.map((el) => ({ ...el.optional, difficulty: el.difficulty }));
 
+	const removedPages = useSelector(getRemovedPages);
+
 	useEffect(() => {
 		setPageCount(Math.ceil(filteredWords.length / DefaultValues.WordsPerPage));
 	}, [filteredWords]);
 
 	function restoreWordToBook(word) {
 		dispatch(removeUserWord(userId, token, word));
+		if (removedPages[word.group].includes(word.page)) {
+			dispatch(updateRemovedPagesForGroup({ group: word.group, page: word.page, action: 'restore' }));
+			saveRemovedPagesToLocalStorage(userId, word.group, word.page, 'restore');
+		}
+		dispatch(updateRemovedWordsCountForPage({ group: word.group, page: word.page, action: 'decrement' }));
 	}
 
 	function handlePageClick(data) {
