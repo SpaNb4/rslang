@@ -3,9 +3,9 @@ import { PropTypes } from 'prop-types';
 import { ourTeammates, globalClasses as c } from '../../common/constants';
 import classes from './Team.module.scss';
 
-const TeamCard = ({ name, src, quote }) => {
+const TeamCard = ({ name, src, quote, githubLink }) => {
 	return (
-		<div className={classes.card}>
+		<a className={classes.card} href={githubLink} target="blank">
 			<div className={classes.avatar}>
 				<img src={src} alt={`фотография ${name}`} />
 			</div>
@@ -13,7 +13,7 @@ const TeamCard = ({ name, src, quote }) => {
 				<h5 className={classes.name}>{name}</h5>
 				<p>{quote}</p>
 			</div>
-		</div>
+		</a>
 	);
 };
 
@@ -36,6 +36,7 @@ TeamCard.propTypes = {
 	src: PropTypes.string,
 	quote: PropTypes.string,
 	fine: PropTypes.string,
+	githubLink: PropTypes.string,
 };
 
 export default Team;
