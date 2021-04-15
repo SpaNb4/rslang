@@ -75,9 +75,16 @@ export function createChartData(objArr) {
 			return nextDay.toISOString().slice(5, 10);
 		});
 
-		return arr.map((elem, index) =>
-			objArr[index] ? { x: elem, y: objArr[index].learnedWords } : { x: elem, y: 0 }
-		);
+		const year = new Date().getFullYear();
+
+		return arr.map((elem) => {
+			let data = { x: elem, y: 0 };
+			const stats = _.find(objArr, { day: `${year}-${elem}` });
+			if (stats) {
+				data = { x: elem, y: stats.learnedWords };
+			}
+			return data;
+		});
 	} else {
 		return objArr.map((elem) => ({ x: elem.day.slice(5, 10), y: elem.learnedWords }));
 	}
