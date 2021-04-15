@@ -95,6 +95,20 @@ function Chapter() {
 		}
 	}
 
+	useEffect(() => {
+		if (filteredWords.length && !currentPageData.length) {
+			setPage(page - 1);
+
+			pageArr.forEach((el) => {
+				if (el.section === currentSection) {
+					el.page = page - 1;
+				}
+			});
+
+			localStorage.setItem(LocalStorageKeys.VocabularyPage, JSON.stringify(pageArr));
+		}
+	}, [pageCount]);
+
 	function sectionClickHandler(index) {
 		setCurrentSection(index);
 
