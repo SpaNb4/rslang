@@ -174,11 +174,10 @@ const Game = (props) => {
 
 			if (userId) {
 				answers.correct.forEach((word) => {
-					if (word.userWord || word.difficulty) {
-						const difficulty = word.userWord ? word.userWord.difficulty : word.difficulty;
-						if (difficulty) {
-							dispatch(updateUserWord(userId, token, word, difficulty, linkId, 1));
-						}
+					if (word.userWord) {
+						dispatch(updateUserWord(userId, token, word.userWord, word.userWord.difficulty, linkId, 1));
+					} else if (word.difficulty) {
+						dispatch(updateUserWord(userId, token, word, word.difficulty, linkId, 1));
 					} else {
 						dispatch(setUserWord(userId, token, word, DictionarySections.Trained, linkId, 1));
 						dispatch(updateStatistics(userId, token, { learnedWords: 1 }));
@@ -186,11 +185,10 @@ const Game = (props) => {
 				});
 
 				answers.wrong.forEach((word) => {
-					if (word.userWord || word.difficulty) {
-						const difficulty = word.userWord ? word.userWord.difficulty : word.difficulty;
-						if (difficulty) {
-							dispatch(updateUserWord(userId, token, word, difficulty, linkId, 0, 1));
-						}
+					if (word.userWord) {
+						dispatch(updateUserWord(userId, token, word.userWord, word.userWord.difficulty, linkId, 0, 1));
+					} else if (word.difficulty) {
+						dispatch(updateUserWord(userId, token, word, word.difficulty, linkId, 0, 1));
 					} else {
 						dispatch(setUserWord(userId, token, word, DictionarySections.Trained, linkId, 0, 1));
 						dispatch(updateStatistics(userId, token, { learnedWords: 1 }));

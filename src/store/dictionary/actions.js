@@ -125,19 +125,37 @@ export const updateUserWord = (
 ) => async (dispatch) => {
 	const isTokenExpired = checkIsTokenExpired();
 	if (!isTokenExpired) {
-		const wordId = wordData.id || wordData._id;
+		const wordId = wordData.id || wordData._id || wordData.optional._id;
 		if (game) {
-			correctAnswers = wordData[game] ? wordData[game].correct + correctAnswers : correctAnswers;
-			wrongAnswers = wordData[game] ? wordData[game].wrong + wrongAnswers : wrongAnswers;
-			wordData = {
-				...wordData,
+			if (wordData.optional) {
+				correctAnswers = wordData.optional[game]
+					? wordData.optional[game].correct + correctAnswers
+					: correctAnswers;
+				wrongAnswers = wordData.optional[game] ? wordData.optional[game].wrong + wrongAnswers : wrongAnswers;
+			} else {
+				correctAnswers = wordData[game] ? wordData[game].correct + correctAnswers : correctAnswers;
+				wrongAnswers = wordData[game] ? wordData[game].wrong + wrongAnswers : wrongAnswers;
+			}
+			let gameData = {
 				[game]: {
 					trained: true,
 					correct: correctAnswers,
 					wrong: wrongAnswers,
 				},
 			};
+			if (wordData.optional) {
+				wordData = {
+					...wordData.optional,
+					...gameData,
+				};
+			} else {
+				wordData = {
+					...wordData,
+					...gameData,
+				};
+			}
 		}
+
 		try {
 			const { data } = await axios({
 				method: 'put',
