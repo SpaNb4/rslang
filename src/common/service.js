@@ -55,6 +55,8 @@ export function saveRemovedPagesToLocalStorage(userId, group, page, action) {
 				}
 			}
 		}
+	} else {
+		removedPages = { [userId]: { [group]: [] } };
 	}
 
 	localStorage.setItem(LocalStorageKeys.RemovedPages, JSON.stringify(removedPages));
@@ -102,7 +104,13 @@ export function saveRemovedWordsCountToLocalStorage(userId, group, page, action)
 				};
 			}
 		} else {
-			removedWordsCount = { [userId]: { [group]: { [page]: 1 } } };
+			removedWordsCount = {
+				[userId]: {
+					[group]: {
+						[page]: 1,
+					},
+				},
+			};
 		}
 	}
 	if (action === 'decrement') {
@@ -132,6 +140,14 @@ export function saveRemovedWordsCountToLocalStorage(userId, group, page, action)
 					}
 				}
 			}
+		} else {
+			removedWordsCount = {
+				[userId]: {
+					[group]: {
+						[page]: 0,
+					},
+				},
+			};
 		}
 	}
 

@@ -69,7 +69,11 @@ function Chapter() {
 
 	function restoreWordToBook(word) {
 		dispatch(removeUserWord(userId, token, word));
-		if (removedPages[word.group].includes(word.page)) {
+		if (
+			removedPages[word.group] &&
+			removedPages[word.group].length &&
+			removedPages[word.group].includes(word.page)
+		) {
 			dispatch(updateRemovedPagesForGroup({ group: word.group, page: word.page, action: 'restore' }));
 			saveRemovedPagesToLocalStorage(userId, word.group, word.page, 'restore');
 		}
