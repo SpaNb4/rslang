@@ -1,0 +1,38 @@
+.wrapper {
+	display: grid;
+	justify-content: center;
+	align-items: center;
+	grid-template-columns: 65% auto;
+	grid-gap: 40px;
+
+	@include resolution(big-desktop) {
+		grid-template-columns: 55% auto;
+		grid-gap: 30px;
+	}
+
+	@include resolution(desktop) {
+		grid-template-columns: 1fr;
+		grid-gap: 30px;
+	}
+}
+
+.video {
+	position: relative;
+	max-width: 853px;
+	overflow: hidden;
+	padding-bottom: 56.25%;
+	height: 0;
+
+	iframe {
+		position: absolute;
+		left: 0;
+		top: 0;
+		height: 100%;
+		width: 100%;
+	}
+}
+
+.text {
+	text-align: center;
+	font-size: 1.15em;
+}

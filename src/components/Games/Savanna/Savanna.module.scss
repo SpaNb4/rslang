@@ -1,0 +1,80 @@
+.savanna {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	color: $color-black;
+	// background-color: $color-sea-buckthorn;
+	// background-image: linear-gradient(315deg, $color-sea-buckthorn 0%, $color-school-bus-yellow 74%);
+}
+
+.currWord {
+	position: absolute;
+	top: 0;
+	font-size: 36px;
+}
+
+.wordList {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin: 40px 0;
+}
+
+.wordListItem {
+	padding: 10px 10px;
+	font-size: 20px;
+
+	&:hover {
+		cursor: pointer;
+		box-shadow: 0 0 3px 2px $color-emperor;
+		background: rgba(255, 255, 255, 0.25);
+		transition: box-shadow 0.5s, background-color 0.5s;
+	}
+
+	span {
+		font-size: 14px;
+	}
+}
+
+.wrongWord {
+	background: $color-chestnut;
+	border-radius: 5px;
+
+	&:hover {
+		cursor: default;
+		box-shadow: none;
+		background: $color-chestnut;
+	}
+}
+
+.correctWord {
+	background: $color-apple;
+	border-radius: 5px;
+
+	&:hover {
+		cursor: default;
+		box-shadow: none;
+		background: $color-apple;
+	}
+}
+
+.lives {
+	display: flex;
+	gap: 5px;
+	font-size: 20px;
+	position: absolute;
+	top: 20px;
+	right: 130px;
+
+	.heart {
+		color: $color-white;
+	}
+
+	.redHeart {
+		color: $color-red;
+	}
+}

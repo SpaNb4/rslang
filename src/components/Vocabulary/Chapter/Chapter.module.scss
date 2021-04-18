@@ -1,0 +1,40 @@
+.chapter {
+	.chapterTitleContainer {
+		padding: 16px 0;
+		text-align: center;
+	}
+
+	.sectionList {
+		display: flex;
+		justify-content: center;
+		gap: 10px;
+		cursor: pointer;
+	}
+
+	.sectionListTitle {
+		text-align: center;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+
+	.noWords {
+		text-align: center;
+		margin-top: 50px;
+		min-height: 52vh;
+	}
+
+	.activeSection {
+		border-bottom: 2px solid $color-primary;
+		padding-bottom: 5px;
+	}
+
+	.progress {
+		text-align: center;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+
+	.progressValue {
+		margin-top: 10px;
+	}
+}

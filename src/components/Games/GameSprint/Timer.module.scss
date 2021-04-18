@@ -1,0 +1,32 @@
+.numbers {
+	line-height: 80px;
+	color: $color-black;
+	display: inline-block;
+	font-size: 30px;
+}
+
+.countdown {
+	position: relative;
+	text-align: center;
+	width: 80px;
+	height: 80px;
+	left: 100px;
+}
+
+.svg {
+	position: absolute;
+	top: -10px;
+	left: -10px;
+	width: 80px;
+	height: 80px;
+	transform: rotateY(-180deg) rotateZ(-90deg);
+
+	.circle {
+		stroke-dasharray: 175px;
+		stroke-dashoffset: 0;
+		stroke-linecap: round;
+		stroke-width: 2px;
+		stroke: $color-black;
+		fill: none;
+	}
+}

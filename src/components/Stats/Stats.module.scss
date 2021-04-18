@@ -1,0 +1,62 @@
+.sub {
+	display: block;
+	text-align: center;
+	font-size: 1.1rem;
+	font-weight: bold;
+}
+
+.info {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	padding: 25px 0;
+	font-size: 0.9em;
+
+	svg {
+		fill: $color-primary;
+	}
+}
+
+.wrapper {
+	width: 100%;
+	overflow-x: auto;
+	margin: 0 auto 60px;
+}
+
+.statsWrapper {
+	min-height: 200px;
+	position: relative;
+}
+
+.table {
+	margin: 0 auto;
+	border: 2px solid $color-secondary;
+	border-collapse: collapse;
+	font-size: 0.9rem;
+
+	td,
+	th {
+		padding: 10px 0.5rem;
+		border: 2px solid $color-secondary;
+	}
+
+	td {
+		text-align: left;
+
+		&:not(:first-child) {
+			text-align: right;
+		}
+	}
+}
+
+.header {
+	color: $color-primary;
+	font-weight: 600;
+	background-color: rgba($color-secondary, 0.3);
+}
+
+.result {
+	font-weight: 600;
+	background-color: rgba($color-cardinal, 0.3);
+}

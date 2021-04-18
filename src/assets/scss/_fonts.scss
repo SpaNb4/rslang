@@ -1,0 +1,17 @@
+@mixin font($fname, $fstyle, $fweight, $furl) {
+	@font-face {
+		font-family: $fname;
+		font-style: $fstyle;
+		font-weight: $fweight;
+		src: local($fname), url($furl) format('woff2');
+		font-display: swap;
+	}
+}
+
+@include font('Manrope', normal, 200, '../fonts/manrope-v4-latin_cyrillic-200.woff2');
+@include font('Manrope', normal, 300, '../fonts/manrope-v4-latin_cyrillic-300.woff2');
+@include font('Manrope', normal, 400, '../fonts/manrope-v4-latin_cyrillic-regular.woff2');
+@include font('Manrope', normal, 500, '../fonts/manrope-v4-latin_cyrillic-500.woff2');
+@include font('Manrope', normal, 600, '../fonts/manrope-v4-latin_cyrillic-600.woff2');
+@include font('Manrope', normal, 700, '../fonts/manrope-v4-latin_cyrillic-500.woff2');
+@include font('Manrope', normal, 800, '../fonts/manrope-v4-latin_cyrillic-600.woff2');

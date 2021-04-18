@@ -1,0 +1,146 @@
+.sprint {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	color: $color-black;
+	width: 500px;
+}
+
+.buttoncontainer {
+	display: flex;
+	flex-direction: row;
+}
+
+.buttonArrow {
+	display: flex;
+	flex-direction: row;
+}
+
+.arrow {
+	margin-top: 10px;
+	width: 150px;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+
+.buttonvalid {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 150px;
+	height: 40px;
+	font-size: 16px;
+	font-weight: 700;
+	color: $color-white;
+	cursor: pointer;
+	background-color: $color-green;
+	border: none;
+	border-radius: 5px;
+	outline: none;
+	margin-top: 20px;
+	margin-left: 5px;
+	margin-right: 5px;
+	box-shadow: $box-shadow-3;
+
+	&:hover,
+	&:active {
+		background: lighten($color-green, 10) radial-gradient(circle, transparent 1%, lighten($color-green, 10) 0) 50%/15000%;
+	}
+}
+
+.buttoninvalid {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 150px;
+	height: 40px;
+	font-size: 16px;
+	font-weight: 700;
+	color: $color-white;
+	cursor: pointer;
+	background-color: $color-cardinal;
+	border: none;
+	border-radius: 5px;
+	outline: none;
+	margin-top: 20px;
+	margin-left: 5px;
+	margin-right: 5px;
+	box-shadow: $box-shadow-3;
+
+	&:hover,
+	&:active {
+		background: lighten($color-cardinal, 10) radial-gradient(circle, transparent 1%, lighten($color-cardinal, 10) 0)
+			50%/15000%;
+	}
+}
+
+.border {
+	border: 1px solid $color-black;
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	border-radius: 5px;
+	width: 450px;
+	height: 400px;
+}
+
+.position {
+	display: flex;
+	flex-direction: column;
+}
+
+.buttonaudio {
+	border: none;
+	font-size: 30px;
+	line-height: 1;
+	background-color: transparent;
+	color: $color-primary;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 20px;
+
+	&:hover,
+	&:active {
+		color: lighten($color-primary, 30);
+	}
+}
+
+.imgposition {
+	margin-top: 10px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+
+	.img {
+		height: 100px;
+	}
+
+	.img_hidden {
+		height: 100px;
+		opacity: 0;
+	}
+}
+
+.iconposition {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+
+	.icon {
+		height: 30px;
+		opacity: 1;
+	}
+
+	.icon_hidden {
+		height: 30px;
+		opacity: 0.1;
+	}
+}

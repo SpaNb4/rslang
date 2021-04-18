@@ -1,0 +1,24 @@
+.fullScreenWrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: calc(100vh - 71px);
+
+	.fullScreenBtn {
+		position: absolute;
+		top: 25px;
+		left: 20px;
+		font-size: 30px;
+		color: $color-black;
+		cursor: pointer;
+	}
+
+	.soundBtn {
+		position: absolute;
+		top: 25px;
+		left: 75px;
+		font-size: 30px;
+		color: $color-black;
+		cursor: pointer;
+	}
+}

@@ -1,0 +1,82 @@
+%hard {
+	display: none;
+}
+
+.Button {
+	position: relative;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: $color-white;
+	font-size: 16px;
+	line-height: 1;
+	margin: 10px;
+	padding: 8px;
+	border: none;
+	border-radius: 8px;
+	min-width: fit-content;
+	background-color: $color-primary;
+	outline: none;
+	transition: background 0.8s;
+
+	&[data-color='ocean-green'] {
+		@include buttonColor($color-ocean-green);
+
+		&[difficulty='hard'] {
+			@extend %hard;
+		}
+	}
+
+	&[data-color='scarlet'] {
+		@include buttonColor($color-scarlet);
+
+		&[difficulty='hard'] {
+			@extend %hard;
+		}
+	}
+
+	&[data-color='secondary'] {
+		@include buttonColor($color-secondary);
+
+		&[difficulty='hard'] {
+			@extend %hard;
+		}
+	}
+
+	&[data-color='cinnamon'] {
+		@include buttonColor($color-cinnamon);
+
+		&[difficulty='hard'] {
+			@extend %hard;
+		}
+	}
+
+	&[data-color='sea-buckthorn'] {
+		@include buttonColor($color-sea-buckthorn);
+
+		&[difficulty='hard'] {
+			@extend %hard;
+		}
+	}
+
+	&[data-color='cardinal'] {
+		@include buttonColor($color-cardinal);
+
+		&[difficulty='hard'] {
+			@extend %hard;
+		}
+	}
+
+	&:hover,
+	&:active {
+		background: lighten($color-primary, 10) radial-gradient(circle, transparent 1%, lighten($color-primary, 10) 0)
+			50%/15000%;
+	}
+
+	&:disabled,
+	&:disabled:hover {
+		background: $color-regent-gray;
+		cursor: not-allowed;
+	}
+}

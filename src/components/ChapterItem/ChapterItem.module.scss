@@ -1,0 +1,149 @@
+.chapterItem {
+	width: 90%;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	margin: 25px auto;
+	padding: 25px 0;
+	box-shadow: $box-shadow-2;
+	border: 1px solid transparent;
+	border-color: transparent;
+	border-radius: 8px;
+
+	.itemImage {
+		flex-basis: 30%;
+		height: auto;
+		padding: 0 15px 15px 15px;
+		text-align: center;
+
+		@include resolution(tablet) {
+			flex-basis: 50%;
+		}
+
+		@include resolution(big-mobile) {
+			flex-basis: 100%;
+		}
+
+		img {
+			width: 100%;
+			height: auto;
+		}
+	}
+
+	.itemInfo {
+		flex-basis: 45%;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		padding: 0 15px;
+
+		@include resolution(tablet) {
+			flex-basis: 50%;
+		}
+
+		@include resolution(big-mobile) {
+			flex-basis: 100%;
+		}
+
+		.itemTitle {
+			flex-basis: 100%;
+			width: 100%;
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			flex-wrap: wrap;
+
+			& > div {
+				margin: 0 5px;
+				padding: 15px 0;
+				font-size: 16px;
+			}
+		}
+
+		.itemParagraph {
+			flex-basis: 100%;
+			padding: 0 0 15px 0;
+		}
+
+		.Hide {
+			display: none;
+		}
+	}
+
+	.itemSettings {
+		flex-basis: 10%;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-wrap: wrap;
+		flex-grow: 2;
+
+		@include resolution(tablet) {
+			flex-basis: 100%;
+		}
+
+		&.Hide {
+			display: none;
+		}
+	}
+
+	.itemResults {
+		flex-basis: 15%;
+		width: 100%;
+		padding: 10px;
+		flex-grow: 2;
+
+		&.Hide {
+			display: none;
+		}
+
+		@include resolution(tablet) {
+			flex-basis: 100%;
+		}
+
+		.resultItem {
+			width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			padding: 5px 0;
+
+			& > div {
+				margin: 0 auto;
+
+				@include resolution(tablet) {
+					padding: 0 15px;
+				}
+			}
+		}
+	}
+}
+
+.chapterItem[data-difficulty='hard'] {
+	&[data-color='ocean-green'] {
+		@include cardColor($color-ocean-green);
+	}
+
+	&[data-color='scarlet'] {
+		@include cardColor($color-scarlet);
+	}
+
+	&[data-color='secondary'] {
+		@include cardColor($color-secondary);
+	}
+
+	&[data-color='cinnamon'] {
+		@include cardColor($color-cinnamon);
+	}
+
+	&[data-color='sea-buckthorn'] {
+		@include cardColor($color-sea-buckthorn);
+	}
+
+	&[data-color='cardinal'] {
+		@include cardColor($color-cardinal);
+	}
+}

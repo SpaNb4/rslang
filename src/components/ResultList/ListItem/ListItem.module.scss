@@ -1,0 +1,38 @@
+.gamesListItem {
+	flex-basis: 45%;
+	margin: 10px;
+	flex-grow: 2;
+
+	@include resolution(big-mobile) {
+		flex-basis: 90%;
+	}
+
+	.listItemLink {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		padding: 14px 5px;
+		border-radius: 6px;
+		box-shadow: $box-shadow-2;
+		background: $color-white;
+
+		.gameAnswers {
+			& div {
+				white-space: nowrap;
+			}
+		}
+
+		.gameTitle {
+			width: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			& div:nth-child(1) {
+				margin: 0 5px;
+			}
+		}
+	}
+}

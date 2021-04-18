@@ -1,0 +1,41 @@
+.pagination {
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	margin-bottom: 30px;
+	margin-top: 50px;
+
+	@include resolution(tablet) {
+		gap: 5px;
+	}
+
+	a {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 30px;
+		width: 30px;
+		cursor: pointer;
+
+		&:hover {
+			color: $color-primary;
+		}
+
+		&[aria-label='disabled'] {
+			cursor: not-allowed;
+			pointer-events: none;
+		}
+	}
+
+	li.activePage {
+		background-color: $color-primary;
+		border-radius: 25%;
+		color: $color-white;
+	}
+
+	.activeLink {
+		&:hover {
+			color: $color-white;
+		}
+	}
+}

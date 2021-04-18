@@ -1,0 +1,37 @@
+.chapter {
+	width: 100%;
+
+	.chapterTitleContainer {
+		display: flex;
+		padding: 16px 0;
+		position: relative;
+	}
+
+	.gamesListContainer {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		& ul.gamesList {
+			width: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-wrap: wrap;
+
+			.gamesListItem {
+				flex-basis: 20%;
+				margin: 10px;
+
+				.listItemLink {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					padding: 14px 5px;
+					border-radius: 6px;
+					box-shadow: $box-shadow-2;
+				}
+			}
+		}
+	}
+}
