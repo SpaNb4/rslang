@@ -12,16 +12,16 @@
  - [Redux-Thunk](https://github.com/reduxjs/redux-thunk)
 
 ### Additional utils and libraries
- - [react-icons](https://reactjs.org/)
- - [react-paginate](https://www.npmjs.com/package/react-paginate)
- - [react-spring](https://www.npmjs.com/package/react-spring)
- - [react-vis](https://www.npmjs.com/package/react-vis)
- - [react-hotkeys-hook](https://www.npmjs.com/package/react-hotkeys-hook)
- - [screenfull](https://www.npmjs.com/package/screenfull)
- - [craco](https://github.com/gsoft-inc/craco/blob/master/packages/craco/README.md)
- - [lodash](https://lodash.com/)
- - [axios](https://www.npmjs.com/package/axios)
- - [html-react-parser](https://www.npmjs.com/package/html-react-parser)
+ - [react-icons](https://react-icons.github.io/react-icons/) - svg react icons of popular icon packs
+ - [react-paginate](https://www.npmjs.com/package/react-paginate) - ReactJS component to render a pagination.
+ - [react-spring](https://www.npmjs.com/package/react-spring) - spring-physics based animation library
+ - [react-vis](https://www.npmjs.com/package/react-vis) - collection of react components to render common data visualization charts
+ - [react-hotkeys-hook](https://www.npmjs.com/package/react-hotkeys-hook) - React hook for using keyboard shortcuts in components
+ - [screenfull](https://www.npmjs.com/package/screenfull) - simple wrapper for cross-browser usage of the Fullscreen API, which lets you bring the page into fullscreen.
+ - [craco](https://github.com/gsoft-inc/craco/blob/master/packages/craco/README.md) - configuration layer for create-react-app (customization without using 'eject' by adding a single craco.config.js file)
+ - [lodash](https://lodash.com/) - JavaScript utility library
+ - [axios](https://www.npmjs.com/package/axios) - promise based HTTP client for the browser and node.js
+ - [html-react-parser](https://www.npmjs.com/package/html-react-parser) - parser that converts an HTML string to one or more React elements
 
 ### Testing
  - [Jest](https://jestjs.io/)
