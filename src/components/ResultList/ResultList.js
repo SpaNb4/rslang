@@ -7,7 +7,7 @@ import ListItem from './ListItem/ListItem';
 
 const ResultList = ({ wordData }) => {
 	const items = menu.games.map(({ linkName, icon, color, linkId }, index) => {
-		const trained = !!(wordData.userWord && wordData.userWord.optional[linkId]);
+		const trained = !!((wordData.userWord && wordData.userWord.optional[linkId]) || wordData[linkId]);
 		return (
 			<ListItem
 				trained={trained}

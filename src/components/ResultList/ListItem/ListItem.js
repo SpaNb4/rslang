@@ -15,8 +15,14 @@ const ListItem = ({ wordData, trained, linkName, icon, color, linkId }) => (
 			</div>
 			{trained ? (
 				<div className={classes.gameAnswers}>
-					<div>Правильно: {wordData.userWord.optional[linkId].correct}</div>
-					<div>Неправильно: {wordData.userWord.optional[linkId].wrong}</div>
+					<div>
+						Правильно:{' '}
+						{wordData.userWord ? wordData.userWord.optional[linkId].correct : wordData[linkId].correct}
+					</div>
+					<div>
+						Неправильно:{' '}
+						{wordData.userWord ? wordData.userWord.optional[linkId].wrong : wordData[linkId].wrong}
+					</div>
 				</div>
 			) : (
 				<div className={classes.gameAnswers}>Не изучено</div>
